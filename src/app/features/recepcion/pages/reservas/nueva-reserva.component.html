@@ -1,0 +1,108 @@
+<div class="form-container">
+
+  <h2>Nueva Reserva</h2>
+  <p>Registro de nueva estancia en Grand Royal Resort</p>
+
+  <form (ngSubmit)="guardar()">
+
+    <div class="grid">
+
+      <!-- NOMBRE -->
+      <div>
+        <label>Nombre del huésped</label>
+        <input type="text"
+          [(ngModel)]="reserva.nombreHuesped"
+          name="nombre"
+          required />
+      </div>
+
+      <!-- DOCUMENTO -->
+      <div>
+        <label>Documento</label>
+        <input type="text"
+          [(ngModel)]="reserva.documentoHuesped"
+          name="documento"
+          required />
+      </div>
+
+      <!-- FECHA ENTRADA -->
+      <div>
+        <label>Fecha Entrada</label>
+        <input type="date"
+          [(ngModel)]="reserva.fechaEntrada"
+          name="fechaEntrada"
+          required />
+      </div>
+
+      <!-- FECHA SALIDA -->
+      <div>
+        <label>Fecha Salida</label>
+        <input type="date"
+          [(ngModel)]="reserva.fechaSalida"
+          name="fechaSalida"
+          required />
+      </div>
+
+      <!-- CANTIDAD -->
+      <div>
+        <label>Cantidad Huéspedes</label>
+        <input type="number"
+          [(ngModel)]="reserva.cantidadHuespedes"
+          name="huespedes"
+          min="1" />
+      </div>
+
+      <!-- TIPO HABITACION -->
+      <div>
+        <label>Tipo de Habitación</label>
+        <select
+          [(ngModel)]="reserva.tipoHabitacionId"
+          name="tipoHabitacion"
+          required>
+
+          <option [value]="null" disabled selected>-- Seleccione --</option>
+          <option *ngFor="let t of tiposHabitacion" [value]="t.id">
+            {{ t.nombre }}
+          </option>
+
+        </select>
+      </div>
+
+    </div>
+
+    <!-- BOTONES -->
+    <div class="buttons">
+
+      <button type="button" class="btn-cancelar" (click)="cancelar()">
+        Cancelar
+      </button>
+
+      <button type="submit" class="btn-guardar" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar Reservación' }}
+      </button>
+
+    </div>
+
+  </form>
+
+  <div class="info-section" *ngIf="error">
+    <strong>⚠️ Error:</strong> {{ error }}
+  </div>
+
+  <!-- Info Cards -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 32px;">
+    <div class="info-section" style="border-left: none; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px;">
+      <strong style="font-size: 15px; display: block; margin-bottom: 8px;">📋 Políticas VIP</strong>
+      <p style="margin: 0; font-size: 12px; color: #94a3b8;">Las suites incluyen transfer privado desde el aeropuerto y acceso al lounge.</p>
+    </div>
+    <div class="info-section" style="border-left: none; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px;">
+      <strong style="font-size: 15px; display: block; margin-bottom: 8px;">🎁 Garantía</strong>
+      <p style="margin: 0; font-size: 12px; color: #94a3b8;">Se requiere una tarjeta de crédito válida para garantizar la reserva.</p>
+    </div>
+    <div class="info-section" style="border-left: none; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px;">
+      <strong style="font-size: 15px; display: block; margin-bottom: 8px;">❌ Cancelaciones</strong>
+      <p style="margin: 0; font-size: 12px; color: #94a3b8;">Cancelación gratuita hasta 48 horas antes del check-in.</p>
+    </div>
+  </div>
+
+</div>

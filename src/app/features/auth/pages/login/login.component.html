@@ -1,98 +1,54 @@
-<!-- src/app/features/auth/pages/login/login.component.html -->
-<div class="login-wrapper">
+<main class="bg-image login-container">
 
-  <div class="login-card">
+  <section class="glass-card login-card">
 
-    <!-- Logo / Marca -->
-    <div class="login-header">
-      <div class="logo-icon">🏨</div>
-      <h1 class="login-title">Hotel PMS</h1>
-      <p class="login-subtitle">Sistema de Gestión Hotelera</p>
-    </div>
+    <header class="login-header">
+      <div class="logo-container">
+        <div class="logo-circle">
+          <span class="logo-letter">M</span>
+        </div>
+      </div>
+      <h1 class="brand-title">HOTEL & RESORTS</h1>
+      <p class="brand-subtitle">Property Management System</p>
+    </header>
 
-    <!-- Formulario -->
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" autocomplete="off">
 
-      <!-- Campo usuario -->
       <div class="form-group">
-        <label class="form-label" for="nombreUsuario">Usuario</label>
-        <div class="input-wrapper">
-          <span class="input-icon">👤</span>
-          <input
-            id="nombreUsuario"
-            type="text"
-            formControlName="nombreUsuario"
-            class="form-input"
-            [class.input-error]="f['nombreUsuario'].invalid && f['nombreUsuario'].touched"
-            placeholder="Ingrese su usuario"
-            autocomplete="username"
-          />
-        </div>
-        <span class="error-msg" *ngIf="f['nombreUsuario'].invalid && f['nombreUsuario'].touched">
-          El usuario es obligatorio (mínimo 3 caracteres)
-        </span>
+        <label class="form-label">Usuario</label>
+        <input class="glass-input" formControlName="nombreUsuario" placeholder="Ingrese su nombre de usuario"
+          type="text" [class.input-error]="f['nombreUsuario'].invalid && f['nombreUsuario'].touched" />
       </div>
 
-      <!-- Campo contraseña -->
       <div class="form-group">
-        <label class="form-label" for="contrasena">Contraseña</label>
-        <div class="input-wrapper">
-          <span class="input-icon">🔒</span>
-          <input
-            id="contrasena"
+        <label class="form-label">Contraseña</label>
+
+        <div class="input-with-icon">
+          <input class="glass-input" formControlName="contrasena" placeholder="••••••••"
             [type]="mostrarPassword ? 'text' : 'password'"
-            formControlName="contrasena"
-            class="form-input"
-            [class.input-error]="f['contrasena'].invalid && f['contrasena'].touched"
-            placeholder="Ingrese su contraseña"
-            autocomplete="current-password"
-          />
-          <button
-            type="button"
-            class="toggle-password"
-            (click)="mostrarPassword = !mostrarPassword"
-            tabindex="-1">
-            {{ mostrarPassword ? '🙈' : '👁️' }}
+            [class.input-error]="f['contrasena'].invalid && f['contrasena'].touched" />
+
+          <button type="button" class="toggle-password" (click)="mostrarPassword = !mostrarPassword">
+            <img [src]="mostrarPassword ? '/assets/icons/eye-off.svg' : '/assets/icons/eye.svg'"
+              class="password-icon" />
           </button>
         </div>
-        <span class="error-msg" *ngIf="f['contrasena'].invalid && f['contrasena'].touched">
-          La contraseña es obligatoria (mínimo 6 caracteres)
-        </span>
       </div>
 
-      <!-- Botón submit -->
-      <button
-        type="submit"
-        class="btn-login"
-        [disabled]="loginForm.invalid || cargando">
-        <span *ngIf="!cargando">Ingresar al Sistema</span>
-        <span *ngIf="cargando" class="loading-text">
-          <mat-spinner diameter="20"></mat-spinner>
-          Verificando...
-        </span>
-      </button>
+      <div class="form-actions">
+        <button type="submit" [disabled]="loginForm.invalid || cargando" class="btn-submit">
+          <ng-container *ngIf="!cargando; else loading">
+            INGRESAR AL SISTEMA
+          </ng-container>
+          <ng-template #loading>
+            <mat-spinner diameter="20"></mat-spinner>
+            Verificando...
+          </ng-template>
+        </button>
+      </div>
 
     </form>
 
-    <!-- Footer -->
-    <div class="login-footer">
-      <p>© 2025 Hotel PMS · Acceso solo para personal autorizado</p>
-    </div>
+  </section>
 
-  </div>
-
-  <!-- Panel decorativo derecho -->
-  <div class="login-banner">
-    <div class="banner-content">
-      <h2>Bienvenido al Sistema</h2>
-      <p>Gestión integral de su hotel: reservas, housekeeping, inventario y más.</p>
-      <div class="banner-features">
-        <div class="feature-item">✅ Control de reservas en tiempo real</div>
-        <div class="feature-item">✅ Mapa visual de habitaciones</div>
-        <div class="feature-item">✅ Gestión de housekeeping</div>
-        <div class="feature-item">✅ Control de inventario</div>
-      </div>
-    </div>
-  </div>
-
-</div>
+</main>

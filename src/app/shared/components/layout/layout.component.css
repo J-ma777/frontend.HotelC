@@ -1,0 +1,10 @@
+.layout-container {
+  display: flex;
+  height: 100vh;
+  background-color: #0f172a; /* Color de fondo oscuro principal */
+}
+
+.main {
+  flex: 1;
+  overflow-y: auto; /* Permitir scroll solo en el área principal */
+}

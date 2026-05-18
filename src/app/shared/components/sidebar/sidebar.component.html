@@ -1,0 +1,96 @@
+<aside class="sidebar">
+
+  <!-- LOGO -->
+  <div class="sidebar-logo">
+    
+<span class="logo-icon">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"></path>
+  </svg>
+</span>
+
+    <span class="logo-text">HOTEL CUENCA</span>
+  </div>
+
+  <!-- USUARIO -->
+  <div class="user-info">
+    <div class="user-avatar">
+      {{ (nombreUsuario || 'U').charAt(0).toUpperCase() }}
+    </div>
+    <div>
+      <div class="user-name">{{ nombreUsuario }}</div>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <nav class="sidebar-nav">
+    <a
+      class="nav-item"
+      *ngFor="let item of menuVisible"
+      [routerLink]="item.ruta"
+      routerLinkActive="activo"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+
+      <!-- ICONO -->
+      <span class="nav-icon">
+        <ng-container [ngSwitch]="item.icon">
+
+          <!-- DASHBOARD -->
+          <svg *ngSwitchCase="'home'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M3 10l9-7 9 7v11H3z" />
+          </svg>
+
+          <!-- USUARIOS -->
+          <svg *ngSwitchCase="'users'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M17 20h5v-1a4 4 0 00-5-3.87M9 20H4v-1a4 4 0 015-3.87" />
+          </svg>
+
+          <!-- MAPA -->
+          <svg *ngSwitchCase="'map'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M9 18l-6 3V6l6-3m6 15l6 3V6l-6-3M9 3l6 3v15l-6-3V3z" />
+          </svg>
+
+          <!-- RESERVAS -->
+          <svg *ngSwitchCase="'calendar'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M8 7V3M16 7V3M4 11h16M5 5h14a1 1 0 011 1v14H4V6a1 1 0 011-1z" />
+          </svg>
+
+          <!-- CHECK-IN -->
+          <svg *ngSwitchCase="'check'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+
+          <!-- CHECK-OUT -->
+          <svg *ngSwitchCase="'logout'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M17 16l4-4m0 0l-4-4m4 4H7" />
+          </svg>
+
+          <!-- LIMPIEZA -->
+          <svg *ngSwitchCase="'sparkles'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M5 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6z" />
+          </svg>
+
+          <!-- INVENTARIO -->
+          <svg *ngSwitchCase="'cube'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 16V8a2 2 0 00-1-1.7l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.7l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+          </svg>
+
+        </ng-container>
+      </span>
+
+      <!-- TEXTO -->
+      <span class="nav-label">{{ item.label }}</span>
+
+    </a>
+  </nav>
+
+  <!-- FOOTER -->
+  <div class="sidebar-footer">
+    <button class="btn-logout" type="button" (click)="cerrarSesion()">
+      <span>🚪</span>
+      <span>CERRAR SESIÓN</span>
+    </button>
+  </div>
+
+</aside>
