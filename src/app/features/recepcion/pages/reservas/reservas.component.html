@@ -78,26 +78,36 @@
           <td>{{ r.cantidadHuespedes }}</td>
           <td class="actions-cell">
             <button 
+              class="action-btn confirmar"
+              *ngIf="tienePermiso('RESERVA_EDITAR') && r.estado === 'PENDIENTE'" 
+              (click)="confirmarDebug(r)"
+              title="Confirmar">
+              ✓
+            </button>
+            <button 
               class="action-btn checkin"
-              *ngIf="tienePermiso('RESERVA_EDITAR')" 
+              *ngIf="tienePermiso('RESERVA_EDITAR') && r.estado === 'CONFIRMADA'" 
               (click)="checkIn(r.id)"
               title="Check-In">
               ↪
             </button>
             <button 
               class="action-btn checkout"
-              *ngIf="tienePermiso('RESERVA_EDITAR')" 
+              *ngIf="tienePermiso('RESERVA_EDITAR') && r.estado === 'EN_CASA'" 
               (click)="checkOut(r.id)"
               title="Check-Out">
               ↩
             </button>
             <button 
               class="action-btn cancelar"
-              *ngIf="tienePermiso('RESERVA_CANCELAR')" 
+              *ngIf="tienePermiso('RESERVA_CANCELAR') && r.estado !== 'CANCELADA'" 
               (click)="cancelar(r.id)"
               title="Cancelar">
               ✕
             </button>
+            <span *ngIf="r.estado === 'CANCELADA'" class="text-muted">
+              ✅ Reserva ya cancelada
+            </span>
           </td>
         </tr>
       </tbody>

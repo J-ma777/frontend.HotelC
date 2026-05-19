@@ -36,14 +36,26 @@ export class ReservaService {
   }
 
   checkIn(id: number): Observable<any> {
-    return this.http.put(`${this.API_URL}/${id}/checkin`, {});
+    const url = `${this.API_URL}/${id}/checkin`;
+    console.log('📤 Llamando a:', url);
+    return this.http.put(url, {});
   }
 
   checkOut(id: number): Observable<any> {
-    return this.http.put(`${this.API_URL}/${id}/checkout`, {});
+    const url = `${this.API_URL}/${id}/checkout`;
+    console.log('📤 Llamando a:', url);
+    return this.http.put(url, {});
+  }
+
+  confirmarReserva(id: number): Observable<any> {
+    const url = `${this.API_URL}/${id}/confirmar`;
+    console.log('📤 Llamando a:', url);
+    return this.http.put(url, {});
   }
 
   cancelarReserva(id: number): Observable<any> {
-    return this.http.put(`${this.API_URL}/${id}/cancelar`, {});
+    const url = `${this.API_URL}/${id}/cancelar`;
+    console.log('📤 Llamando a:', url);
+    return this.http.put(url, {});
   }
 }
