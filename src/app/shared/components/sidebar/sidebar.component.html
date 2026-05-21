@@ -56,6 +56,19 @@
             <path d="M8 7V3M16 7V3M4 11h16M5 5h14a1 1 0 011 1v14H4V6a1 1 0 011-1z" />
           </svg>
 
+          <!-- TIPOS DE HABITACIÓN -->
+          <svg *ngSwitchCase="'tag'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-1.41.59H5a2 2 0 01-2-2v-6a2 2 0 01.59-1.41L11 3l9.59 9.59z" />
+            <circle cx="7" cy="7" r="1.5" />
+          </svg>
+
+          <!-- HABITACIONES -->
+          <svg *ngSwitchCase="'door'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M3 4h18v16H3z" />
+            <path d="M18 8h2M18 11h2M18 14h2" />
+            <circle cx="15" cy="10" r="1" />
+          </svg>
+
           <!-- CHECK-IN -->
           <svg *ngSwitchCase="'check'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M5 13l4 4L19 7" />

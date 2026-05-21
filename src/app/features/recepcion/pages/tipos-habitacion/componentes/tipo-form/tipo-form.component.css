@@ -1,0 +1,15 @@
+.tipo-form-card {
+  background: rgba(12,18,24,0.7);
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 6px solid rgba(250,204,21,0.95);
+}
+.form-title { color: #facc15; margin: 0 0 8px 0; font-size: 18px; }
+.form-grid { display:flex; flex-direction:column; gap:10px; }
+.form-grid input, .form-grid textarea { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.04); padding:10px; border-radius:8px; color: #e6eef8 }
+.image-upload { display:flex; gap:10px; align-items:center }
+.image-upload .preview { width:64px; height:64px; background: rgba(255,255,255,0.02); border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden }
+.image-upload .preview img { width:100%; height:100%; object-fit:cover }
+.image-upload input[type='file'] { color: #e6eef8 }
+.form-actions { display:flex; justify-content:flex-start; margin-top:6px }
+.btn-primary { background:#facc15; color:#071024; padding:10px 14px; border-radius:8px; border:none; font-weight:700 }

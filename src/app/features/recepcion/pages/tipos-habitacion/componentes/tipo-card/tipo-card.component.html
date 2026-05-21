@@ -1,0 +1,25 @@
+<article class="tipo-card">
+  <div class="thumb">
+    <img [src]="tipo.imagenUrl || 'assets/images/login.webp'" alt="imagen" class="thumb-img" (error)="onImgError($event)" />
+  </div>
+  <div class="content">
+    <div class="content-header">
+      <div class="meta-id">ID: {{ formatId(tipo.id) }}</div>
+      <div class="actions">
+        <button class="icon-btn" title="Editar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 20h4l10-10-4-4L4 16v4z"/></svg>
+        </button>
+        <button class="icon-btn" title="Eliminar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 6h18M8 6v12a2 2 0 002 2h4a2 2 0 002-2V6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <h3 class="title">{{ tipo.nombre }}</h3>
+    <p class="descripcion">{{ tipo.descripcion }}</p>
+
+    <div class="card-footer">
+      <div class="capacidad">Hasta {{ tipo.capacidad }} Personas</div>
+    </div>
+  </div>
+</article>

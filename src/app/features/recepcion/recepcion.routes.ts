@@ -8,6 +8,13 @@ export const RECEPCION_ROUTES: Routes = [
   },
 
   {
+    path: 'tipos-habitacion',
+    loadComponent: () =>
+      import('./pages/tipos-habitacion/tipos-habitacion.page')
+        .then(m => m.TiposHabitacionPage)
+  },
+
+  {
     path: 'reservas',
     children: [
       {
@@ -21,6 +28,12 @@ export const RECEPCION_ROUTES: Routes = [
         loadComponent: () =>
           import('./pages/reservas/nueva-reserva.component')
             .then(m => m.NuevaReservaComponent)
+      },
+      {
+        path: 'habitaciones',
+        loadComponent: () =>
+          import('./pages/habitaciones/habitaciones.component')
+            .then(m => m.HabitacionesComponent)
       }
     ]
   },

@@ -1,3 +1,7 @@
+export * from './habitacion.model';
+export * from './habitacion-create.model';
+export * from './tipo-habitacion.model';
+
 export interface AuthResponse {
   accessToken: string;
   tokenType: string;

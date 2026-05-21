@@ -1,0 +1,26 @@
+<div class="tipo-form-card">
+  <h3 class="form-title">Nueva Categoría</h3>
+
+  <form (ngSubmit)="onSubmit()" class="form-grid">
+    <label>URL de imagen (Cloudinary)</label>
+    <input 
+      type="text"
+      placeholder="URL de imagen (Cloudinary)"
+      [(ngModel)]="imagenUrl"
+      name="imagenUrl"
+    />
+
+    <label>Nombre de la Habitación</label>
+    <input type="text" [(ngModel)]="modelo.nombre" name="nombre" placeholder="Ej: Suite Presidencial" />
+
+    <label>Capacidad Máxima</label>
+    <input type="number" [(ngModel)]="modelo.capacidad" name="capacidad" min="1" />
+
+    <label>Descripción de la Categoría</label>
+    <textarea [(ngModel)]="modelo.descripcion" name="descripcion" rows="4" placeholder="Detalles de lujo, vistas al mar..."></textarea>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">Guardar Categoría</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,64 @@
+/* Estilos locales para la vista de crear habitación. Evitar tocar estilos globales. */
+.habitaciones-page {
+    padding: 32px;
+  color: var(--text-color, #fff);
+  padding: 1rem;
+}
+.page-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #facc15;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+.page-header p {
+  margin: 0 0 1rem 0;
+  color: rgba(230,238,248,0.8);
+}
+.habitaciones-container {
+  padding: 24px;
+  background: linear-gradient(135deg, #0f172a 0%, #111827 100%);
+  min-height: 100vh;
+}
+.page-header { display:flex; justify-content:space-between; align-items:center; gap:1rem; }
+.page-header .title { font-size:28px; font-weight:700; color:#facc15; margin:0 0 6px 0 }
+.page-header .subtitle { color:#94a3b8; margin:0 }
+.create-card {
+  background: rgba(20,28,34,0.8);
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+}
+.create-card { border-left:6px solid rgba(250,204,21,0.95); padding-left:0.75rem; }
+.create-form .row { display:flex; gap:1rem; margin-bottom:0.75rem; align-items:flex-end }
+.create-form .col { flex:1; display:flex; flex-direction:column; }
+.create-form .col.full { flex:1 1 100%; }
+.create-form label { font-size:0.8rem; margin-bottom:0.25rem; color:rgba(230,238,248,0.85); }
+.create-form input[type="text"], .create-form input[type="number"], .create-form select {
+  padding:0.5rem; border-radius:6px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); color:#e6eef8;
+}
+.create-form select option {
+  color: #071024;
+}
+.input-with-icon .input-wrap { display:flex; align-items:center; gap:0.75rem; }
+.input-with-icon .input-wrap .icon { display:inline-flex; width:34px; height:34px; align-items:center; justify-content:center; background:rgba(255,255,255,0.02); border-radius:6px; }
+.input-with-icon .input-wrap input { flex:1; }
+.equipamiento .equip-list { display:flex; gap:1rem; flex-wrap:wrap; margin-top:0.5rem; }
+.equip-item { display:flex; align-items:center; gap:0.5rem; color:rgba(230,238,248,0.9); }
+.equip-item .equip-icon { display:inline-flex; width:20px; height:20px; align-items:center; justify-content:center; margin-right:0.25rem; color:rgba(255,255,255,0.6); }
+.actions { display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1rem; }
+.btn { padding:0.6rem 1rem; border-radius:8px; border:none; cursor:pointer; }
+.btn-cancel { background:transparent; color:rgba(230,238,248,0.9); border:1px solid rgba(255,255,255,0.04); }
+.btn-primary { background:#facc15; color:#0f172a; font-weight:700; display:inline-flex; gap:0.5rem; align-items:center; padding:0.7rem 1rem; box-shadow:0 8px 20px rgba(250,204,21,0.12); border-radius:10px }
+.btn-icon svg{ width:16px; height:16px; }
+.info-row { display:flex; gap:1rem; margin-top:1rem; }
+.info-card { flex:1; background: rgba(12,18,22,0.6); padding:0.75rem; border-radius:8px; border-left:6px solid rgba(250,204,21,0.95); }
+.rooms-table { width:100%; border-collapse:collapse; margin-top:1rem; }
+.rooms-table thead { background: rgba(15, 23, 42, 0.8); }
+.rooms-table th { padding:12px; text-transform:uppercase; font-size:12px; color:#facc15; font-weight:700; }
+.rooms-table td { padding:12px; color:#e6eef8; border-bottom:1px solid rgba(255,255,255,0.03); }
+@media (max-width:700px){ .create-form .row { flex-direction:column; } }
+
+/* Descripción bajo el título */
+.page-header-desc { margin: 0 0 1rem 0; color: #cbd5e1; padding: 0 0 8px 0; }
+.page-header-desc p { margin:0; color: #94a3b8; font-size:0.95rem }

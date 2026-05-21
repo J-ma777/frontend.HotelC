@@ -1,0 +1,21 @@
+<div class="tipos-page">
+  <header class="page-header">
+    <h1>Tipos de Habitación</h1>
+    <p class="subtitle">Gestiona las categorías y capacidades de las estancias del hotel.</p>
+  </header>
+
+  <div class="layout">
+    <aside class="left-col">
+      <app-tipo-form (crearTipo)="handleCrear($event)"></app-tipo-form>
+    </aside>
+
+    <main class="right-col">
+      <div class="cards-grid">
+      <div class="tipos-list">
+        <div *ngIf="message" class="toast" [ngClass]="messageType">{{ message }}</div>
+        <app-tipo-card *ngFor="let tipo of tipos" [tipo]="tipo"></app-tipo-card>
+      </div>
+      </div>
+    </main>
+  </div>
+</div>

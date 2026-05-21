@@ -49,6 +49,18 @@ export class SidebarComponent implements OnInit {
     permisos: ['RESERVA_VER']
   },
   {
+    label: 'TIPOS DE HABITACIÓN',
+    icon: 'tag',
+    ruta: '/recepcion/tipos-habitacion',
+    permisos: ['RESERVA_VER']
+  },
+  {
+    label: 'HABITACIONES',
+    icon: 'door',
+    ruta: '/recepcion/reservas/habitaciones',
+    permisos: ['RESERVA_VER']
+  },
+  {
     label: 'CHECK-IN',
     icon: 'check',
     ruta: '/recepcion/checkin',
