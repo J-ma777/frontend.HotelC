@@ -20,26 +20,19 @@ export class HabitacionesComponent implements OnInit {
 
   habitaciones: Habitacion[] = [];
   tipos: TipoHabitacion[] = [];
-
-  availableEquipamiento: { key: string; label: string }[] = [
-    { key: 'minibar', label: 'Minibar' },
-    { key: 'wifi', label: 'Wi‑Fi' },
-    { key: 'smartTv', label: 'Smart TV' },
-    { key: 'jacuzzi', label: 'Jacuzzi' }
-  ];
+  editandoId: number | null = null;
 
   nuevaHabitacion: HabitacionCreate = {
     numero: '',
     estado: 'DISPONIBLE',
     piso: 1,
-    tipoId: 0,
-    equipamiento: []
+    tipoId: null as any
   };
 
   constructor(
     private habService: HabitacionesService,
     private tipoService: TipoHabitacionService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.cargarHabitaciones();
@@ -61,34 +54,98 @@ export class HabitacionesComponent implements OnInit {
   }
 
   guardar() {
-    if (!this.nuevaHabitacion.numero || !this.nuevaHabitacion.tipoId) {
-      alert('Completa los campos');
+
+    console.log('tipoId antes:', this.nuevaHabitacion.tipoId);
+
+    if (!this.nuevaHabitacion.numero) {
+      this.showError('El número de habitación es obligatorio');
       return;
     }
 
-    this.habService.create(this.nuevaHabitacion).subscribe({
-      next: () => {
-        this.cargarHabitaciones();
+    if (!this.nuevaHabitacion.tipoId) {
+      this.showError('Debes seleccionar un tipo de habitación válido');
+      return;
+    }
 
-        this.nuevaHabitacion = {
-          numero: '',
-          estado: 'DISPONIBLE',
-          piso: 1,
-          tipoId: 0
-        };
+    if (this.editandoId) {
+      this.habService.update(this.editandoId, this.nuevaHabitacion).subscribe({
+        next: () => {
+          this.showSuccess('Habitación actualizada correctamente');
+          this.cargarHabitaciones();
+          this.nuevaHabitacion = {
+            numero: '',
+            estado: 'DISPONIBLE',
+            piso: 1,
+            tipoId: null as any
+          };
+          this.editandoId = null;
+        },
+        error: err => this.handleError(err)
+      });
+    } else {
+      this.habService.create(this.nuevaHabitacion).subscribe({
+        next: () => {
+          this.showSuccess('Habitación creada correctamente');
+          this.cargarHabitaciones();
+          this.nuevaHabitacion = {
+            numero: '',
+            estado: 'DISPONIBLE',
+            piso: 1,
+            tipoId: null as any
+          };
+        },
+        error: err => this.handleError(err)
+      });
+    }
+  }
+
+  editar(h: Habitacion) {
+    this.nuevaHabitacion = {
+      numero: h.numero,
+      estado: h.estado,
+      piso: h.piso,
+      tipoId: null as any // no usar tipoNombre
+    };
+    this.editandoId = h.id;
+  }
+
+  eliminar(id: number) {
+    if (!confirm('¿Eliminar habitación?')) return;
+
+    this.habService.delete(id).subscribe({
+      next: () => {
+        this.showSuccess('Habitación eliminada');
+        this.cargarHabitaciones();
       },
-      error: err => console.error('Error creando habitación', err)
+      error: err => this.handleError(err)
     });
   }
 
-  toggleEquipamiento(key: string, checked: boolean) {
-    const eq = this.nuevaHabitacion.equipamiento || [];
-    if (checked) {
-      if (!eq.includes(key)) eq.push(key);
-    } else {
-      const idx = eq.indexOf(key);
-      if (idx >= 0) eq.splice(idx, 1);
+
+
+  handleError(error: any) {
+    if (error.status === 500) {
+      if (error.error?.detail?.includes('tipo_habitacion_id')) {
+        this.showError('Debes seleccionar un tipo de habitación válido');
+        return;
+      }
+      this.showError('Error interno del servidor. Intenta nuevamente.');
+      return;
     }
-    this.nuevaHabitacion.equipamiento = eq;
+
+    if (error.status === 403) {
+      this.showError('No tienes permisos para realizar esta acción');
+      return;
+    }
+
+    this.showError('Ocurrió un error inesperado');
+  }
+
+  showError(message: string) {
+    alert(message);
+  }
+
+  showSuccess(message: string) {
+    alert(message);
   }
 }

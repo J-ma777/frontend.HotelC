@@ -3,5 +3,4 @@ export interface HabitacionCreate {
   estado: string;
   piso: number;
   tipoId: number;
-  equipamiento?: string[];
 }

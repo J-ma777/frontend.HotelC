@@ -6,7 +6,8 @@
 
   <!-- Descripción bajo el título y encima de las tarjetas -->
   <div class="page-header-desc">
-    <p>Configura los detalles técnicos de la estancia para integrarla en el inventario. Asegúrate de asignar los parámetros correctos.</p>
+    <p>Configura los detalles técnicos de la estancia para integrarla en el inventario. Asegúrate de asignar los
+      parámetros correctos.</p>
   </div>
 
   <div class="create-card">
@@ -16,7 +17,9 @@
           <label>Número de habitación</label>
           <div class="input-wrap">
             <span class="icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"></path></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"></path>
+              </svg>
             </span>
             <input type="text" placeholder="Ej: 304" [(ngModel)]="nuevaHabitacion.numero" name="numero" />
           </div>
@@ -26,7 +29,9 @@
           <label>Piso / Planta</label>
           <div class="input-wrap">
             <span class="icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9h12M6 13h9M6 17h6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M6 9h12M6 13h9M6 17h6" />
+              </svg>
             </span>
             <input type="number" placeholder="Ej: 3" [(ngModel)]="nuevaHabitacion.piso" name="piso" />
           </div>
@@ -37,30 +42,21 @@
         <div class="col full">
           <label>Tipo de habitación</label>
           <select [(ngModel)]="nuevaHabitacion.tipoId" name="tipo">
-            <option value="0">Selecciona una categoría</option>
-            <option *ngFor="let t of tipos" [value]="t.id">{{ t.nombre }}</option>
+            <option [ngValue]="null">Selecciona una categoría</option>
+            <option *ngFor="let t of tipos" [ngValue]="t.id">{{ t.nombre }}</option>
           </select>
         </div>
       </div>
 
-      <div class="row equipamiento">
-        <label>Equipamiento incluido</label>
-        <div class="equip-list">
-          <label *ngFor="let e of availableEquipamiento" class="equip-item">
-            <input type="checkbox" [checked]="nuevaHabitacion.equipamiento?.includes(e.key)" (change)="$event && toggleEquipamiento(e.key, $event.target.checked)" />
-            <span class="equip-icon" aria-hidden>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle></svg>
-            </span>
-            <span>{{ e.label }}</span>
-          </label>
-        </div>
-      </div>
 
       <div class="actions">
-        <button type="button" class="btn btn-cancel" (click)="nuevaHabitacion = { numero: '', estado: 'DISPONIBLE', piso: 1, tipoId: 0, equipamiento: [] }">Cancelar</button>
+        <button type="button" class="btn btn-cancel"
+          (click)="nuevaHabitacion = { numero: '', estado: 'DISPONIBLE', piso: 1, tipoId: 0 }">Cancelar</button>
         <button type="submit" class="btn btn-primary">
           <span class="btn-icon" aria-hidden>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
           </span>
           <span>Crear Habitación</span>
         </button>
@@ -71,7 +67,8 @@
   <div class="info-row">
     <div class="info-card">
       <h4>Dato de Inventario</h4>
-      <p>Las habitaciones nuevas se marcan automáticamente como "En Mantenimiento" hasta que se complete la primera revisión de limpieza.</p>
+      <p>Las habitaciones nuevas se marcan automáticamente como "En Mantenimiento" hasta que se complete la primera
+        revisión de limpieza.</p>
     </div>
     <div class="info-card">
       <h4>Precios Inteligentes</h4>
@@ -79,25 +76,46 @@
     </div>
   </div>
 
-  
-
-  <hr />
+  <hr class="list-section-divider" />
 
   <section class="list-section">
-    <h2>Listado de habitaciones</h2>
-    <table class="rooms-table">
-      <thead>
-        <tr><th>Número</th><th>Estado</th><th>Piso</th><th>Tipo</th></tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let h of habitaciones">
-          <td>{{ h.numero }}</td>
-          <td>{{ h.estado }}</td>
-          <td>{{ h.piso }}</td>
-          <td>{{ h.tipo?.nombre }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="list-header">
+      <h2>Inventario de Habitaciones</h2>
+      <span class="edificio-info">EDIFICIO</span>
+    </div>
+    <div class="habitaciones-list">
+      <div class="habitacion-card" *ngFor="let h of habitaciones">
+        <div class="col-numero">{{ h.numero }}</div>
+
+        <div class="col-estado">
+          <div class="estado" [ngClass]="{
+            'estado-disponible': h.estado === 'DISPONIBLE',
+            'estado-ocupada': h.estado === 'OCUPADA',
+            'estado-mantenimiento': h.estado === 'MANTENIMIENTO' || h.estado === 'LIMPIEZA',
+            'estado-bloqueada': h.estado === 'BLOQUEADA'
+          }">{{ h.estado }}</div>
+        </div>
+
+        <div class="col-info">
+          <span class="label">UBICACIÓN</span>
+          <span class="value">Piso {{ h.piso }}</span>
+        </div>
+
+        <div class="col-info">
+          <span class="label">CATEGORÍA</span>
+          <span class="value">{{ h.tipoNombre }}</span>
+        </div>
+
+        <div class="col-actions">
+          <button class="btn-action edit" (click)="editar(h)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          </button>
+          <button class="btn-action delete" (click)="eliminar(h.id)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
   </section>
 
 </section>
