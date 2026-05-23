@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ReservaService } from '../../../../core/services/reserva.service';
+import { ReservasService } from '../../services/reservas.service';
 @Component({
   selector: 'app-nueva-reserva',
   standalone: true,
@@ -12,7 +12,7 @@ import { ReservaService } from '../../../../core/services/reserva.service';
 })
 export class NuevaReservaComponent {
 
-  private reservaService = inject(ReservaService);
+  private reservaService = inject(ReservasService);
   private router = inject(Router);
 
   loading = false;
@@ -34,8 +34,8 @@ export class NuevaReservaComponent {
   ];
 
   guardar() {
-    if (!this.reserva.nombreHuesped || !this.reserva.documentoHuesped || 
-        !this.reserva.fechaEntrada || !this.reserva.fechaSalida || !this.reserva.tipoHabitacionId) {
+    if (!this.reserva.nombreHuesped || !this.reserva.documentoHuesped ||
+      !this.reserva.fechaEntrada || !this.reserva.fechaSalida || !this.reserva.tipoHabitacionId) {
       this.error = 'Por favor completa todos los campos';
       return;
     }
@@ -45,12 +45,12 @@ export class NuevaReservaComponent {
 
     console.log('📤 Enviando reserva:', this.reserva);
 
-    this.reservaService.crearReserva(this.reserva).subscribe({
-      next: (res) => {
+    this.reservaService.crearReserva(this.reserva as any).subscribe({
+      next: (res: any) => {
         console.log('✅ Reserva creada exitosamente:', res);
         this.router.navigate(['/recepcion/reservas']);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('❌ Error al crear la reserva:', err);
         console.error('Error status:', err.status);
         console.error('Error body:', err.error);

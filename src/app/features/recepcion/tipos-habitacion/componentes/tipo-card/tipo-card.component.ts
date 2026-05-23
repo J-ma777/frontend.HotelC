@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TipoHabitacion } from '../../../../../../core/models/tipo-habitacion.model';
+import { TipoHabitacion } from '../../../../../core/models/tipo-habitacion.model';
 
 @Component({
   selector: 'app-tipo-card',

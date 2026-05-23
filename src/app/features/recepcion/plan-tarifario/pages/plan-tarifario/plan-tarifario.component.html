@@ -1,0 +1,252 @@
+<div class="plan-tarifario-page">
+
+  <!-- ===== HEADER ===== -->
+  <header class="page-header">
+    <div class="header-left">
+      <h1 class="title">Planes Tarifarios</h1>
+      <p class="subtitle">Gestión de tarifas por tipo de habitación y temporadas</p>
+    </div>
+    <button class="btn-nuevo" (click)="abrirCrearPlan()">
+      <span class="btn-icon">+</span> NUEVO PLAN TARIFARIO
+    </button>
+  </header>
+
+  <!-- ===== FILTROS ===== -->
+  <div class="filters-row">
+
+    <div class="filters-left">
+
+      <div class="filter-row-top">
+
+        <div class="filter-group">
+          <label class="filter-label">TIPO DE HABITACIÓN</label>
+          <select class="filter-select" [(ngModel)]="filtroTipoHabitacion">
+            <option value="">Todas las habitaciones</option>
+            <option value="simple">Simple</option>
+            <option value="doble">Doble</option>
+            <option value="suite">Suite</option>
+            <option value="penthouse">Penthouse</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">TIPO DE TARIFA</label>
+          <select class="filter-select" [(ngModel)]="filtroTipoTarifa">
+            <option value="">Todos los tipos</option>
+            <option value="feriado">Feriado</option>
+            <option value="fin-de-semana">Fin de semana</option>
+            <option value="entre-semana">Entre semana</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="filter-row-bottom">
+        <div class="filter-group filter-date">
+          <label class="filter-label">RANGO DE FECHAS</label>
+          <div class="date-inputs">
+            <input type="date" class="date-input" [(ngModel)]="filtroFechaDesde" />
+            <span class="date-separator">-</span>
+            <input type="date" class="date-input" [(ngModel)]="filtroFechaHasta" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANEL DERECHA -->
+    <div class="jerarquia-panel">
+      <h3 class="jerarquia-title">JERARQUÍA VISUAL DE TARIFAS</h3>
+
+      <div class="jerarquia-items">
+        <div class="jerarquia-item">
+          <span class="dot dot-feriado"></span>
+          <span>Feriado</span>
+        </div>
+        <div class="jerarquia-item">
+          <span class="dot dot-finde"></span>
+          <span>Fin de semana</span>
+        </div>
+        <div class="jerarquia-item">
+          <span class="dot dot-semana"></span>
+          <span>Entre semana</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== LISTADO ===== -->
+  <div class="plans-list">
+
+    <div class="plan-card" *ngFor="let plan of planes"
+         [ngClass]="{
+           'border-feriado': plan.tipo === 'feriado',
+           'border-finde': plan.tipo === 'fin-de-semana',
+           'border-semana': plan.tipo === 'entre-semana'
+         }">
+
+      <!-- ICONO -->
+      <div class="plan-icon"
+           [ngClass]="{
+             'icon-bg-gold': plan.tipo === 'entre-semana',
+             'icon-bg-red': plan.tipo === 'feriado',
+             'icon-bg-blue': plan.tipo === 'fin-de-semana'
+           }">
+
+        <!-- ICONO SIMPLE -->
+        <span *ngIf="plan.iconClass === 'icon-tag'">🏷</span>
+        <span *ngIf="plan.iconClass === 'icon-calendar'">📅</span>
+        <span *ngIf="plan.iconClass === 'icon-briefcase'">💼</span>
+
+      </div>
+
+      <!-- INFO -->
+      <div class="plan-info">
+        <h3 class="plan-nombre">{{ plan.nombre }}</h3>
+        <p class="plan-habitacion">
+          🏨 {{ plan.tipoHabitacion }}
+        </p>
+      </div>
+
+      <!-- PRECIO -->
+      <div class="plan-precio">
+        <span class="precio-label">PRECIO POR NOCHE</span>
+        <span class="precio-valor">
+          {{ plan.precioNoche | number:'1.2-2' }} USD
+        </span>
+      </div>
+
+      <!-- VIGENCIA -->
+      <div class="plan-vigencia">
+        <span class="vigencia-label">VIGENCIA</span>
+        <span class="vigencia-valor">
+          {{ plan.fechaDesde }} - {{ plan.fechaHasta }}
+        </span>
+      </div>
+
+      <!-- ESTADO -->
+      <div class="plan-estado">
+        <span class="estado-label">ESTADO</span>
+
+        <span class="estado-badge"
+              [ngClass]="{
+                'badge-activo': plan.estado === 'ACTIVO',
+                'badge-inactivo': plan.estado === 'INACTIVO'
+              }">
+          ● {{ plan.estado }}
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="plans-footer">
+    <span class="plans-count">
+      Mostrando {{ planes.length }} de {{ planes.length }} planes tarifarios
+    </span>
+
+    <div class="pagination">
+      <button class="page-btn" disabled>&lt;</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">&gt;</button>
+    </div>
+  </div>
+
+  <!-- ===== MODAL ===== -->
+  <div class="modal-backdrop"
+       *ngIf="crearModalVisible"
+       (click)="cerrarCrearPlan()">
+
+    <div class="modal-panel" (click)="$event.stopPropagation()">
+
+      <header class="modal-header">
+        <h2>Crear Plan Tarifario</h2>
+        <button class="close-btn" (click)="cerrarCrearPlan()">✕</button>
+      </header>
+
+      <form class="modal-form">
+
+        <label>
+          <span class="form-label">Nombre</span>
+          <input type="text"
+                 [(ngModel)]="nuevoPlan.nombre"
+                 name="nombre" />
+        </label>
+
+        <label>
+          <span class="form-label">Precio por noche</span>
+          <input type="number"
+                 [(ngModel)]="nuevoPlan.precioNoche"
+                 name="precioNoche" />
+        </label>
+
+        <label>
+          <span class="form-label">Tipo de habitación</span>
+          <select [(ngModel)]="nuevoPlan.tipoHabitacion" name="tipoHabitacion">
+            <option value="">Seleccione</option>
+            <option>Simple</option>
+            <option>Doble</option>
+            <option>Suite</option>
+            <option>Penthouse</option>
+          </select>
+        </label>
+
+        <div class="checkbox-group">
+
+          <label>
+            <input type="checkbox"
+                   [(ngModel)]="nuevoPlan.esFeriado"
+                   name="esFeriado">
+            Feriado
+          </label>
+
+          <label>
+            <input type="checkbox"
+                   [(ngModel)]="nuevoPlan.esFinDeSemana"
+                   name="esFinDeSemana">
+            Fin de semana
+          </label>
+
+        </div>
+
+        <div class="form-date-range">
+
+          <label>
+            <span>Desde</span>
+            <input type="date"
+                   [(ngModel)]="nuevoPlan.fechaDesde"
+                   name="fechaDesde">
+          </label>
+
+          <label>
+            <span>Hasta</span>
+            <input type="date"
+                   [(ngModel)]="nuevoPlan.fechaHasta"
+                   name="fechaHasta">
+          </label>
+
+        </div>
+
+        <div class="modal-actions">
+          <button type="button"
+                  class="btn-guardar"
+                  (click)="guardarPlan()">
+            Guardar
+          </button>
+
+          <button type="button"
+                  class="btn-cancelar"
+                  (click)="cerrarCrearPlan()">
+            Cancelar
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+</div>

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TipoHabitacionService } from '../../../../core/services/tipo-habitacion.service';
-import { TipoHabitacion } from '../../../../core/models/tipo-habitacion.model';
-import { TipoFormComponent } from './componentes/tipo-form/tipo-form.component';
-import { TipoCardComponent } from './componentes/tipo-card/tipo-card.component';
+import { TipoHabitacionService } from '../../services/tipo-habitacion.service';
+import { TipoHabitacion } from '../../../../../core/models/tipo-habitacion.model';
+import { TipoFormComponent } from '../../../../recepcion/tipos-habitacion/componentes/tipo-form/tipo-form.component';
+import { TipoCardComponent } from '../../../../recepcion/tipos-habitacion/componentes/tipo-card/tipo-card.component';
 
 @Component({
 	selector: 'app-tipos-habitacion',
@@ -17,7 +17,7 @@ export class TiposHabitacionPage implements OnInit {
 	message: string | null = null;
 	messageType: 'success' | 'error' | null = null;
 
-	constructor(private tipoService: TipoHabitacionService) {}
+	constructor(private tipoService: TipoHabitacionService) { }
 
 	ngOnInit(): void {
 		this.loadAll();
@@ -29,13 +29,15 @@ export class TiposHabitacionPage implements OnInit {
 
 	handleCrear(tipo: { nombre: string; capacidad: number; descripcion?: string; imagenUrl?: string }): void {
 		const payload = { nombre: tipo.nombre, capacidad: tipo.capacidad, descripcion: tipo.descripcion ?? '', imagenUrl: tipo.imagenUrl };
-		this.tipoService.create(payload).subscribe({ next: () => {
-			this.loadAll();
-			this.showMessage('Categoría guardada correctamente', 'success');
-		}, error: (err: unknown) => {
-			console.error(err);
-			this.showMessage('Error al guardar la categoría', 'error');
-		} });
+		this.tipoService.create(payload).subscribe({
+			next: () => {
+				this.loadAll();
+				this.showMessage('Categoría guardada correctamente', 'success');
+			}, error: (err: unknown) => {
+				console.error(err);
+				this.showMessage('Error al guardar la categoría', 'error');
+			}
+		});
 	}
 
 	private showMessage(text: string, type: 'success' | 'error'): void {

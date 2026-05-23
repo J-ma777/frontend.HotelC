@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Habitacion } from '../models/habitacion.model';
-import { HabitacionCreate } from '../models/habitacion-create.model';
+import { Habitacion } from '../../../../core/models/habitacion.model';
+import { HabitacionCreate } from '../../../../core/models/habitacion-create.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +14,12 @@ export class HabitacionesService {
 
   constructor(private http: HttpClient) { }
 
-  // ✅ GET
+  // GET
   getAll(): Observable<Habitacion[]> {
     return this.http.get<Habitacion[]>(this.apiUrl);
   }
 
-  // ✅ POST
+  // POST
   create(data: HabitacionCreate): Observable<Habitacion> {
 
     const payload = {
@@ -35,7 +35,7 @@ export class HabitacionesService {
     return this.http.post<Habitacion>(this.apiUrl, payload);
   }
 
-  // ✅ PUT
+  // PUT
   update(id: number, data: HabitacionCreate): Observable<Habitacion> {
     const payload = {
       numero: data.numero,
@@ -48,7 +48,7 @@ export class HabitacionesService {
     return this.http.put<Habitacion>(`${this.apiUrl}/${id}`, payload);
   }
 
-  // ✅ DELETE
+  // DELETE
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

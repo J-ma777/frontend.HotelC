@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { HabitacionesService } from '../../../../core/services/habitacion.service';
-import { TipoHabitacionService } from '../../../../core/services/tipo-habitacion.service';
+import { HabitacionesService } from '../../service/habitacion.service';
+import { TipoHabitacionService } from '../../../tipos-habitacion/services/tipo-habitacion.service';
 
-import { Habitacion } from '../../../../core/models/habitacion.model';
-import { HabitacionCreate } from '../../../../core/models/habitacion-create.model';
-import { TipoHabitacion } from '../../../../core/models/tipo-habitacion.model';
+import { Habitacion } from '../../../../../core/models/habitacion.model';
+import { HabitacionCreate } from '../../../../../core/models/habitacion-create.model';
+import { TipoHabitacion } from '../../../../../core/models/tipo-habitacion.model';
 
 @Component({
   selector: 'app-habitaciones',
@@ -41,15 +41,15 @@ export class HabitacionesComponent implements OnInit {
 
   cargarHabitaciones() {
     this.habService.getAll().subscribe({
-      next: data => this.habitaciones = data,
-      error: err => console.error('Error cargando habitaciones', err)
+      next: (data: any) => this.habitaciones = data,
+      error: (err: any) => console.error('Error cargando habitaciones', err)
     });
   }
 
   cargarTipos() {
     this.tipoService.getAll().subscribe({
-      next: data => this.tipos = data,
-      error: err => console.error('Error cargando tipos', err)
+      next: (data: any) => this.tipos = data,
+      error: (err: any) => console.error('Error cargando tipos', err)
     });
   }
 
@@ -80,7 +80,7 @@ export class HabitacionesComponent implements OnInit {
           };
           this.editandoId = null;
         },
-        error: err => this.handleError(err)
+        error: (err: any) => this.handleError(err)
       });
     } else {
       this.habService.create(this.nuevaHabitacion).subscribe({
@@ -94,7 +94,7 @@ export class HabitacionesComponent implements OnInit {
             tipoId: null as any
           };
         },
-        error: err => this.handleError(err)
+        error: (err: any) => this.handleError(err)
       });
     }
   }
@@ -117,7 +117,7 @@ export class HabitacionesComponent implements OnInit {
         this.showSuccess('Habitación eliminada');
         this.cargarHabitaciones();
       },
-      error: err => this.handleError(err)
+      error: (err: any) => this.handleError(err)
     });
   }
 

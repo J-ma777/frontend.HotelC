@@ -87,14 +87,15 @@
             <button 
               class="action-btn checkin"
               *ngIf="tienePermiso('RESERVA_EDITAR') && r.estado === 'CONFIRMADA'" 
-              (click)="checkIn(r.id)"
+              (click)="abrirCheckinModal(r)"
               title="Check-In">
               ↪
             </button>
             <button 
               class="action-btn checkout"
-              *ngIf="tienePermiso('RESERVA_EDITAR') && r.estado === 'EN_CASA'" 
-              (click)="checkOut(r.id)"
+              *ngIf="tienePermiso('RESERVA_EDITAR') && r.estado === 'EN_CASA'"
+              [disabled]="checkoutLoadingIds.has(r.id)"
+              (click)="hacerCheckout(r)"
               title="Check-Out">
               ↩
             </button>
@@ -124,3 +125,11 @@
   </div>
 
 </div>
+
+<!-- Check-in Modal -->
+<app-checkin-modal
+  *ngIf="mostrarCheckinModal && reservaSeleccionada"
+  [reserva]="reservaSeleccionada"
+  (cerrar)="cerrarCheckinModal()"
+  (checkinCompletado)="onCheckinCompletado()">
+</app-checkin-modal>

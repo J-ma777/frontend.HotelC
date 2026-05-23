@@ -10,7 +10,7 @@ export const RECEPCION_ROUTES: Routes = [
   {
     path: 'tipos-habitacion',
     loadComponent: () =>
-      import('./pages/tipos-habitacion/tipos-habitacion.page')
+      import('./tipos-habitacion/pages/tipos-habitacion/tipos-habitacion.page')
         .then(m => m.TiposHabitacionPage)
   },
 
@@ -20,22 +20,29 @@ export const RECEPCION_ROUTES: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./pages/reservas/reservas.component')
+          import('./reservas/pages/reservas/reservas.component')
             .then(m => m.ReservasComponent)
       },
       {
         path: 'nueva',
         loadComponent: () =>
-          import('./pages/reservas/nueva-reserva.component')
+          import('./reservas/pages/nueva-reserva/nueva-reserva.component')
             .then(m => m.NuevaReservaComponent)
       },
       {
         path: 'habitaciones',
         loadComponent: () =>
-          import('./pages/habitaciones/habitaciones.component')
+          import('./habitaciones/pages/habitaciones/habitaciones.component')
             .then(m => m.HabitacionesComponent)
       }
     ]
+  },
+
+  {
+    path: 'plan-tarifario',
+    loadComponent: () =>
+      import('./plan-tarifario/pages/plan-tarifario/plan-tarifario.component')
+        .then(m => m.PlanTarifarioComponent)
   },
 
   {

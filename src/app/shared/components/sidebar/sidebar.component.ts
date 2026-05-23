@@ -73,6 +73,12 @@ export class SidebarComponent implements OnInit {
     permisos: ['RESERVA_VER']
   },
   {
+    label: 'PLANES TARIFARIOS',
+    icon: 'money',
+    ruta: '/recepcion/plan-tarifario',
+    permisos: ['RESERVA_VER']
+  },
+  {
     label: 'LIMPIEZA',
     icon: 'sparkles',
     ruta: '/housekeeping',
