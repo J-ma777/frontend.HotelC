@@ -1,0 +1,131 @@
+<div class="housekeeping-container">
+  <!-- Panel Izquierdo: Lista de Habitaciones -->
+  <div class="room-list-panel">
+    <div class="panel-header">
+      <h2>Lista de Habitaciones</h2>
+      <button class="filter-btn">
+        <span>≡</span>
+      </button>
+    </div>
+    <div class="table-header">
+      <span>HABITACIÓN</span>
+      <span>TIPO</span>
+      <span>ESTADO</span>
+    </div>
+    <div class="room-list">
+      <div 
+        class="room-item" 
+        *ngFor="let h of habitaciones" 
+        [class.selected]="habitacionSeleccionada?.id === h.id"
+        (click)="seleccionarHabitacion(h)">
+        <span class="room-number">{{ h.numero }}</span>
+        <span class="room-type">{{ h.tipoNombre || 'Habitación' }}</span>
+        <span class="room-status" [ngClass]="h.estado | lowercase">
+           <span class="status-dot"></span>
+           {{ h.estado }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel Derecho: Detalles e Historial -->
+  <div class="right-panel">
+    
+    <!-- Detalles de la Habitación Superior -->
+    <div class="room-details-panel">
+      <ng-container *ngIf="habitacionSeleccionada; else noSelection">
+        <div class="details-header">
+           <div class="header-info">
+             <span class="label">DETALLES DE LA HABITACIÓN</span>
+             <h2>Habitación Seleccionada: <span class="text-gold">{{ habitacionSeleccionada.numero }}</span></h2>
+             <p class="sub-text">{{ habitacionSeleccionada.tipoNombre || 'Tipo de Habitación Desconocido' }}</p>
+           </div>
+           
+           <div class="status-badge" [ngClass]="habitacionSeleccionada.estado | lowercase">
+             <div class="current-status-label">ESTADO ACTUAL</div>
+             <div class="badge-pill">
+               <span class="status-dot"></span> {{ habitacionSeleccionada.estado }}
+             </div>
+           </div>
+        </div>
+
+        <div class="actions-container">
+           <div class="notes-section">
+             <span class="label">NOTAS DE LIMPIEZA</span>
+             <textarea 
+               placeholder="Ingrese instrucciones especiales u observaciones para el personal de limpieza..."
+               [(ngModel)]="notas"></textarea>
+           </div>
+
+           <div class="priority-actions">
+             <span class="label">ACCIONES PRIORITARIAS</span>
+             <button class="btn-primary" (click)="marcarLimpia()">
+                <span class="btn-icon">✓</span> MARCAR COMO LIMPIA
+             </button>
+             <button class="btn-secondary" (click)="marcarSucia()">
+                <span class="btn-icon">!</span> MARCAR COMO SUCIA
+             </button>
+           </div>
+        </div>
+
+        <!-- Tarjetas de información dinámica -->
+        <div class="info-cards">
+           <div class="card">
+             <span class="label">ÚLTIMA LIMPIEZA</span>
+             <span class="value">{{ ultimaLimpieza ? (ultimaLimpieza.cambiadoEn | date:'d \'de\' MMM, HH:mm') : 'Sin registros' }}</span>
+           </div>
+           <div class="card">
+             <span class="label">PERSONAL</span>
+             <span class="value">{{ ultimaLimpieza ? ('Usuario ID: ' + ultimaLimpieza.cambiadoPor) : 'Sin registros' }}</span>
+           </div>
+           <div class="card">
+             <span class="label">NOTAS</span>
+             <span class="value">{{ ultimaLimpieza ? (ultimaLimpieza.notas || 'Sin notas') : 'Sin registros' }}</span>
+           </div>
+           <div class="card">
+             <span class="label">ESTADO DE REGISTRO</span>
+             <span class="value text-gold">{{ ultimaLimpieza ? ultimaLimpieza.estadoNuevo : 'Sin registros' }}</span>
+           </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noSelection>
+        <div class="empty-selection">
+          <p>Por favor, seleccione una habitación para ver los detalles y gestionar su estado de limpieza.</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Panel de Historial -->
+    <div class="history-panel">
+      <div class="panel-header">
+        <h2>Historial de limpieza</h2>
+        <button class="link-btn">VER REGISTRO COMPLETO</button>
+      </div>
+      <div class="history-table">
+         <div class="table-header">
+           <span>FECHA / HORA</span>
+           <span>ACCIÓN</span>
+           <span>PERSONAL</span>
+           <span>NOTAS</span>
+         </div>
+         <div class="history-list">
+            <div class="history-item" *ngFor="let reg of historial">
+              <span class="date">{{ reg.cambiadoEn | date:'d \'de\' MMM, HH:mm' }}</span>
+              <span class="action">
+                <span class="status-badge-small" [ngClass]="reg.estadoAnterior | lowercase">{{ reg.estadoAnterior }}</span>
+                <span class="arrow">→</span>
+                <span class="status-badge-small" [ngClass]="reg.estadoNuevo | lowercase">{{ reg.estadoNuevo }}</span>
+              </span>
+              <span class="staff">{{ reg.cambiadoPor ? ('Usuario ID: ' + reg.cambiadoPor) : 'Auto del Sistema' }}</span>
+              <span class="notes-col">{{ reg.notas || '-' }}</span>
+            </div>
+            
+            <div class="empty-state" *ngIf="!historial || historial.length === 0">
+               <p>No hay registros de historial para esta habitación.</p>
+            </div>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>

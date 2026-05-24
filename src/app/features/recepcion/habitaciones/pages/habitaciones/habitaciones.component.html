@@ -10,7 +10,7 @@
       parámetros correctos.</p>
   </div>
 
-  <div class="create-card">
+  <div class="create-card" *ngIf="canCreate()">
     <form (ngSubmit)="guardar()" class="create-form">
       <div class="row">
         <div class="col input-with-icon">
@@ -104,6 +104,11 @@
         <div class="col-info">
           <span class="label">CATEGORÍA</span>
           <span class="value">{{ h.tipoNombre }}</span>
+        </div>
+
+        <div class="col-actions">
+          <button class="btn btn-sm btn-edit" *ngIf="canEdit()" (click)="editar(h)">Editar</button>
+          <button class="btn btn-sm btn-delete" *ngIf="canDelete()" (click)="eliminar(h.id)">Eliminar</button>
         </div>
       </div>
     </div>

@@ -43,18 +43,17 @@ export class AuthService {
     getUser(): User | null {
         const raw = localStorage.getItem(this.USER_KEY);
         if (!raw) {
-            console.log('[AuthService] getUser() -> null (no localStorage user)');
+            //console.log('[AuthService] getUser() -> null (no localStorage user)');
             return null;
         }
 
+
         try {
-            const parsed = JSON.parse(raw);
-            console.log('[AuthService] getUser() -> parsed', parsed);
-            return parsed as User;
-        } catch (err) {
-            console.error('[AuthService] getUser() JSON.parse error. raw=', raw, err);
+            return JSON.parse(raw) as User;
+        } catch {
             return null;
         }
+
     }
 
     getPermisos(): string[] {
@@ -79,14 +78,11 @@ export class AuthService {
             }
         }
 
-        console.log('[AuthService] getPermisos() ->', {
-            permisos,
-            permisosLength: permisos.length,
-            permisosType: typeof permisosAny,
-            permisosIsArray: Array.isArray(permisosAny)
-        });
-
         return permisos;
+    }
+
+    hasPermission(permission: string): boolean {
+        return this.getPermisos().includes(permission);
     }
 
     clearSession(): void {

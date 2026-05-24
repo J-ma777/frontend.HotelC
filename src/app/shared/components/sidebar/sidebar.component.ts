@@ -24,73 +24,73 @@ export class SidebarComponent implements OnInit {
   menuVisible: MenuItem[] = [];
 
   readonly menuItems: MenuItem[] = [
-  {
-    label: 'DASHBOARD',
-    icon: 'home',
-    ruta: '/admin',
-    permisos: ['ROLE_ADMIN']
-  },
-  {
-    label: 'USUARIOS',
-    icon: 'users',
-    ruta: '/admin/usuarios',
-    permisos: ['ROLE_ADMIN']
-  },
-  {
-    label: 'MAPA',
-    icon: 'map',
-    ruta: '/recepcion/mapa',
-    permisos: ['RESERVA_VER']
-  },
-  {
-    label: 'RESERVAS',
-    icon: 'calendar',
-    ruta: '/recepcion/reservas',
-    permisos: ['RESERVA_VER']
-  },
-  {
-    label: 'TIPOS DE HABITACIÓN',
-    icon: 'tag',
-    ruta: '/recepcion/tipos-habitacion',
-    permisos: ['RESERVA_VER']
-  },
-  {
-    label: 'HABITACIONES',
-    icon: 'door',
-    ruta: '/recepcion/reservas/habitaciones',
-    permisos: ['RESERVA_VER']
-  },
-  {
-    label: 'CHECK-IN',
-    icon: 'check',
-    ruta: '/recepcion/checkin',
-    permisos: ['RESERVA_VER']
-  },
-  {
-    label: 'CHECK-OUT',
-    icon: 'logout',
-    ruta: '/recepcion/checkout',
-    permisos: ['RESERVA_VER']
-  },
-  {
-    label: 'PLANES TARIFARIOS',
-    icon: 'money',
-    ruta: '/recepcion/plan-tarifario',
-    permisos: ['RESERVA_VER']
-  },
-  {
-    label: 'LIMPIEZA',
-    icon: 'sparkles',
-    ruta: '/housekeeping',
-    permisos: ['ROLE_ADMIN']
-  },
-  {
-    label: 'INVENTARIO',
-    icon: 'cube',
-    ruta: '/almacen',
-    permisos: ['INVENTARIO_VER', 'INVENTARIO_GESTIONAR']
-  }
-];
+    {
+      label: 'DASHBOARD',
+      icon: 'home',
+      ruta: '/admin',
+      permisos: ['USUARIO_VER']
+    },
+    {
+      label: 'USUARIOS',
+      icon: 'users',
+      ruta: '/admin/usuarios',
+      permisos: ['USUARIO_VER']
+    },
+    {
+      label: 'MAPA',
+      icon: 'map',
+      ruta: '/recepcion/mapa',
+      permisos: ['RESERVA_VER']
+    },
+    {
+      label: 'RESERVAS',
+      icon: 'calendar',
+      ruta: '/recepcion/reservas',
+      permisos: ['RESERVA_VER']
+    },
+    {
+      label: 'TIPOS DE HABITACIÓN',
+      icon: 'tag',
+      ruta: '/recepcion/tipos-habitacion',
+      permisos: ['HABITACION_VER']
+    },
+    {
+      label: 'HABITACIONES',
+      icon: 'door',
+      ruta: '/recepcion/reservas/habitaciones',
+      permisos: ['HABITACION_VER']
+    },
+    {
+      label: 'CHECK-IN',
+      icon: 'check',
+      ruta: '/recepcion/checkin',
+      permisos: ['RESERVA_CHECKIN']
+    },
+    {
+      label: 'CHECK-OUT',
+      icon: 'logout',
+      ruta: '/recepcion/checkout',
+      permisos: ['RESERVA_CHECKOUT']
+    },
+    {
+      label: 'PLANES TARIFARIOS',
+      icon: 'money',
+      ruta: '/recepcion/plan-tarifario',
+      permisos: ['TARIFAS_VER']
+    },
+    {
+      label: 'LIMPIEZA',
+      icon: 'sparkles',
+      ruta: '/housekeeping',
+      permisos: ['VER_LIMPIEZAS']
+    },
+    {
+      label: 'INVENTARIO',
+      icon: 'cube',
+      ruta: '/almacen',
+      permisos: ['INVENTARIO_VER', 'INVENTARIO_GESTIONAR']
+    }
+  ];
 
   constructor(
     private authService: AuthService,
@@ -106,10 +106,9 @@ export class SidebarComponent implements OnInit {
     }
 
     this.nombreUsuario = user.username;
-    const permisosUsuario = this.authService.getPermisos();
 
     this.menuVisible = this.menuItems.filter(item =>
-      item.permisos.some(p => permisosUsuario.includes(p))
+      item.permisos.some(p => this.authService.hasPermission(p))
     );
   }
 

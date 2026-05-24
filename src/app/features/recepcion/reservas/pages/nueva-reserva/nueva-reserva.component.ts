@@ -1,8 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReservasService } from '../../services/reservas.service';
+import { TipoHabitacionService } from '../../../tipos-habitacion/services/tipo-habitacion.service';
+import { TipoHabitacion } from '../../../../../core/models/tipo-habitacion.model';
+
 @Component({
   selector: 'app-nueva-reserva',
   standalone: true,
@@ -10,9 +13,10 @@ import { ReservasService } from '../../services/reservas.service';
   templateUrl: './nueva-reserva.component.html',
   styleUrl: './nueva-reserva.component.css'
 })
-export class NuevaReservaComponent {
+export class NuevaReservaComponent implements OnInit {
 
   private reservaService = inject(ReservasService);
+  private tipoHabitacionService = inject(TipoHabitacionService);
   private router = inject(Router);
 
   loading = false;
@@ -24,14 +28,21 @@ export class NuevaReservaComponent {
     fechaEntrada: '',
     fechaSalida: '',
     cantidadHuespedes: 1,
-    tipoHabitacionId: null
+    tipoHabitacionId: null as number | null
   };
 
-  tiposHabitacion = [
-    { id: 1, nombre: 'Simple' },
-    { id: 2, nombre: 'Doble' },
-    { id: 3, nombre: 'Suite' }
-  ];
+  tiposHabitacion: TipoHabitacion[] = [];
+
+  ngOnInit(): void {
+    this.tipoHabitacionService.getAll().subscribe({
+      next: (data: TipoHabitacion[]) => {
+        this.tiposHabitacion = data;
+      },
+      error: (err: unknown) => {
+        console.error('❌ Error al obtener tipos de habitación:', err);
+      }
+    });
+  }
 
   guardar() {
     if (!this.reserva.nombreHuesped || !this.reserva.documentoHuesped ||

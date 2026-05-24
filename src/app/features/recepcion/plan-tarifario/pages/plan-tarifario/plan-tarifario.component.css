@@ -1,8 +1,3 @@
-/* ============================================
-   PLAN TARIFARIO – Component Styles
-   Dark theme + Gold accent (matching system)
-   ============================================ */
-
 :host {
   display: block;
   --bg-primary: #0f1523;
@@ -190,9 +185,17 @@
   flex-shrink: 0;
 }
 
-.dot-feriado { background: var(--red); }
-.dot-finde   { background: var(--yellow); }
-.dot-semana  { background: var(--green); }
+.dot-feriado {
+  background: var(--red);
+}
+
+.dot-finde {
+  background: var(--yellow);
+}
+
+.dot-semana {
+  background: var(--green);
+}
 
 /* ===== PLAN CARDS ===== */
 .plans-list {
@@ -221,9 +224,17 @@
 }
 
 /* Left border color by type */
-.border-feriado { border-left-color: var(--red); }
-.border-finde   { border-left-color: var(--yellow); }
-.border-semana  { border-left-color: var(--green); }
+.border-feriado {
+  border-left-color: var(--red);
+}
+
+.border-finde {
+  border-left-color: var(--yellow);
+}
+
+.border-semana {
+  border-left-color: var(--green);
+}
 
 /* Plan Icon */
 .plan-icon {
@@ -430,13 +441,23 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideIn {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 .modal-panel {

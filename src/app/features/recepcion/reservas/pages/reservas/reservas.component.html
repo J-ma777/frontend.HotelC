@@ -7,7 +7,7 @@
       <p class="subtitle">Gestiona y monitorea todas las estancias del hotel.</p>
     </div>
     
-<button class="btn-new-reservation" [routerLink]="['/recepcion/reservas/nueva']">
+<button class="btn-new-reservation" *ngIf="canCreate()" [routerLink]="['/recepcion/reservas/nueva']">
       ➕ New Reservation
     </button>
 
@@ -79,21 +79,21 @@
           <td class="actions-cell">
             <button 
               class="action-btn confirmar"
-              *ngIf="tienePermiso('RESERVA_EDITAR') && r.estado === 'PENDIENTE'" 
+              *ngIf="canEdit() && r.estado === 'PENDIENTE'" 
               (click)="confirmarDebug(r)"
               title="Confirmar">
               ✓
             </button>
             <button 
               class="action-btn checkin"
-              *ngIf="tienePermiso('RESERVA_EDITAR') && r.estado === 'CONFIRMADA'" 
+              *ngIf="canEdit() && r.estado === 'CONFIRMADA'" 
               (click)="abrirCheckinModal(r)"
               title="Check-In">
               ↪
             </button>
             <button 
               class="action-btn checkout"
-              *ngIf="tienePermiso('RESERVA_EDITAR') && r.estado === 'EN_CASA'"
+              *ngIf="canEdit() && r.estado === 'EN_CASA'"
               [disabled]="checkoutLoadingIds.has(r.id)"
               (click)="hacerCheckout(r)"
               title="Check-Out">
@@ -101,7 +101,7 @@
             </button>
             <button 
               class="action-btn cancelar"
-              *ngIf="tienePermiso('RESERVA_CANCELAR') && r.estado !== 'CANCELADA'" 
+              *ngIf="canCancel() && r.estado !== 'CANCELADA'" 
               (click)="cancelar(r.id)"
               title="Cancelar">
               ✕

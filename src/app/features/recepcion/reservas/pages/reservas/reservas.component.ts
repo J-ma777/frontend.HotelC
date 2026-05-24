@@ -34,6 +34,22 @@ export class ReservasComponent implements OnInit {
     return this.permisos.includes(permiso);
   }
 
+  canCreate(): boolean {
+    return this.authService.hasPermission('RESERVA_CREAR');
+  }
+
+  canEdit(): boolean {
+    return this.authService.hasPermission('RESERVA_EDITAR');
+  }
+
+  canDelete(): boolean {
+    return this.authService.hasPermission('RESERVA_CANCELAR');
+  }
+
+  canCancel(): boolean {
+    return this.authService.hasPermission('RESERVA_CANCELAR');
+  }
+
   ngOnInit(): void {
     this.permisos = this.authService.getPermisos();
     console.log('[ReservasComponent] permisos cargados:', this.permisos);

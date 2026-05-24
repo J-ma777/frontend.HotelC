@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { HabitacionesService } from '../../service/habitacion.service';
 import { TipoHabitacionService } from '../../../tipos-habitacion/services/tipo-habitacion.service';
+import { AuthService } from '../../../../../core/services/auth.service';
 
 import { Habitacion } from '../../../../../core/models/habitacion.model';
 import { HabitacionCreate } from '../../../../../core/models/habitacion-create.model';
@@ -17,6 +18,8 @@ import { TipoHabitacion } from '../../../../../core/models/tipo-habitacion.model
   styleUrls: ['./habitaciones.component.css']
 })
 export class HabitacionesComponent implements OnInit {
+
+  private authService = inject(AuthService);
 
   habitaciones: Habitacion[] = [];
   tipos: TipoHabitacion[] = [];
@@ -33,6 +36,18 @@ export class HabitacionesComponent implements OnInit {
     private habService: HabitacionesService,
     private tipoService: TipoHabitacionService
   ) { }
+
+  canCreate(): boolean {
+    return this.authService.hasPermission('HABITACION_CREAR');
+  }
+
+  canEdit(): boolean {
+    return this.authService.hasPermission('HABITACION_EDITAR');
+  }
+
+  canDelete(): boolean {
+    return false;
+  }
 
   ngOnInit(): void {
     this.cargarHabitaciones();

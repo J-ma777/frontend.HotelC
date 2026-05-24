@@ -1,6 +1,7 @@
 export * from './habitacion.model';
 export * from './habitacion-create.model';
 export * from './tipo-habitacion.model';
+export * from './plan-tarifario.model';
 
 export interface AuthResponse {
   accessToken: string;

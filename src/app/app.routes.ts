@@ -36,5 +36,17 @@ export const routes: Routes = [
           import('./features/recepcion/recepcion.routes').then(m => m.RECEPCION_ROUTES)
       }
     ]
+  },
+  {
+    path: 'housekeeping',
+    component: LayoutComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/mantenimiento/limpieza/pages/limpieza.page').then(m => m.LimpiezaPage)
+      }
+    ]
   }
 ];
