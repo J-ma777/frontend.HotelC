@@ -11,7 +11,7 @@ export class ReservasService {
 
   private http = inject(HttpClient);
 
-  private readonly API_URL = 'http://localhost:3030/reservas';
+  private readonly API_URL = 'https://backend-hotel-2xhw.onrender.com/reservas';
 
   // CHECK-IN 
   realizarCheckIn(id: number, habitacionId: number): Observable<void> {
