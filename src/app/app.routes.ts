@@ -48,5 +48,17 @@ export const routes: Routes = [
           import('./features/mantenimiento/limpieza/pages/limpieza.page').then(m => m.LimpiezaPage)
       }
     ]
+  },
+  {
+    path: 'mantenimiento',
+    component: LayoutComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'tickets',
+        loadComponent: () =>
+          import('./features/mantenimiento/tickets/pages/tickets.page').then(m => m.TicketsPage)
+      }
+    ]
   }
 ];

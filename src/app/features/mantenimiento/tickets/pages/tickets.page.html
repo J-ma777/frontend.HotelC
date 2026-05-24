@@ -1,0 +1,233 @@
+<!-- TOP HEADER -->
+<header class="page-header">
+  <div class="search-wrapper">
+    <span class="material-symbols-outlined search-icon">search</span>
+    <input class="search-input" placeholder="Buscar ticket o habitación..." type="text"/>
+  </div>
+
+  <div class="header-actions">
+    <button class="icon-btn">
+      <span class="material-symbols-outlined">notifications</span>
+      <span class="notification-dot"></span>
+    </button>
+    <button class="icon-btn">
+      <span class="material-symbols-outlined">help_outline</span>
+    </button>
+    <div class="header-divider"></div>
+    <div class="user-profile">
+      <div class="user-text">
+        <div class="user-name">Alex Rivera</div>
+        <div class="user-role">Maintenance Mgr</div>
+      </div>
+      <img class="user-avatar"
+           src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd9d-doxzrtSeLTXpsxVnScc_c_k8WU3eKyFunWU-rNdjfRyubus3bE_sDRSdSYyzPfO8wtUAiygK78abe0Z4KJd528ikxoYod8p0-DKvusulQet9y1wU_UXuSif3r2aKSlMjF1j3qCkJsn2AUklnAt1UPPZ4lt1eOHXfSyJqGWrTdbB-UleDk8WMv7D3u1SBruawvNWQMwUKevVVUs5bHkMBwAJOqlEG8eB9Y7rNSEBOLeWCBI0s9eL13JhkK6EpKvHUKCqmJNdNx"
+           alt="Avatar de usuario"/>
+    </div>
+  </div>
+</header>
+
+<!-- CONTENIDO PRINCIPAL -->
+<div class="page-content">
+
+  <!-- Breadcrumb + Título -->
+  <div class="page-title-row">
+    <div>
+      <nav class="breadcrumb">
+        <span class="breadcrumb-item">Operaciones</span>
+        <span class="material-symbols-outlined breadcrumb-sep" style="font-size:14px;">chevron_right</span>
+        <span class="breadcrumb-item active">Mantenimiento</span>
+      </nav>
+      <h2 class="page-title">Gestión de Mantenimiento</h2>
+    </div>
+    <button class="btn-primary" (click)="toggleModal()">
+      <span class="material-symbols-outlined">confirmation_number</span>
+      Nuevo Ticket
+    </button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card border-primary">
+      <div class="stat-icon primary">
+        <span class="material-symbols-outlined">pending_actions</span>
+      </div>
+      <div>
+        <div class="stat-label">Pendientes</div>
+        <div class="stat-value">{{ pendientesCount | number:'2.0-0' }}</div>
+      </div>
+    </div>
+    <div class="stat-card border-secondary">
+      <div class="stat-icon secondary">
+        <span class="material-symbols-outlined">build</span>
+      </div>
+      <div>
+        <div class="stat-label">En Proceso</div>
+        <div class="stat-value">{{ enProcesoCount | number:'2.0-0' }}</div>
+      </div>
+    </div>
+    <div class="stat-card border-teal">
+      <div class="stat-icon teal">
+        <span class="material-symbols-outlined">check_circle</span>
+      </div>
+      <div>
+        <div class="stat-label">Resueltos Hoy</div>
+        <div class="stat-value">{{ resueltosCount | number:'2.0-0' }}</div>
+      </div>
+    </div>
+    <div class="stat-card border-outline">
+      <div class="stat-icon outline">
+        <span class="material-symbols-outlined">timer</span>
+      </div>
+      <div>
+        <div class="stat-label">TMA Promedio</div>
+        <div class="stat-value">{{ tmaPromedio }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Tickets -->
+  <div class="table-card">
+    <div class="table-header">
+      <h3 class="table-title">Cola de Trabajo</h3>
+      <div class="table-actions">
+        <button class="icon-action-btn" title="Filtrar">
+          <span class="material-symbols-outlined">filter_list</span>
+        </button>
+        <button class="icon-action-btn" title="Exportar">
+          <span class="material-symbols-outlined">download</span>
+        </button>
+      </div>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Habitación</th>
+            <th>Descripción</th>
+            <th>Reportado</th>
+            <th>Estado</th>
+            <th class="text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ticket of tickets"
+              [class.resolved]="ticket.estado === 'RESUELTO'">
+
+            <!-- Habitación -->
+            <td>
+              <div class="room-number"
+                   [class.active]="ticket.estado !== 'RESUELTO'"
+                   [class.resolved]="ticket.estado === 'RESUELTO'">
+                {{ ticket.habitacion.numero }}
+              </div>
+              <div class="room-type">{{ ticket.habitacion.tipo }}</div>
+            </td>
+
+            <!-- Descripción -->
+            <td style="max-width: 240px;">
+              <div class="desc-text"
+                   [class.clamp-1]="ticket.estado === 'RESUELTO'">
+                {{ ticket.descripcion }}
+              </div>
+              <div class="reported-by">Por: {{ ticket.reportadoPor.nombre }}</div>
+            </td>
+
+            <!-- Reportado -->
+            <td>
+              <div class="date-main">{{ ticket.reportadoEn }}</div>
+              <div class="date-sub error"   *ngIf="ticket.estado === 'PENDIENTE'">{{ ticket.tiempoEstado }}</div>
+              <div class="date-sub neutral" *ngIf="ticket.estado === 'EN PROCESO'">{{ ticket.tiempoEstado }}</div>
+              <div class="date-sub resolved-color" *ngIf="ticket.estado === 'RESUELTO'"
+                   style="color: #8abcd4;">{{ ticket.resueltoEn }}</div>
+            </td>
+
+            <!-- Estado -->
+            <td>
+              <span class="badge pending"     *ngIf="ticket.estado === 'PENDIENTE'">{{ ticket.estado }}</span>
+              <span class="badge in-progress" *ngIf="ticket.estado === 'EN PROCESO'">{{ ticket.estado }}</span>
+              <span class="badge resolved"    *ngIf="ticket.estado === 'RESUELTO'">{{ ticket.estado }}</span>
+            </td>
+
+            <!-- Acciones -->
+            <td class="actions-cell">
+              <div class="row-actions actions-hidden" *ngIf="ticket.estado === 'PENDIENTE'">
+                <button class="btn-action process" (click)="setEnProceso(ticket)">En Proceso</button>
+                <button class="btn-action resolve" (click)="resolver(ticket)">Resolver</button>
+              </div>
+              <div class="row-actions" *ngIf="ticket.estado === 'EN PROCESO'">
+                <button class="btn-action resolve" (click)="resolver(ticket)">Resolver</button>
+              </div>
+              <div class="row-actions" *ngIf="ticket.estado === 'RESUELTO'">
+                <button class="btn-view" (click)="verDetalle(ticket)" title="Ver detalle">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Glow de fondo -->
+  <div class="bg-glow"></div>
+</div>
+
+<!-- MODAL: Nuevo Ticket -->
+<div class="modal-backdrop" [class.hidden]="!isModalOpen">
+  <div class="modal-overlay" (click)="toggleModal()"></div>
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h2 class="modal-title">Nuevo Ticket de Mantenimiento</h2>
+        <p class="modal-subtitle">Reporte de incidencias técnicas en propiedad</p>
+      </div>
+      <button class="icon-btn" (click)="toggleModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Número de Habitación</label>
+            <select class="form-control" formControlName="habitacionNumero">
+              <option value="" disabled selected>Seleccione habitación</option>
+              <option *ngFor="let h of habitacionesDisponibles" [value]="h.numero">
+                {{ h.numero }} - {{ h.tipo }}
+              </option>
+            </select>
+            <span class="form-error"
+                  *ngIf="ticketForm.get('habitacionNumero')?.touched && ticketForm.get('habitacionNumero')?.invalid">
+              La habitación es requerida.
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Reportado por</label>
+            <input type="text" class="form-control" formControlName="reportadoPor"/>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label class="form-label">Descripción del Problema</label>
+          <textarea class="form-control"
+                    formControlName="descripcion"
+                    placeholder="Describa brevemente la incidencia detectada..."
+                    rows="4"></textarea>
+          <span class="form-error"
+                *ngIf="ticketForm.get('descripcion')?.touched && ticketForm.get('descripcion')?.invalid">
+            La descripción debe tener al menos 5 caracteres.
+          </span>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="toggleModal()">Cancelar</button>
+          <button type="submit" class="btn-submit">Crear Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

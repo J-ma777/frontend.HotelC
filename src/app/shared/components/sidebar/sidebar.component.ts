@@ -85,6 +85,12 @@ export class SidebarComponent implements OnInit {
       permisos: ['VER_LIMPIEZAS']
     },
     {
+      label: 'TICKETS DE MANT.',
+      icon: 'wrench',
+      ruta: '/mantenimiento/tickets',
+      permisos: ['VER_LIMPIEZAS', 'USUARIO_VER']
+    },
+    {
       label: 'INVENTARIO',
       icon: 'cube',
       ruta: '/almacen',
