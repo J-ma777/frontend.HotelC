@@ -9,7 +9,7 @@ import { TipoHabitacion } from '../../../../core/models/tipo-habitacion.model';
 })
 export class TipoHabitacionService {
 
-  private apiUrl = 'https://backend-hotel-2xhw.onrender.com/tipo-habitaciones';
+  private apiUrl = 'http://localhost:3030/tipo-habitaciones';
 
   constructor(private http: HttpClient) {}
 

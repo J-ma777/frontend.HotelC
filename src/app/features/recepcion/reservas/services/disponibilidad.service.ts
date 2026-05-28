@@ -9,7 +9,7 @@ import { HabitacionDisponible } from '../types/habitacion.types';
 })
 export class DisponibilidadService {
 
-  private readonly API = 'https://backend-hotel-2xhw.onrender.com/habitaciones';
+  private readonly API = 'http://localhost:3030/habitaciones';
 
   constructor(private http: HttpClient) { }
 

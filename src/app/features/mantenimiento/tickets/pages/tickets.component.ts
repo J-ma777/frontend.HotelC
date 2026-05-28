@@ -11,10 +11,10 @@ import { TicketService } from '../services/ticket.service';
   selector: 'app-tickets',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './tickets.page.html',
+  templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.page.css']
 })
-export class TicketsPage implements OnInit, OnDestroy {
+export class TicketsComponent implements OnInit, OnDestroy {
   tickets: Ticket[] = [];
   habitaciones: Habitacion[] = [];
   ticketForm: FormGroup;
@@ -91,7 +91,7 @@ export class TicketsPage implements OnInit, OnDestroy {
           this.isLoadingTickets = false;
         },
         error: error => {
-          console.log('[TicketsPage] Error cargando tickets', error);
+          console.log('[TicketsComponent] Error cargando tickets', error);
           this.isLoadingTickets = false;
         }
       })
@@ -108,7 +108,7 @@ export class TicketsPage implements OnInit, OnDestroy {
           this.isLoadingHabitaciones = false;
         },
         error: error => {
-          console.log('[TicketsPage] Error cargando habitaciones', error);
+          console.log('[TicketsComponent] Error cargando habitaciones', error);
           this.isLoadingHabitaciones = false;
         }
       })
@@ -152,12 +152,12 @@ export class TicketsPage implements OnInit, OnDestroy {
         descripcion
       }).subscribe({
         next: ticketCreado => {
-          console.log('[TicketsPage] Ticket creado', ticketCreado);
+          console.log('[TicketsComponent] Ticket creado', ticketCreado);
           this.isSavingTicket = false;
           this.cerrarModal();
         },
         error: error => {
-          console.log('[TicketsPage] Error creando ticket', error);
+          console.log('[TicketsComponent] Error creando ticket', error);
           this.isSavingTicket = false;
         }
       })
@@ -179,7 +179,7 @@ export class TicketsPage implements OnInit, OnDestroy {
           this.ticketActionId = null;
         },
         error: error => {
-          console.log('[TicketsPage] Error marcando en proceso', error);
+          console.log('[TicketsComponent] Error marcando en proceso', error);
           this.ticketActionId = null;
         }
       })
@@ -194,7 +194,7 @@ export class TicketsPage implements OnInit, OnDestroy {
           this.ticketActionId = null;
         },
         error: error => {
-          console.log('[TicketsPage] Error resolviendo ticket', error);
+          console.log('[TicketsComponent] Error resolviendo ticket', error);
           this.ticketActionId = null;
         }
       })
@@ -203,10 +203,6 @@ export class TicketsPage implements OnInit, OnDestroy {
 
   getHabitacionPorId(habitacionId: number): Habitacion | undefined {
     return this.habitaciones.find(habitacion => habitacion.id === habitacionId);
-  }
-
-  getEstadoLabel(estado: TicketEstado): string {
-    return estado.replace('_', ' ');
   }
 
   trackByTicketId(_: number, ticket: Ticket): number {

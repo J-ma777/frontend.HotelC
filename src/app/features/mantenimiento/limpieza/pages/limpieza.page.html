@@ -49,6 +49,14 @@
            </div>
         </div>
 
+        <div class="occupied-message" *ngIf="habitacionOcupada">
+          La habitación está ocupada
+        </div>
+
+        <div class="error-message" *ngIf="mensajeError">
+          {{ mensajeError }}
+        </div>
+
         <div class="actions-container">
            <div class="notes-section">
              <span class="label">NOTAS DE LIMPIEZA</span>
@@ -59,12 +67,19 @@
 
            <div class="priority-actions">
              <span class="label">ACCIONES PRIORITARIAS</span>
-             <button class="btn-primary" (click)="marcarLimpia()">
-                <span class="btn-icon">✓</span> MARCAR COMO LIMPIA
-             </button>
-             <button class="btn-secondary" (click)="marcarSucia()">
-                <span class="btn-icon">!</span> MARCAR COMO SUCIA
-             </button>
+             <ng-container *ngIf="!habitacionOcupada; else ocupadaActions">
+               <button class="btn-primary" (click)="marcarLimpia()">
+                  <span class="btn-icon">✓</span> MARCAR COMO LIMPIA
+               </button>
+               <button class="btn-secondary" (click)="marcarSucia()">
+                  <span class="btn-icon">!</span> MARCAR COMO SUCIA
+               </button>
+             </ng-container>
+             <ng-template #ocupadaActions>
+               <div class="occupied-actions-message" title="La habitación está ocupada">
+                 Acciones deshabilitadas mientras la habitación está ocupada.
+               </div>
+             </ng-template>
            </div>
         </div>
 

@@ -8,7 +8,7 @@ import { AuthResponse, User } from '../models';
 })
 export class AuthService {
 
-    private API_URL = 'https://backend-hotel-2xhw.onrender.com/auth';
+    private API_URL = 'http://localhost:3030/auth';
     private readonly TOKEN_KEY = 'accessToken';
     private readonly USER_KEY = 'user';
 

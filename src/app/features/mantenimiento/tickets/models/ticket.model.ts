@@ -1,21 +1,33 @@
-export interface Habitacion {
-  numero: string;
-  tipo: string;
+import { Habitacion } from '../../../../core/models/habitacion.model';
+
+export type TicketEstado = 'ABIERTO' | 'EN_PROCESO' | 'RESUELTO';
+
+export interface TicketCreateRequest {
+  habitacionId: number;
+  descripcion: string;
 }
 
-export interface Empleado {
+export interface TicketApiResponse {
   id: number;
-  nombre: string;
-  cargo: string;
+  habitacionId?: number;
+  descripcion: string;
+  estado: TicketEstado | 'PENDIENTE';
+  reportadoEn?: string;
+  habitacion?: Habitacion;
+  habitacionNumero?: string;
+  habitacionTipo?: string;
+  creadoEn?: string;
+  actualizadoEn?: string;
 }
 
 export interface Ticket {
   id: number;
-  habitacion: Habitacion;
+  habitacionId: number;
   descripcion: string;
-  reportadoPor: Empleado;
-  reportadoEn: string;
-  estado: 'PENDIENTE' | 'EN PROCESO' | 'RESUELTO';
-  tiempoEstado?: string;
-  resueltoEn?: string;
+  estado: TicketEstado;
+  habitacionNumero: string;
+  habitacionTipo: string;
+  reportadoEn?: string;
+  creadoEn?: string;
+  actualizadoEn?: string;
 }

@@ -10,13 +10,17 @@ import { HabitacionCreate } from '../../../../core/models/habitacion-create.mode
 })
 export class HabitacionesService {
 
-  private apiUrl = 'https://backend-hotel-2xhw.onrender.com/habitaciones';
+  private apiUrl = 'http://localhost:3030/habitaciones';
 
   constructor(private http: HttpClient) { }
 
   // GET
   getAll(): Observable<Habitacion[]> {
     return this.http.get<Habitacion[]>(this.apiUrl);
+  }
+
+  getDisponiblesMantenimiento(): Observable<Habitacion[]> {
+    return this.http.get<Habitacion[]>(`${this.apiUrl}/disponibles-mantenimiento`);
   }
 
   // POST

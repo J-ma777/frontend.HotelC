@@ -9,7 +9,7 @@ import { PlanTarifario, PlanTarifarioCreate } from '../../../../core/models/plan
 })
 export class PlanTarifarioService {
 
-  private readonly apiUrl = 'https://backend-hotel-2xhw.onrender.com/plan-tarifarios';
+  private readonly apiUrl = 'http://localhost:3030/plan-tarifarios';
 
   constructor(private http: HttpClient) {}
 

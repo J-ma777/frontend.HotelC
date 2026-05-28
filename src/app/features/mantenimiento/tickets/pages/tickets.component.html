@@ -26,10 +26,7 @@
   </div>
 </header>
 
-<!-- CONTENIDO PRINCIPAL -->
 <div class="page-content">
-
-  <!-- Breadcrumb + Título -->
   <div class="page-title-row">
     <div>
       <nav class="breadcrumb">
@@ -45,7 +42,6 @@
     </button>
   </div>
 
-  <!-- Stats Cards -->
   <div class="stats-grid">
     <div class="stat-card border-primary">
       <div class="stat-icon primary">
@@ -100,7 +96,6 @@
     </div>
   </div>
 
-  <!-- Tabla de Tickets -->
   <div class="table-card">
     <div class="table-header">
       <h3 class="table-title">Cola de Trabajo</h3>
@@ -125,10 +120,8 @@
           </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let ticket of ticketsVisibles; trackBy: trackByTicketId"
+          <tr *ngFor="let ticket of ticketsVisibles; trackBy: trackByTicketId"
               [class.resolved]="ticket.estado === 'RESUELTO'">
-
-            <!-- Habitación -->
             <td>
               <div class="room-number"
                    [class.active]="ticket.estado !== 'RESUELTO'"
@@ -138,7 +131,6 @@
               <div class="room-type">{{ ticket.habitacionTipo || 'Habitación' }}</div>
             </td>
 
-            <!-- Descripción -->
             <td style="max-width: 240px;">
               <div class="desc-text"
                    [class.clamp-1]="ticket.estado === 'RESUELTO'">
@@ -152,7 +144,6 @@
               <span class="badge resolved" *ngIf="ticket.estado === 'RESUELTO'">RESUELTO</span>
             </td>
 
-            <!-- Acciones -->
             <td class="actions-cell">
               <div class="row-actions actions-hidden" *ngIf="ticket.estado === 'ABIERTO'">
                 <button class="btn-action process"
@@ -178,7 +169,7 @@
               </div>
             </td>
           </tr>
-          <tr *ngIf="!isLoadingTickets && tickets.length === 0">
+          <tr *ngIf="!isLoadingTickets && ticketsVisibles.length === 0">
             <td colspan="4" class="table-empty">No hay tickets registrados.</td>
           </tr>
           <tr *ngIf="isLoadingTickets">
@@ -189,11 +180,9 @@
     </div>
   </div>
 
-  <!-- Glow de fondo -->
   <div class="bg-glow"></div>
 </div>
 
-<!-- MODAL: Nuevo Ticket -->
 <div class="modal-backdrop" [class.hidden]="!isModalOpen">
   <div class="modal-overlay" (click)="cerrarModal()"></div>
   <div class="modal-box">

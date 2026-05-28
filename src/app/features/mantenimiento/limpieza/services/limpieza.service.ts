@@ -8,7 +8,7 @@ import { RegistroLimpieza } from '../models/registro-limpieza.model';
 })
 export class LimpiezaService {
 
-    private apiUrl = 'https://backend-hotel-2xhw.onrender.com/limpieza';
+    private apiUrl = 'http://localhost:3030/limpieza';
 
     constructor(private http: HttpClient) { }
 

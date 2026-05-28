@@ -18,6 +18,7 @@ export class LimpiezaPage implements OnInit {
 
     habitaciones: Habitacion[] = [];
     habitacionSeleccionada: Habitacion | null = null;
+    mensajeError: string = '';
 
     historial: RegistroLimpieza[] = [];
     notas: string = '';
@@ -40,7 +41,16 @@ export class LimpiezaPage implements OnInit {
 
     seleccionarHabitacion(h: Habitacion) {
         this.habitacionSeleccionada = h;
+        this.mensajeError = '';
         this.cargarHistorial(h.id);
+    }
+
+    get habitacionOcupada(): boolean {
+        return (this.habitacionSeleccionada?.estado ?? '').trim().toUpperCase() === 'OCUPADA';
+    }
+
+    get puedeModificarLimpieza(): boolean {
+        return !!this.habitacionSeleccionada && !this.habitacionOcupada;
     }
 
     cargarHistorial(id: number) {
@@ -57,33 +67,57 @@ export class LimpiezaPage implements OnInit {
 
     marcarLimpia() {
         if (!this.habitacionSeleccionada) return;
+        if (this.habitacionOcupada) {
+            console.error('[LimpiezaPage] No se puede modificar limpieza de una habitación ocupada');
+            this.mensajeError = 'No se puede modificar limpieza de una habitación ocupada';
+            return;
+        }
         const habitacionId = this.habitacionSeleccionada.id;
 
         this.limpiezaService
             .registrarLimpieza(habitacionId, 'INSPECCIONADA', this.notas)
-            .subscribe(() => {
-                if (this.habitacionSeleccionada) {
-                    this.habitacionSeleccionada.estado = 'INSPECCIONADA';
+            .subscribe({
+                next: () => {
+                    if (this.habitacionSeleccionada) {
+                        this.habitacionSeleccionada.estado = 'INSPECCIONADA';
+                    }
+                    this.notas = '';
+                    this.mensajeError = '';
+                    this.cargarHistorial(habitacionId);
+                    this.cargarHabitaciones();
+                },
+                error: error => {
+                    console.error('[LimpiezaPage] Error al marcar como limpia', error);
+                    this.mensajeError = 'No se puede modificar limpieza de una habitación ocupada';
                 }
-                this.notas = '';
-                this.cargarHistorial(habitacionId);
-                this.cargarHabitaciones();
             });
     }
 
     marcarSucia() {
         if (!this.habitacionSeleccionada) return;
+        if (this.habitacionOcupada) {
+            console.error('[LimpiezaPage] No se puede modificar limpieza de una habitación ocupada');
+            this.mensajeError = 'No se puede modificar limpieza de una habitación ocupada';
+            return;
+        }
         const habitacionId = this.habitacionSeleccionada.id;
 
         this.limpiezaService
             .registrarLimpieza(habitacionId, 'SUCIA', this.notas)
-            .subscribe(() => {
-                if (this.habitacionSeleccionada) {
-                    this.habitacionSeleccionada.estado = 'SUCIA';
+            .subscribe({
+                next: () => {
+                    if (this.habitacionSeleccionada) {
+                        this.habitacionSeleccionada.estado = 'SUCIA';
+                    }
+                    this.notas = '';
+                    this.mensajeError = '';
+                    this.cargarHistorial(habitacionId);
+                    this.cargarHabitaciones();
+                },
+                error: error => {
+                    console.error('[LimpiezaPage] Error al marcar como sucia', error);
+                    this.mensajeError = 'No se puede modificar limpieza de una habitación ocupada';
                 }
-                this.notas = '';
-                this.cargarHistorial(habitacionId);
-                this.cargarHabitaciones();
             });
     }
 }
