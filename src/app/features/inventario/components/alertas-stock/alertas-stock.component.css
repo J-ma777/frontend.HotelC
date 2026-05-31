@@ -1,0 +1,76 @@
+.alertas-container {
+  background: #12212a;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255,0,0,0.2);
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.badge {
+  background: red;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* LISTA */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alert-card {
+  background: #1d2c35;
+  padding: 12px;
+  border-radius: 10px;
+  border-left: 4px solid red;
+}
+
+/* top */
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.status {
+  font-size: 11px;
+  color: #ff4d4f;
+}
+
+/* stock */
+.stock {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.rojo {
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+/* button */
+button {
+  width: 100%;
+  padding: 8px;
+  background: #f2ca50;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ver-todo {
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid #f2ca50;
+  color: #f2ca50;
+}

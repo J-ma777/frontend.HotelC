@@ -55,7 +55,7 @@ export const RECEPCION_ROUTES: Routes = [
     path: 'plan-tarifario',
     canActivate: [authGuard, permissionGuard],
     data: {
-      permissions: ['PLAN_TARIFARIO_VER']
+      permissions: ['PLAN_TARIFARIO_VER', 'RESERVA_VER']
     },
     loadComponent: () =>
       import('./plan-tarifario/pages/plan-tarifario/plan-tarifario.component')

@@ -1,0 +1,53 @@
+<div class="form-container">
+  <h2>Nuevo Artículo</h2>
+  <p>Ingrese los detalles técnicos para integrar el producto al catálogo de suministros.</p>
+
+  <form [formGroup]="form" (ngSubmit)="guardarArticulo()">
+    <div class="grid">
+      <div class="full">
+        <label>Nombre del articulo</label>
+        <input
+          type="text"
+          formControlName="nombre"
+          placeholder="Ej. Toallas de Algodón Premium"
+        />
+      </div>
+
+      <div>
+        <label>Unidad de medida</label>
+        <select formControlName="unidad">
+          <option value="" disabled>Seleccione una opción</option>
+          <option *ngFor="let u of unidades" [value]="u">{{ u }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Stock mínimo</label>
+        <input type="number" formControlName="stockMinimo" min="0" />
+      </div>
+
+      <div>
+        <label>Costo unitario ($)</label>
+        <input type="number" formControlName="costoUnitario" min="0" step="0.01" placeholder="0.00" />
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button type="submit" class="btn-guardar" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar Artículo' }}
+      </button>
+
+      <button type="button" class="btn-cancelar" (click)="cancelar()" [disabled]="loading">
+        Cancelar
+      </button>
+    </div>
+  </form>
+
+  <div class="info-section" *ngIf="errorMessage">
+    <strong>⚠️ Error:</strong> {{ errorMessage }}
+  </div>
+
+  <div class="info-section success" *ngIf="successMessage">
+    <strong>✅</strong> {{ successMessage }}
+  </div>
+</div>

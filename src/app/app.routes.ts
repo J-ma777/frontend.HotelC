@@ -60,5 +60,33 @@ export const routes: Routes = [
           import('./features/mantenimiento/tickets/pages/tickets.page').then(m => m.TicketsPage)
       }
     ]
+  },
+  {
+    path: 'inventario',
+    component: LayoutComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/inventario/pages/inventario-dashboard/inventario-dashboard.component').then(m => m.InventarioDashboardComponent)
+      },
+      {
+        path: 'nuevo-articulo',
+        loadComponent: () =>
+          import('./features/inventario/pages/nuevo-articulo/nuevo-articulo.component').then(m => m.NuevoArticuloComponent)
+      },
+      {
+        path: 'articulo/:id',
+        loadComponent: () =>
+          import('./features/inventario/pages/inventario-detalle/inventario-detalle.component').then(m => m.InventarioDetalleComponent)
+      }
+      ,
+      {
+        path: 'historial/:id',
+        loadComponent: () =>
+          import('./features/inventario/pages/inventario-detalle/inventario-detalle.component').then(m => m.InventarioDetalleComponent)
+      }
+    ]
   }
 ];

@@ -1,0 +1,104 @@
+<div class="detalle-container">
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+
+    <button class="volver" (click)="volver()">
+      ← Volver al listado
+    </button>
+
+    <span class="breadcrumb">
+      Inventario / Detalle / Movimientos
+    </span>
+
+  </div>
+
+  <!-- HEADER -->
+  <div class="header-grid">
+
+    <!-- INFO ARTÍCULO -->
+    <div class="card">
+
+      <p class="subtitle">Detalle de movimientos</p>
+
+      <h2>
+        {{ articulo?.nombre || 'Artículo no disponible' }}
+      </h2>
+
+      <div class="tags">
+        <span>Categoría: {{ articulo?.categoria || 'Sin categoría' }}</span>
+        <span>SKU: {{ articulo?.sku || 'Sin SKU' }}</span>
+      </div>
+
+    </div>
+
+    <!-- KPI STOCK -->
+    <div class="card kpi">
+
+      <p>Stock actual</p>
+      <h3>{{ articulo?.stockActual || 0 }}</h3>
+
+      <div class="barra">
+        <div class="progreso"
+          [style.width.%]="articulo ? ((articulo.stockActual / articulo.stockMaximo) * 100) : 0">
+        </div>
+      </div>
+
+      <small>Nivel óptimo: {{ articulo?.stockMaximo || 0 }}</small>
+
+    </div>
+
+  </div>
+
+  <!-- FILTROS -->
+  <form class="filtros" [formGroup]="filtrosForm" (ngSubmit)="aplicarFiltros()">
+
+    <div class="input-group">
+      <input
+        #fechaDesdeInput
+        type="date"
+        formControlName="fechaDesde"
+        (click)="openCalendar(fechaDesdeInput, $event)"
+      />
+      <span class="calendar-icon" (click)="openCalendar(fechaDesdeInput, $event)">📅</span>
+    </div>
+
+    <div class="input-group">
+      <input
+        #fechaHastaInput
+        type="date"
+        formControlName="fechaHasta"
+        (click)="openCalendar(fechaHastaInput, $event)"
+      />
+      <span class="calendar-icon" (click)="openCalendar(fechaHastaInput, $event)">📅</span>
+    </div>
+
+    <select formControlName="tipo">
+      <option value="TODOS">Todos los tipos</option>
+      <option value="ENTRADA">Entrada</option>
+      <option value="SALIDA">Salida</option>
+      <option value="AJUSTE">Ajuste</option>
+    </select>
+
+    <div class="acciones-filtros">
+      <button type="button" (click)="limpiarFiltros()">Limpiar</button>
+      <button type="submit" class="primary">Aplicar</button>
+    </div>
+
+  </form>
+
+  <!-- TABLA -->
+  <p class="movimientos-resumen">
+    Mostrando {{ movimientosFiltrados.length }} de {{ movimientos.length }} movimientos
+  </p>
+
+  <app-movimientos-table
+    [movimientos]="movimientosFiltrados"
+    [loading]="loading">
+  </app-movimientos-table>
+
+</div>

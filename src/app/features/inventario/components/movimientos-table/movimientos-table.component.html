@@ -1,0 +1,72 @@
+<div class="table-container">
+
+  <div class="table-debug">
+    Movimientos visibles: {{ movimientos.length }}
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading">
+    Cargando movimientos...
+  </div>
+
+  <!-- EMPTY -->
+  <div *ngIf="!loading && movimientos.length === 0" class="empty">
+    No hay movimientos registrados
+  </div>
+
+  <!-- TABLE -->
+  <table *ngIf="!loading && movimientos.length > 0">
+
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Tipo</th>
+        <th>Cantidad</th>
+        <th>Motivo</th>
+        <th>Usuario</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let m of movimientos">
+
+        <td>
+          {{ m.fecha | date:'short' }}
+        </td>
+
+        <td>
+          <span class="tipo" [ngClass]="getClaseTipo(m.tipo)">
+            {{ m.tipo }}
+          </span>
+        </td>
+
+        <td class="cantidad"
+            [ngClass]="getClaseTipo(m.tipo)">
+          {{ getSigno(m.tipo) }}{{ m.cantidad }}
+        </td>
+
+        <td class="motivo">
+          {{ m.motivo }}
+        </td>
+
+        <td class="usuario">
+          {{ m.usuarioNombre }}
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+  <!-- PAGINATION (simple por ahora) -->
+  <div class="pagination">
+    <button>‹</button>
+    <button class="active">1</button>
+    <button>2</button>
+    <button>3</button>
+    <button>›</button>
+  </div>
+
+</div>

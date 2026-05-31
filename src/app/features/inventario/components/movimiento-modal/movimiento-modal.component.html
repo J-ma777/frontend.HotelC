@@ -1,0 +1,86 @@
+<div *ngIf="visible" class="overlay">
+
+  <div class="modal">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div>
+        <h2>Registrar Movimiento</h2>
+        <p>Define los detalles del movimiento de inventario</p>
+      </div>
+
+      <button (click)="close()">✖</button>
+    </div>
+
+    <!-- FORM -->
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <!-- TIPO -->
+      <div class="tipo-container">
+        <button type="button"
+          [class.active]="tipo === 'ENTRADA'"
+          (click)="seleccionarTipo('ENTRADA')">
+          ⬇ Entrada
+        </button>
+
+        <button type="button"
+          [class.active]="tipo === 'SALIDA'"
+          (click)="seleccionarTipo('SALIDA')">
+          ⬆ Salida
+        </button>
+      </div>
+
+      <!-- ARTICULO -->
+      <div class="form-group">
+        <label>Artículo</label>
+
+        <!-- Si viene un artículo preseleccionado desde la tabla, se muestra solo visual -->
+        <ng-container *ngIf="articuloSeleccionado; else selectorArticulo">
+          <input type="hidden" formControlName="articuloId" />
+          <input type="text" [value]="articuloSeleccionado.nombre" readonly />
+          <small>
+            Seleccionado: {{ articuloSeleccionado.nombre }}
+          </small>
+        </ng-container>
+
+        <!-- Selector por nombre: muestra articuloNombre, guarda articuloId en el form -->
+        <ng-template #selectorArticulo>
+          <select formControlName="articuloId">
+            <option value="">Seleccione un artículo</option>
+            <option *ngFor="let a of articulos" [value]="a.id">
+              {{ a.nombre }}
+            </option>
+          </select>
+        </ng-template>
+      </div>
+
+      <!-- CANTIDAD -->
+      <div class="row">
+        <div class="form-group">
+          <label>Cantidad</label>
+          <input type="number" formControlName="cantidad" />
+        </div>
+      </div>
+
+      <!-- MOTIVO -->
+      <div class="form-group">
+        <label>Motivo</label>
+        <textarea formControlName="motivo"></textarea>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <button type="button" class="btn-secondary" (click)="close()">
+          Cancelar
+        </button>
+
+        <button type="submit" class="btn-primary" [disabled]="form.invalid || !tipo">
+          Guardar
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

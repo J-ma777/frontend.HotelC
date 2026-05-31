@@ -1,0 +1,96 @@
+.table-container {
+  width: 100%;
+}
+
+/* loading / empty */
+.loading, .empty {
+  text-align: center;
+  padding: 20px;
+  opacity: 0.7;
+}
+
+/* table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #12212a;
+}
+
+th {
+  text-align: left;
+  padding: 12px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+td {
+  padding: 14px;
+  border-top: 1px solid #1d2c35;
+  vertical-align: middle;
+}
+
+/* nombre */
+.nombre {
+  display: flex;
+  flex-direction: column;
+  white-space: normal;
+}
+
+.nombre small {
+  opacity: 0.5;
+}
+
+.muted {
+  opacity: 0.7;
+}
+
+/* estados */
+.bajo {
+  color: #ff4d4f;
+}
+
+.warning {
+  color: #f2ca50;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.badge.normal {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+
+.badge.bajo {
+  background: rgba(255, 77, 79, 0.2);
+  color: #ff4d4f;
+}
+
+.badge.warning {
+  background: rgba(242, 202, 80, 0.2);
+  color: #f2ca50;
+}
+
+/* acciones */
+.acciones {
+  text-align: right;
+}
+
+.acciones button {
+  margin-left: 6px;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.acciones button:hover {
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+}

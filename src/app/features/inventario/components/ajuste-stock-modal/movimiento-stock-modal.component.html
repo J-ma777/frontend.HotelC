@@ -1,0 +1,69 @@
+<div *ngIf="visible" class="overlay">
+
+  <div class="modal">
+
+    <!-- HEADER -->
+    <div class="header">
+      <h2>Ajuste de Stock</h2>
+      <button (click)="close()">✖</button>
+    </div>
+
+    <!-- BODY -->
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <!-- ARTÍCULO -->
+      <div class="group">
+        <label>Artículo</label>
+        <div class="readonly">
+          {{ articulo?.nombre }}
+        </div>
+      </div>
+
+      <!-- STOCK -->
+      <div class="row">
+
+        <div class="group">
+          <label>Stock actual</label>
+          <p class="stock-actual">
+            {{ articulo?.stockActual }}
+          </p>
+        </div>
+
+        <div class="group">
+          <label>Nuevo stock</label>
+          <input type="number" formControlName="nuevoStock" />
+        </div>
+
+      </div>
+
+      <!-- DIFERENCIA (UX PRO) -->
+      <div *ngIf="diferencia !== null" class="diferencia"
+        [class.positivo]="diferencia! > 0"
+        [class.negativo]="diferencia! < 0">
+
+        Ajuste: {{ diferencia! > 0 ? '+' : '' }}{{ diferencia }}
+
+      </div>
+
+      <!-- MOTIVO -->
+      <div class="group">
+        <label>Motivo del ajuste</label>
+        <textarea formControlName="motivo"></textarea>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <button type="button" class="btn-secondary" (click)="close()">
+          Cancelar
+        </button>
+
+        <button type="submit" class="btn-primary">
+          Guardar ajuste
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

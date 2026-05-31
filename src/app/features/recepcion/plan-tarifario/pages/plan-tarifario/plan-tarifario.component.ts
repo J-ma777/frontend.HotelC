@@ -40,11 +40,11 @@ export class PlanTarifarioComponent implements OnInit {
   private readonly authService = inject(AuthService);
 
   canView(): boolean {
-    return this.authService.hasPermission('TARIFAS_VER');
+    return this.authService.hasPermission('PLAN_TARIFARIO_VER');
   }
 
   canManage(): boolean {
-    return this.authService.hasPermission('TARIFAS_GESTIONAR');
+    return this.authService.hasPermission('PLAN_TARIFARIO_GESTIONAR');
   }
 
   formulario = {

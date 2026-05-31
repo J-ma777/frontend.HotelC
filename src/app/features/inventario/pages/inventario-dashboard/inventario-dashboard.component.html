@@ -1,0 +1,128 @@
+<div class="dashboard-shell">
+  <section class="hero-panel">
+    <div class="hero-copy">
+      <p class="eyebrow">Inventario PMS</p>
+      <h1>Dashboard de inventario</h1>
+      <p class="hero-description">
+        Monitoreo en tiempo real de artículos con stock mínimo, conectado directamente al backend Spring Boot.
+      </p>
+
+      <div class="hero-meta">
+        <span>Última actualización: {{ lastUpdated || 'pendiente' }}</span>
+        <span>{{ totalArticulos }} artículos con alerta</span>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <button type="button" class="btn btn-ghost" (click)="refrescar()" [disabled]="loading">
+        {{ loading ? 'Actualizando...' : 'Actualizar' }}
+      </button>
+       <button type="button" class="btn btn-ghost" (click)="onNuevoArticulo()" [disabled]="loading">
+         Nuevo Artículo
+       </button>
+      <button type="button" class="btn btn-primary" (click)="onRegistrarMovimiento()">
+        + Movimiento
+      </button>
+    </div>
+  </section>
+
+  <div *ngIf="loading" class="feedback feedback-info">
+    Cargando inventario desde el backend...
+  </div>
+
+  <div *ngIf="errorMessage" class="feedback feedback-error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage && !loading" class="feedback feedback-success">
+    {{ successMessage }}
+  </div>
+
+  <section class="kpi-grid">
+    <article class="kpi-card">
+      <span class="kpi-label">Artículos monitorizados</span>
+      <strong>{{ totalArticulos }}</strong>
+      <small>Respuesta de /inventario/alertas/stock-minimo</small>
+    </article>
+
+    <article class="kpi-card danger">
+      <span class="kpi-label">Bajo stock</span>
+      <strong>{{ bajoStock }}</strong>
+      <small>Artículos bajo o en el mínimo</small>
+    </article>
+
+    <article class="kpi-card">
+      <span class="kpi-label">Stock actual total</span>
+      <strong>{{ stockActualTotal }}</strong>
+      <small>Suma de stock actual visible</small>
+    </article>
+
+    <article class="kpi-card">
+      <span class="kpi-label">Stock mínimo total</span>
+      <strong>{{ stockMinimoTotal }}</strong>
+      <small>Referencia de reposición</small>
+    </article>
+  </section>
+
+  <section class="content-grid">
+    <article class="panel panel-table">
+      <div class="panel-header">
+        <div>
+          <p class="panel-kicker">Inventario</p>
+          <h2>Artículos</h2>
+        </div>
+
+        <label class="search-box">
+          <span>Buscar</span>
+          <input
+            type="search"
+            placeholder="Nombre, SKU o tipo"
+            [value]="searchTerm"
+            (input)="onBuscar($event)"
+          />
+        </label>
+      </div>
+
+      <app-inventario-table
+        [articulos]="articulosFiltrados"
+        [loading]="loading"
+        (entrada)="onEntrada($event)"
+        (salida)="onSalida($event)"
+        (ajustar)="onAjustar($event)"
+      ></app-inventario-table>
+    </article>
+
+    <aside class="panel panel-alerts">
+      <div class="panel-header panel-header-tight">
+        <div>
+          <p class="panel-kicker">Alertas</p>
+          <h2>Stock mínimo</h2>
+        </div>
+      </div>
+
+      <app-alertas-stock
+        [alertas]="alertasCriticas"
+        (entrada)="onEntrada($event)">
+      </app-alertas-stock>
+
+      <p class="panel-note">
+        El dashboard se refresca desde el endpoint real y resalta los artículos que requieren reposición.
+      </p>
+    </aside>
+  </section>
+
+  <app-movimiento-modal
+    [visible]="movimientoModalVisible"
+    [articuloSeleccionado]="articuloModalSeleccionado"
+    [tipoInicial]="tipoMovimientoSeleccionado"
+    (cerrar)="cerrarMovimientoModal()"
+    (guardar)="guardarMovimiento($event)">
+  </app-movimiento-modal>
+
+  <app-ajuste-stock-modal
+    [visible]="ajusteModalVisible"
+    [articulo]="articuloModalSeleccionado"
+    (cerrar)="cerrarAjusteModal()"
+    (guardar)="guardarAjuste($event)">
+  </app-ajuste-stock-modal>
+</div>

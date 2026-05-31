@@ -1,0 +1,99 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.table-container {
+  background: #12212a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table-debug {
+  padding: 10px 14px;
+  font-size: 12px;
+  opacity: 0.65;
+  border-bottom: 1px solid #1d2c35;
+}
+
+/* estados */
+.loading, .empty {
+  padding: 20px;
+  text-align: center;
+  opacity: 0.7;
+}
+
+/* table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #1d2c35;
+}
+
+th {
+  padding: 14px;
+  text-align: left;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+td {
+  padding: 16px;
+  border-top: 1px solid #1d2c35;
+}
+
+/* tipo */
+.tipo {
+  font-weight: 600;
+}
+
+.entrada {
+  color: #4caf50;
+}
+
+.salida {
+  color: #ff4d4f;
+}
+
+.ajuste {
+  color: #f2ca50;
+}
+
+/* cantidad */
+.cantidad {
+  font-weight: bold;
+}
+
+/* motivo */
+.motivo {
+  opacity: 0.8;
+}
+
+/* usuario */
+.usuario {
+  font-size: 14px;
+}
+
+/* pagination */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px;
+  gap: 6px;
+}
+
+.pagination button {
+  padding: 6px 10px;
+  background: #06151d;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: #f2ca50;
+  color: black;
+}

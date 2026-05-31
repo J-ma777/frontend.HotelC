@@ -76,7 +76,7 @@ export class SidebarComponent implements OnInit {
       label: 'PLANES TARIFARIOS',
       icon: 'money',
       ruta: '/recepcion/plan-tarifario',
-      permisos: ['TARIFAS_VER']
+      permisos: ['PLAN_TARIFARIO_VER', 'RESERVA_VER']
     },
     {
       label: 'LIMPIEZA',
@@ -93,7 +93,7 @@ export class SidebarComponent implements OnInit {
     {
       label: 'INVENTARIO',
       icon: 'cube',
-      ruta: '/almacen',
+      ruta: '/inventario',
       permisos: ['INVENTARIO_VER', 'INVENTARIO_GESTIONAR']
     }
   ];

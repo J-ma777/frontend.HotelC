@@ -1,0 +1,83 @@
+<div class="table-container">
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading">
+    Cargando inventario...
+  </div>
+
+  <!-- EMPTY -->
+  <div *ngIf="!loading && articulos.length === 0" class="empty">
+    No hay artículos registrados
+  </div>
+
+  <!-- TABLE -->
+  <table *ngIf="!loading && articulos.length > 0">
+
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Unidad</th>
+        <th>Stock actual</th>
+        <th>Stock mínimo</th>
+        <th>Estado</th>
+        <th class="acciones">Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let a of articulos">
+
+        <td>
+          <div class="nombre">
+            <strong>{{ a.nombre }}</strong>
+            <small *ngIf="a.costoUnitario != null">Costo unitario: {{ a.costoUnitario }}</small>
+          </div>
+        </td>
+
+        <td>{{ a.unidad || a.unidadMedida || '—' }}</td>
+
+        <td
+          [class.bajo]="getEstado(a) === 'BAJO'"
+          [class.warning]="getEstado(a) === 'ADVERTENCIA'">
+          {{ a.stockActual }} <span *ngIf="a.unidad || a.unidadMedida" class="muted">{{ a.unidad || a.unidadMedida }}</span>
+        </td>
+
+        <td>{{ a.stockMinimo }} <span *ngIf="a.unidad || a.unidadMedida" class="muted">{{ a.unidad || a.unidadMedida }}</span></td>
+
+        <td>
+          <span class="badge"
+            [ngClass]="{
+              'normal': getEstado(a) === 'NORMAL',
+              'bajo': getEstado(a) === 'BAJO',
+              'warning': getEstado(a) === 'ADVERTENCIA'
+            }">
+            {{ getEstado(a) }}
+          </span>
+        </td>
+
+        <td class="acciones">
+
+          <button (click)="onVerMovimientos(a)" title="Historial">
+            ⏱
+          </button>
+
+          <button (click)="onEntrada(a)" title="Entrada">
+            ➕
+          </button>
+
+          <button (click)="onSalida(a)" title="Salida">
+            ➖
+          </button>
+
+          <button (click)="onAjustar(a)" title="Ajustar">
+            ✏️
+          </button>
+
+        </td>
+
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>
