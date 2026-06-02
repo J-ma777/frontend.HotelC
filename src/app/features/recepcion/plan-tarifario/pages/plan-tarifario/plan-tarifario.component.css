@@ -24,12 +24,100 @@
   font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
+/* ===== TOPBAR ===== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  max-width: 560px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.search-box input:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px var(--accent-gold-dim);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.action-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.avatar-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-gold-dim);
+  color: var(--accent-gold);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
 /* ===== HEADER ===== */
 .page-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
   margin-bottom: 28px;
+}
+
+.header-left {
+  min-width: 240px;
 }
 
 .title {
@@ -62,6 +150,12 @@
   white-space: nowrap;
 }
 
+.btn-nuevo-topbar {
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+}
+
 .btn-nuevo:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
@@ -70,6 +164,62 @@
 .btn-icon {
   font-size: 1.1rem;
   font-weight: 700;
+}
+
+/* ===== EMPTY / FEEDBACK ===== */
+.empty-state {
+  padding: 18px 20px;
+  border: 1px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.feedback-banner {
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+}
+
+.feedback-success {
+  background: rgba(52, 211, 153, 0.08);
+  border-color: rgba(52, 211, 153, 0.25);
+  color: var(--green);
+}
+
+.feedback-error {
+  background: rgba(225, 29, 72, 0.08);
+  border-color: rgba(225, 29, 72, 0.25);
+  color: var(--red);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .filters-row {
+    flex-direction: column;
+  }
+
+  .jerarquia-panel {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .plan-tarifario-page {
+    padding: 22px 18px;
+  }
+
+  .filter-row-top {
+    flex-direction: column;
+  }
+
+  .btn-nuevo {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ===== FILTERS ROW ===== */

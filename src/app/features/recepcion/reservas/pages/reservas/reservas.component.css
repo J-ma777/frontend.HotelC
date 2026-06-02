@@ -266,6 +266,11 @@
   border-color: #93c5fd;
 }
 
+.action-btn.folio:hover {
+  color: #facc15;
+  border-color: #facc15;
+}
+
 .action-btn.cancelar:hover {
   color: #fca5a5;
   border-color: #fca5a5;

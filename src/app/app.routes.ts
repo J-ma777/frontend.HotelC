@@ -38,6 +38,19 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'folio/:id',
+    component: LayoutComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/recepcion/reservas/pages/folio-reserva/folio-reserva.component')
+            .then(m => m.FolioReservaComponent)
+      }
+    ]
+  },
+  {
     path: 'housekeeping',
     component: LayoutComponent,
     canActivate: [authGuard],

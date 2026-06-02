@@ -8,6 +8,18 @@ export interface Reserva {
   cantidadHuespedes: number;
   categoria?: string;
   tipoHabitacionId?: number;
+  planTarifarioId?: number;
+}
+
+// DTO de creación (backend: CrearReservaRequest)
+export interface CrearReservaRequest {
+  fechaEntrada: string;
+  fechaSalida: string;
+  cantidadHuespedes: number;
+  nombreHuesped: string;
+  documentoHuesped: string;
+  tipoHabitacionId: number;
+  planTarifarioId: number;
 }
 
 export interface CheckinRequest {

@@ -3,7 +3,7 @@
   <h2>Nueva Reserva</h2>
   <p>Registro de nueva estancia en Grand Royal Resort</p>
 
-  <form (ngSubmit)="guardar()">
+  <form [formGroup]="form" (ngSubmit)="guardar()">
 
     <div class="grid">
 
@@ -11,8 +11,7 @@
       <div>
         <label>Nombre del huésped</label>
         <input type="text"
-          [(ngModel)]="reserva.nombreHuesped"
-          name="nombre"
+          formControlName="nombreHuesped"
           required />
       </div>
 
@@ -20,8 +19,7 @@
       <div>
         <label>Documento</label>
         <input type="text"
-          [(ngModel)]="reserva.documentoHuesped"
-          name="documento"
+          formControlName="documentoHuesped"
           required />
       </div>
 
@@ -29,8 +27,7 @@
       <div>
         <label>Fecha Entrada</label>
         <input type="date"
-          [(ngModel)]="reserva.fechaEntrada"
-          name="fechaEntrada"
+          formControlName="fechaEntrada"
           required />
       </div>
 
@@ -38,8 +35,7 @@
       <div>
         <label>Fecha Salida</label>
         <input type="date"
-          [(ngModel)]="reserva.fechaSalida"
-          name="fechaSalida"
+          formControlName="fechaSalida"
           required />
       </div>
 
@@ -47,8 +43,7 @@
       <div>
         <label>Cantidad Huéspedes</label>
         <input type="number"
-          [(ngModel)]="reserva.cantidadHuespedes"
-          name="huespedes"
+          formControlName="cantidadHuespedes"
           min="1" />
       </div>
 
@@ -56,16 +51,31 @@
       <div>
         <label>Tipo de Habitación</label>
         <select
-          [(ngModel)]="reserva.tipoHabitacionId"
-          name="tipoHabitacion"
+          formControlName="tipoHabitacionId"
           required>
 
-          <option [value]="null" disabled selected>-- Seleccione --</option>
-          <option *ngFor="let t of tiposHabitacion" [value]="t.id">
+          <option value="" disabled>-- Seleccione --</option>
+          <option *ngFor="let t of tiposHabitacion" [ngValue]="t.id">
             {{ t.nombre }}
           </option>
 
         </select>
+      </div>
+
+      <!-- PLAN TARIFARIO -->
+      <div>
+        <label>Plan Tarifario</label>
+        <select formControlName="planTarifarioId" required>
+          <option value="" disabled>-- Seleccione --</option>
+          <option *ngFor="let plan of planesTarifarios" [ngValue]="plan.id">
+            {{ plan.nombre }} - {{ plan.precioPorNoche }}
+          </option>
+        </select>
+
+        <small *ngIf="cargandoPlanes">Cargando planes tarifarios...</small>
+        <small *ngIf="!cargandoPlanes && form.controls.tipoHabitacionId.value && planesTarifarios.length === 0">
+          No hay planes tarifarios disponibles para este tipo de habitación.
+        </small>
       </div>
 
     </div>

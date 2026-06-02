@@ -99,16 +99,20 @@
               title="Check-Out">
               ↩
             </button>
+            <button
+              class="action-btn folio"
+              *ngIf="puedeVerFolio(r.estado)"
+              [routerLink]="['/folio', r.id]"
+              title="Ver Folio">
+              📄
+            </button>
             <button 
               class="action-btn cancelar"
-              *ngIf="canCancel() && r.estado !== 'CANCELADA'" 
-              (click)="cancelar(r.id)"
+              *ngIf="canCancel() && (r.estado === 'PENDIENTE' || r.estado === 'CONFIRMADA')" 
+              (click)="cancelarReserva(r)"
               title="Cancelar">
-              ✕
+              ✗
             </button>
-            <span *ngIf="r.estado === 'CANCELADA'" class="text-muted">
-              ✅ Reserva ya cancelada
-            </span>
           </td>
         </tr>
       </tbody>

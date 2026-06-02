@@ -20,9 +20,9 @@
     </div>
 
     <div class="topbar-actions">
-      <button type="button" class="action-btn" aria-label="Notificaciones">🔔</button>
-      <button type="button" class="action-btn" aria-label="Ayuda">?</button>
-      <div class="avatar-badge">HP</div>
+      <button class="btn-nuevo btn-nuevo-topbar" (click)="abrirCrearPlan()">
+        <span class="btn-icon">+</span> NUEVO PLAN TARIFARIO
+      </button>
     </div>
   </section>
 
@@ -32,9 +32,6 @@
       <h1 class="title">Planes Tarifarios</h1>
       <p class="subtitle">Gestión de tarifas por tipo de habitación y temporadas</p>
     </div>
-    <button class="btn-nuevo" *ngIf="canManage()" (click)="abrirCrearPlan()">
-      <span class="btn-icon">+</span> NUEVO PLAN TARIFARIO
-    </button>
   </header>
 
   <!-- ===== FILTROS ===== -->

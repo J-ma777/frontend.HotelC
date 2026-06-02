@@ -50,6 +50,16 @@ export class ReservasComponent implements OnInit {
     return this.authService.hasPermission('RESERVA_CANCELAR');
   }
 
+  puedeVerFolio(estado: string | null | undefined): boolean {
+    const normalized = (estado || '').toUpperCase();
+    return (
+      normalized === 'EN_CASA' ||
+      normalized === 'EN_CURSO' ||
+      normalized === 'CHECKOUT' ||
+      normalized === 'CHECK_OUT'
+    );
+  }
+
   ngOnInit(): void {
     this.permisos = this.authService.getPermisos();
     console.log('[ReservasComponent] permisos cargados:', this.permisos);
@@ -93,7 +103,6 @@ export class ReservasComponent implements OnInit {
     }
   }
 
-
   // MAPEO DE ERRORES
   hacerCheckout(reserva: Reserva): void {
     const confirmMsg = `¿Confirma checkout de la reserva #${reserva.id}?`;
@@ -112,6 +121,19 @@ export class ReservasComponent implements OnInit {
         this.manejarErrorHTTP(err, 'Error inesperado al hacer Checkout');
       }
     });
+  }
+
+  cancelarReserva(reserva: Reserva): void {
+    const confirmMsg = `¿Está seguro de que desea cancelar la reserva #${reserva.id}?`;
+    if (window.confirm(confirmMsg)) {
+      this.reservasService.cancelarReserva(reserva.id).subscribe({
+        next: () => {
+          this.mostrarMensaje(`Reserva #${reserva.id} cancelada.`);
+          this.cargarReservas();
+        },
+        error: (err) => this.manejarErrorHTTP(err, `Error al cancelar la reserva #${reserva.id}.`)
+      });
+    }
   }
 
   // Existing legacy method retained for backward compatibility (optional)
@@ -155,11 +177,11 @@ export class ReservasComponent implements OnInit {
     });
   }
 
-  confirmarDebug(r: any): void {
-    console.log('🔍 [Debug] Objeto clickeado:', r);
-    console.log('🔍 [Debug] r.id:', r.id, 'Tipo:', typeof r.id);
-    console.log('🔍 [Debug] r.estado:', r.estado);
-    this.confirmar(Number(r.id));
+  confirmarDebug(reserva: Reserva): void {
+    console.log('🔍 [Debug] Objeto clickeado:', reserva);
+    console.log('🔍 [Debug] r.id:', reserva.id, 'Tipo:', typeof reserva.id);
+    console.log('🔍 [Debug] r.estado:', reserva.estado);
+    this.confirmar(Number(reserva.id));
   }
 
   getEstadisticas() {

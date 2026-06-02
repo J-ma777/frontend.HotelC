@@ -1,0 +1,183 @@
+<div class="frontdesk-checkin">
+
+  <div class="topbar">
+    <div class="search">
+      <label class="search-label">Reserva ID</label>
+      <div class="search-row">
+        <input
+          class="search-input"
+          type="number"
+          min="1"
+          [(ngModel)]="reservaIdInput"
+          placeholder="Ej: 10"
+          aria-label="ID de reserva"
+        />
+        <button class="btn btn-secondary" type="button" (click)="onBuscarReserva()" [disabled]="cargandoReserva">
+          Cargar
+        </button>
+      </div>
+      <div class="search-hint">Abre una reserva por ID para confirmar el check-in.</div>
+    </div>
+
+    <div class="topbar-actions">
+      <a class="link" [routerLink]="['/recepcion/reservas']">Ir a Reservas</a>
+    </div>
+  </div>
+
+  <div class="banner" *ngIf="error" role="alert">
+    {{ error }}
+  </div>
+
+  <div class="banner banner-success" *ngIf="success" role="status">
+    {{ success }}
+  </div>
+
+  <div class="loading" *ngIf="cargandoReserva">
+    Cargando reserva...
+  </div>
+
+  <ng-container *ngIf="vm as data">
+
+    <header class="header">
+      <div>
+        <div class="breadcrumb">Front Desk <span class="sep">/</span> Check-in</div>
+        <h1 class="title">Confirmar llegada</h1>
+        <div class="subtitle">
+          Reserva #{{ data.reserva.id }} · Estado: <span class="status">{{ getEstadoLabel(data.reserva) }}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <section class="left">
+
+        <div class="card">
+          <div class="card-title">Detalles del huésped</div>
+
+          <div class="grid2">
+            <div class="field">
+              <div class="field-label">Nombre</div>
+              <div class="field-value">{{ getHuespedNombre(data.reserva) }}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Documento</div>
+              <div class="field-value">{{ getHuespedDocumento(data.reserva) }}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Email</div>
+              <div class="field-value">{{ getHuespedEmail(data.reserva) }}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Teléfono</div>
+              <div class="field-value">{{ getHuespedTelefono(data.reserva) }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Detalles de la reserva</div>
+
+          <div class="grid2">
+            <div class="field">
+              <div class="field-label">Check-in</div>
+              <div class="field-value">{{ formatearFecha(data.reserva.fechaEntrada || data.reserva.checkIn) }}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Check-out</div>
+              <div class="field-value">{{ formatearFecha(data.reserva.fechaSalida || data.reserva.checkOut) }}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Noches</div>
+              <div class="field-value">{{ data.noches }}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Tipo de habitación</div>
+              <div class="field-value">{{ getTipoHabitacion(data.reserva) }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Asignación de habitación</div>
+
+          <div class="loading" *ngIf="cargandoHabitaciones">Cargando habitaciones disponibles...</div>
+
+          <div class="rooms" *ngIf="!cargandoHabitaciones">
+            <button
+              class="room"
+              *ngFor="let h of habitaciones"
+              type="button"
+              (click)="seleccionarHabitacion(h)"
+              [disabled]="!esHabitacionDisponible(h)"
+              [class.selected]="habitacionSeleccionadaId === h.id"
+              [class.disabled]="!esHabitacionDisponible(h)"
+            >
+              <div class="room-head">
+                <div class="room-num">{{ h.numero }}</div>
+                <div class="estado" [ngClass]="getHabitacionEstadoClase(h)">
+                  <span class="estado-icon" *ngIf="esHabitacionDisponible(h)">✅</span>
+                  <span class="estado-icon" *ngIf="!esHabitacionDisponible(h) && (h.estado | uppercase) === 'SUCIA'">⚠️</span>
+                  <span class="estado-icon" *ngIf="!esHabitacionDisponible(h) && (h.estado | uppercase) === 'OCUPADA'">⛔</span>
+                  {{ getHabitacionEstadoTexto(h) }}
+                </div>
+              </div>
+              <div class="room-meta">Piso {{ h.piso }} · {{ h.tipoNombre }}</div>
+              <div class="room-price" *ngIf="(h.precioPorNoche || (h.tarifa?.precioPorNoche) || (h.tarifa?.precio))">
+                {{ formatearMoneda((h.precioPorNoche || h.tarifa?.precioPorNoche || h.tarifa?.precio) || 0) }} / noche
+              </div>
+            </button>
+
+            <div class="empty" *ngIf="habitaciones.length === 0">
+              No hay habitaciones registradas para este rango.
+            </div>
+
+            <div class="empty" *ngIf="habitaciones.length > 0 && !hasAvailableRooms()">
+              No hay habitaciones disponibles (todas están sucias u ocupadas).
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <aside class="right">
+        <div class="card summary">
+          <div class="card-title">Resumen</div>
+
+          <div class="summary-row">
+            <span>Precio por noche</span>
+            <strong class="money">{{ formatearMoneda(data.precioPorNoche) }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Noches</span>
+            <strong>{{ data.noches }}</strong>
+          </div>
+          <div class="summary-row total">
+            <span>Total estimado</span>
+            <strong class="money-total">{{ formatearMoneda(data.totalEstimado) }}</strong>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            (click)="confirmarCheckIn()"
+            [disabled]="isConfirmDisabled()"
+          >
+            <span *ngIf="!confirmando">Confirmar Check-in</span>
+            <span *ngIf="confirmando">Confirmando...</span>
+          </button>
+
+          <div class="summary-hint" *ngIf="!puedeHacerCheckIn(data.reserva)">
+            Esta reserva no está habilitada para check-in.
+          </div>
+        </div>
+      </aside>
+
+    </div>
+
+  </ng-container>
+
+  <div class="empty" *ngIf="!vm && !cargandoReserva">
+    Carga una reserva para iniciar el proceso de check-in.
+  </div>
+
+</div>

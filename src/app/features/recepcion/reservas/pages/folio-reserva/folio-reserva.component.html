@@ -1,0 +1,182 @@
+<div class="folio-page">
+  <div class="folio-header">
+    <div>
+      <h1 class="title">Folio de reserva</h1>
+      <p class="subtitle">Detalle de cargos, pagos y descuentos asociados a la estancia.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" (click)="cargarFolio()" [disabled]="loading">Actualizar</button>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <p>Cargando folio...</p>
+  </div>
+
+  <div class="error" *ngIf="error">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!loading && !error" class="folio-content">
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-title">Información del huésped</div>
+        <div class="card-body">
+          <div class="kv">
+            <span class="k">Nombre</span>
+            <span class="v">{{ reserva?.nombreHuesped || '—' }}</span>
+          </div>
+          <div class="kv">
+            <span class="k">Documento</span>
+            <span class="v">{{ reserva?.documentoHuesped || '—' }}</span>
+          </div>
+          <div class="kv">
+            <span class="k">Huéspedes</span>
+            <span class="v">{{ reserva?.cantidadHuespedes ?? '—' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Información de reserva</div>
+        <div class="card-body">
+          <div class="kv">
+            <span class="k">Reserva</span>
+            <span class="v">#{{ reservaId }}</span>
+          </div>
+          <div class="kv">
+            <span class="k">Estado</span>
+            <span class="v">
+              <span class="pill">{{ reserva?.estado || '—' }}</span>
+            </span>
+          </div>
+          <div class="kv">
+            <span class="k">Entrada</span>
+            <span class="v">{{ reserva?.fechaEntrada ? (reserva?.fechaEntrada | date:'dd/MM/yyyy') : '—' }}</span>
+          </div>
+          <div class="kv">
+            <span class="k">Salida</span>
+            <span class="v">{{ reserva?.fechaSalida ? (reserva?.fechaSalida | date:'dd/MM/yyyy') : '—' }}</span>
+          </div>
+          <div class="kv">
+            <span class="k">Noches</span>
+            <span class="v">{{ getNoches() }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Habitación</div>
+        <div class="card-body">
+          <div class="kv">
+            <span class="k">Categoría</span>
+            <span class="v">{{ reserva?.categoria || '—' }}</span>
+          </div>
+          <div class="kv">
+            <span class="k">Tipo habitación</span>
+            <span class="v">{{ reserva?.tipoHabitacionId ?? '—' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Plan tarifario</div>
+        <div class="card-body">
+          <div class="kv">
+            <span class="k">Plan</span>
+            <span class="v">No disponible</span>
+          </div>
+          <div class="kv">
+            <span class="k">Observación</span>
+            <span class="v">No disponible</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div class="table-card">
+        <div class="table-head">
+          <div class="table-title">Transacciones del folio</div>
+          <div class="table-actions">
+            <button class="btn btn-ghost" disabled>Filtrar</button>
+            <button class="btn btn-ghost" disabled>Exportar PDF</button>
+          </div>
+        </div>
+
+        <div class="table-wrap" *ngIf="transacciones.length > 0; else emptyState">
+          <table class="transactions-table">
+            <thead>
+              <tr>
+                <th>FECHA</th>
+                <th>TIPO</th>
+                <th>DESCRIPCIÓN</th>
+                <th class="num">CANT.</th>
+                <th class="num">PRECIO UNIT.</th>
+                <th class="num">TOTAL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let t of transacciones">
+                <td>{{ t.fechaTransaccion | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  <span class="tipo-tag" [ngClass]="getTipoClase(t.tipo)">{{ getTipoLabel(t.tipo) }}</span>
+                </td>
+                <td>{{ t.descripcion }}</td>
+                <td class="num">{{ t.cantidad }}</td>
+                <td class="num">{{ t.precioUnitario | currency }}</td>
+                <td class="num" [ngClass]="{ 'monto-pago': t.tipo === 'PAGO', 'monto-descuento': t.tipo === 'DESCUENTO' }">
+                  {{ getMontoTransaccion(t) | currency }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ng-template #emptyState>
+          <div class="empty">
+            <p class="empty-title">Aún no hay transacciones</p>
+            <p class="empty-subtitle">Registra un consumo, pago o descuento para empezar.</p>
+          </div>
+        </ng-template>
+
+        <div class="actions-row">
+          <button class="btn btn-info" (click)="registrarConsumo()">Registrar consumo</button>
+          <button class="btn btn-success" (click)="registrarPago()">Registrar pago</button>
+          <button class="btn btn-warning" (click)="aplicarDescuento()">Aplicar descuento</button>
+          <button class="btn btn-danger" (click)="realizarCheckout()" [disabled]="saldo.total > 0">
+            Check-out
+          </button>
+        </div>
+        <p *ngIf="saldo.total > 0" class="checkout-warning">
+          Debe saldar la cuenta antes de realizar check-out
+        </p>
+      </div>
+
+      <aside class="summary-card">
+        <div class="summary-title">Resumen financiero</div>
+        <div class="summary-item">
+          <span>Subtotal alojamiento</span>
+          <span>{{ subtotalAlojamiento | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span>Subtotal consumos</span>
+          <span>{{ subtotalConsumos | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span>Total descuentos</span>
+          <span class="monto-descuento">{{ getTotalDescuentosDisplay() | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span>Total pagos</span>
+          <span class="monto-pago">{{ totalPagos | currency }}</span>
+        </div>
+        <div class="summary-total">
+          <div class="summary-total-label">TOTAL FINAL</div>
+          <div class="summary-total-value">{{ saldo.total | currency }}</div>
+          <div class="summary-total-note">Obtenido desde el backend</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>

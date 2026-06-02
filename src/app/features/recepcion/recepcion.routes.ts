@@ -19,6 +19,16 @@ export const RECEPCION_ROUTES: Routes = [
       import('./tipos-habitacion/pages/tipos-habitacion/tipos-habitacion.page')
         .then(m => m.TiposHabitacionPage)
   },
+  {
+    path: 'reservas/:id/folio',
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      permissions: ['RESERVA_VER']
+    },
+    loadComponent: () =>
+      import('./reservas/pages/folio-reserva/folio-reserva.component')
+        .then(m => m.FolioReservaComponent)
+  },
 
   {
     path: 'reservas',
@@ -69,8 +79,23 @@ export const RECEPCION_ROUTES: Routes = [
   },
   {
     path: 'checkin',
-    redirectTo: 'reservas',
-    pathMatch: 'full'
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      permissions: ['RESERVA_CHECKIN']
+    },
+    loadComponent: () =>
+      import('./front-desk/check-in/check-in.component')
+        .then(m => m.CheckInComponent)
+  },
+  {
+    path: 'checkin/:id',
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      permissions: ['RESERVA_CHECKIN']
+    },
+    loadComponent: () =>
+      import('./front-desk/check-in/check-in.component')
+        .then(m => m.CheckInComponent)
   },
   {
     path: 'checkout',

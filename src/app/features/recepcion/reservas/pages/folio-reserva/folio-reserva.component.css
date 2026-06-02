@@ -1,0 +1,373 @@
+* {
+  -webkit-font-smoothing: antialiased;
+}
+
+.folio-page {
+  padding: 32px;
+  background: linear-gradient(135deg, #0f172a 0%, #1a2f4f 100%);
+  min-height: 100vh;
+  color: #e2e8f0;
+}
+
+.folio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #facc15;
+  margin: 0 0 6px 0;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.loading,
+.error {
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #94a3b8;
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.error {
+  color: #fca5a5;
+  border-left: 4px solid #ef4444;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 1200px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.card-title {
+  font-size: 12px;
+  color: #facc15;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.card-body {
+  display: grid;
+  gap: 10px;
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.k {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.v {
+  font-size: 13px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.25);
+  color: #facc15;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+}
+
+@media (max-width: 980px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.table-card,
+.summary-card {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.table-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(15, 23, 42, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.table-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #e2e8f0;
+}
+
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.table-wrap {
+  overflow: auto;
+}
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.transactions-table thead {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.transactions-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-size: 11px;
+}
+
+.transactions-table td {
+  padding: 14px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+}
+
+.transactions-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.num {
+  text-align: right;
+}
+
+.tipo-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.tipo-alojamiento {
+  background: rgba(59, 130, 246, 0.18);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.28);
+}
+
+.tipo-consumo {
+  background: rgba(239, 68, 68, 0.16);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.28);
+}
+
+.tipo-pago {
+  background: rgba(34, 197, 94, 0.16);
+  color: #86efac;
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.tipo-descuento {
+  background: rgba(250, 204, 21, 0.14);
+  color: #facc15;
+  border-color: rgba(250, 204, 21, 0.28);
+}
+
+.monto-pago {
+  color: #86efac;
+  font-weight: 800;
+}
+
+.monto-descuento {
+  color: #facc15;
+  font-weight: 800;
+}
+
+.empty {
+  padding: 28px 16px;
+  text-align: center;
+}
+
+.empty-title {
+  margin: 0 0 6px 0;
+  font-weight: 800;
+  color: #e2e8f0;
+}
+
+.empty-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.actions-row {
+  padding: 14px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(15, 23, 42, 0.25);
+}
+
+.checkout-warning {
+  margin: 0;
+  padding: 0 16px 16px 16px;
+  color: #facc15;
+  font-size: 12px;
+}
+
+.summary-card {
+  padding: 16px;
+}
+
+.summary-title {
+  font-size: 12px;
+  color: #facc15;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+}
+
+.summary-total {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.summary-total-label {
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  font-weight: 900;
+  color: #facc15;
+}
+
+.summary-total-value {
+  margin-top: 4px;
+  font-size: 28px;
+  font-weight: 900;
+  color: #facc15;
+}
+
+.summary-total-note {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.btn {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.btn-info {
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #93c5fd;
+}
+
+.btn-success {
+  border-color: rgba(34, 197, 94, 0.35);
+  color: #86efac;
+}
+
+.btn-warning {
+  border-color: rgba(250, 204, 21, 0.35);
+  color: #facc15;
+}
+
+.btn-danger {
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+}
+  

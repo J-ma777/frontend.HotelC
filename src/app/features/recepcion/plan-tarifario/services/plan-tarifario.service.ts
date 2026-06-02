@@ -20,6 +20,13 @@ export class PlanTarifarioService {
     );
   }
 
+  // Listado filtrado por tipo de habitación
+  getByTipo(tipoHabitacionId: number): Observable<PlanTarifario[]> {
+    return this.http.get<PlanTarifario[]>(`${this.apiUrl}/tipo/${tipoHabitacionId}`).pipe(
+      catchError((error) => this.handleError(error))
+    );
+  }
+
   // Crear con manejo completo
   create(data: PlanTarifarioCreate): Observable<PlanTarifario> {
 

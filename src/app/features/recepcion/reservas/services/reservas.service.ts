@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Reserva } from '../types/reserva.types';
+import { CrearReservaRequest, Reserva } from '../types/reserva.types';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,7 @@ export class ReservasService {
   }
 
   // CREAR
-  crearReserva(data: Reserva): Observable<Reserva> {
+  crearReserva(data: CrearReservaRequest): Observable<Reserva> {
     console.log('📤 [ReservasService] POST:', this.API_URL, data);
     return this.http.post<Reserva>(this.API_URL, data);
   }
