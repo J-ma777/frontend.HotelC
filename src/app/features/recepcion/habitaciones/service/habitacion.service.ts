@@ -23,6 +23,10 @@ export class HabitacionesService {
     return this.http.get<Habitacion[]>(`${this.apiUrl}/disponibles-mantenimiento`);
   }
 
+  getDisponiblesPorTipo(tipoId: number, inicio: string, fin: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/disponibles?tipoHabitacionId=${tipoId}&fechaInicio=${inicio}&fechaFin=${fin}`);
+  }
+
   // POST
   create(data: HabitacionCreate): Observable<Habitacion> {
 

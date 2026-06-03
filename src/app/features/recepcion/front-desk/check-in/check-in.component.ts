@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 
 import { CheckInService } from '../services/check-in.service';
 import { FrontDeskCheckInVm, HabitacionDisponible, ReservaDetalle } from '../models/check-in.model';
+import { HabitacionesService } from '../../habitaciones/service/habitacion.service';
 
 @Component({
   selector: 'app-frontdesk-checkin',
@@ -18,6 +19,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private checkInService = inject(CheckInService);
+  private habitacionService = inject(HabitacionesService);
 
   private sub = new Subscription();
 
@@ -31,8 +33,16 @@ export class CheckInComponent implements OnInit, OnDestroy {
   success: string | null = null;
 
   vm: FrontDeskCheckInVm | null = null;
-  habitaciones: HabitacionDisponible[] = [];
+  habitaciones: any[] = [];
   habitacionSeleccionadaId: number | null = null;
+
+  get habitacionSeleccionada(): number | null {
+    return this.habitacionSeleccionadaId;
+  }
+
+  set habitacionSeleccionada(value: number | null) {
+    this.habitacionSeleccionadaId = value;
+  }
 
   // Getter helpers para template
   get habitacionesDisponiblesSolo(): HabitacionDisponible[] {
@@ -121,7 +131,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
         };
 
         this.cargandoReserva = false;
-        this.cargarHabitacionesDisponibles(reserva);
+        this.cargarHabitaciones(reserva);
       },
       error: (err: any) => {
         this.cargandoReserva = false;
@@ -130,57 +140,55 @@ export class CheckInComponent implements OnInit, OnDestroy {
     });
   }
 
-  private cargarHabitacionesDisponibles(reserva: ReservaDetalle): void {
-    const { inicio, fin } = this.obtenerRango(reserva);
+  cargarHabitaciones(reserva: any): void {
+    const tipoId = reserva.tipoHabitacionId || reserva.tipoHabitacion?.id;
+    const rango = this.obtenerRango(reserva);
 
-    if (!inicio || !fin) {
-      this.error = 'La reserva no tiene fechas válidas para buscar disponibilidad.';
+    if (!tipoId || !rango.inicio || !rango.fin) {
+      console.warn('Datos incompletos');
+      this.error = 'La reserva no tiene datos completos (tipo de habitación o fechas) para buscar disponibilidad.';
       return;
     }
 
     this.cargandoHabitaciones = true;
-    this.checkInService.getHabitacionesDisponibles(inicio, fin).subscribe({
-      next: (data) => {
-        this.habitaciones = (data || []).slice();
-        if (this.vm) {
-          this.vm.habitacionesDisponibles = this.habitaciones;
-          // Si la reserva no tiene precio por noche, intentar obtenerlo desde las habitaciones.
-          if (!this.vm.precioPorNoche || this.vm.precioPorNoche === 0) {
-            // 1) Buscar habitación cuyo tipo coincida con la reserva
-            const tipoIdReserva = (this.vm.reserva.tipoHabitacion && (this.vm.reserva.tipoHabitacion.id as any)) || (this.vm.reserva as any).tipoHabitacionId;
-            const tipoNombreReserva = this.vm.reserva.tipoHabitacion?.nombre || this.vm.reserva.tipoHabitacionNombre;
+    this.error = null;
 
-            let candidato: HabitacionDisponible | undefined;
+    this.habitacionService
+      .getDisponiblesPorTipo(tipoId, rango.inicio, rango.fin)
+      .subscribe({
+        next: (data) => {
+          // Filtrar SOLO habitaciones disponibles / listas (PRO UX)
+          this.habitaciones = (data || []).filter((h: any) => {
+            const est = (h.estado || '').toUpperCase();
+            return est === 'DISPONIBLE' || est === 'AVAILABLE';
+          });
 
-            if (tipoIdReserva) {
-              candidato = this.habitaciones.find((h) => (h as any).tipoId === tipoIdReserva && this.obtenerPrecioDeHabitacion(h) > 0);
-            }
+          // Reset selección previa
+          this.habitacionSeleccionada = null;
+          this.habitacionSeleccionadaId = null;
 
-            if (!candidato && tipoNombreReserva) {
-              candidato = this.habitaciones.find((h) => (h.tipoNombre || '').toLowerCase() === (tipoNombreReserva || '').toLowerCase() && this.obtenerPrecioDeHabitacion(h) > 0);
-            }
-
-            // 2) Si no encontramos por tipo, usar la primera habitación con tarifa válida
-            if (!candidato) {
-              candidato = this.habitaciones.find((h) => this.obtenerPrecioDeHabitacion(h) > 0);
-            }
-
-            if (candidato) {
-              const p = this.obtenerPrecioDeHabitacion(candidato);
-              if (p > 0) {
-                this.vm.precioPorNoche = p;
-                this.vm.totalEstimado = this.vm.noches * this.vm.precioPorNoche;
+          if (this.vm) {
+            this.vm.habitacionesDisponibles = this.habitaciones;
+            // Si la reserva no tiene precio por noche, intentar obtenerlo desde las habitaciones.
+            if (!this.vm.precioPorNoche || this.vm.precioPorNoche === 0) {
+              const candidato = this.habitaciones.find((h) => this.obtenerPrecioDeHabitacion(h) > 0);
+              if (candidato) {
+                const p = this.obtenerPrecioDeHabitacion(candidato);
+                if (p > 0) {
+                  this.vm.precioPorNoche = p;
+                  this.vm.totalEstimado = this.vm.noches * this.vm.precioPorNoche;
+                }
               }
             }
           }
+          this.cargandoHabitaciones = false;
+        },
+        error: (err: any) => {
+          console.error(err);
+          this.cargandoHabitaciones = false;
+          this.error = this.mapearError(err, 'No se pudieron cargar las habitaciones disponibles.');
         }
-        this.cargandoHabitaciones = false;
-      },
-      error: (err: any) => {
-        this.cargandoHabitaciones = false;
-        this.error = this.mapearError(err, 'No se pudo cargar habitaciones disponibles.');
-      }
-    });
+      });
   }
 
   seleccionarHabitacion(h: HabitacionDisponible): void {

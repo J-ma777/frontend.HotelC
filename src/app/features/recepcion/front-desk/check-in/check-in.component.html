@@ -4,14 +4,8 @@
     <div class="search">
       <label class="search-label">Reserva ID</label>
       <div class="search-row">
-        <input
-          class="search-input"
-          type="number"
-          min="1"
-          [(ngModel)]="reservaIdInput"
-          placeholder="Ej: 10"
-          aria-label="ID de reserva"
-        />
+        <input class="search-input" type="number" min="1" [(ngModel)]="reservaIdInput" placeholder="Ej: 10"
+          aria-label="ID de reserva" />
         <button class="btn btn-secondary" type="button" (click)="onBuscarReserva()" [disabled]="cargandoReserva">
           Cargar
         </button>
@@ -102,37 +96,19 @@
 
           <div class="loading" *ngIf="cargandoHabitaciones">Cargando habitaciones disponibles...</div>
 
-          <div class="rooms" *ngIf="!cargandoHabitaciones">
-            <button
-              class="room"
-              *ngFor="let h of habitaciones"
-              type="button"
-              (click)="seleccionarHabitacion(h)"
-              [disabled]="!esHabitacionDisponible(h)"
-              [class.selected]="habitacionSeleccionadaId === h.id"
-              [class.disabled]="!esHabitacionDisponible(h)"
-            >
-              <div class="room-head">
-                <div class="room-num">{{ h.numero }}</div>
-                <div class="estado" [ngClass]="getHabitacionEstadoClase(h)">
-                  <span class="estado-icon" *ngIf="esHabitacionDisponible(h)">✅</span>
-                  <span class="estado-icon" *ngIf="!esHabitacionDisponible(h) && (h.estado | uppercase) === 'SUCIA'">⚠️</span>
-                  <span class="estado-icon" *ngIf="!esHabitacionDisponible(h) && (h.estado | uppercase) === 'OCUPADA'">⛔</span>
-                  {{ getHabitacionEstadoTexto(h) }}
-                </div>
-              </div>
-              <div class="room-meta">Piso {{ h.piso }} · {{ h.tipoNombre }}</div>
-              <div class="room-price" *ngIf="(h.precioPorNoche || (h.tarifa?.precioPorNoche) || (h.tarifa?.precio))">
-                {{ formatearMoneda((h.precioPorNoche || h.tarifa?.precioPorNoche || h.tarifa?.precio) || 0) }} / noche
-              </div>
-            </button>
+          <div class="dropdown-container" *ngIf="!cargandoHabitaciones">
+            <select class="select-habitacion" [(ngModel)]="habitacionSeleccionada"
+              [disabled]="habitaciones.length === 0">
+              <option [ngValue]="null" disabled>
+                {{ habitaciones.length === 0 ? 'No hay habitaciones disponibles' : 'Selecciona una habitación...' }}
+              </option>
+              <option *ngFor="let h of habitaciones" [ngValue]="h.id">
+                {{ h.numero }} - Piso {{ h.piso }} - {{ h.tipoNombre }}
+              </option>
+            </select>
 
             <div class="empty" *ngIf="habitaciones.length === 0">
-              No hay habitaciones registradas para este rango.
-            </div>
-
-            <div class="empty" *ngIf="habitaciones.length > 0 && !hasAvailableRooms()">
-              No hay habitaciones disponibles (todas están sucias u ocupadas).
+              No hay habitaciones disponibles
             </div>
           </div>
         </div>
@@ -156,12 +132,7 @@
             <strong class="money-total">{{ formatearMoneda(data.totalEstimado) }}</strong>
           </div>
 
-          <button
-            class="btn btn-primary"
-            type="button"
-            (click)="confirmarCheckIn()"
-            [disabled]="isConfirmDisabled()"
-          >
+          <button class="btn btn-primary" type="button" (click)="confirmarCheckIn()" [disabled]="isConfirmDisabled()">
             <span *ngIf="!confirmando">Confirmar Check-in</span>
             <span *ngIf="confirmando">Confirmando...</span>
           </button>

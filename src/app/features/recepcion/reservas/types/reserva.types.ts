@@ -7,7 +7,7 @@ export interface Reserva {
   estado: string;
   cantidadHuespedes: number;
   categoria?: string;
-  tipoHabitacionId?: number;
+  tipoHabitacionId: number;
   planTarifarioId?: number;
 }
 

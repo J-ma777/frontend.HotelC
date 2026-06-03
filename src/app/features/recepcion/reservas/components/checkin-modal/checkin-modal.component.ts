@@ -21,7 +21,7 @@ export class CheckinModalComponent implements OnInit {
   private reservasService = inject(ReservasService);
 
   habitaciones: HabitacionDisponible[] = [];
-  habitacionSeleccionada: number | null = null;
+  habitacionSeleccionada: HabitacionDisponible | null = null;
   loading = false;
   error: string | null = null;
   confirmando = false;
@@ -37,9 +37,11 @@ export class CheckinModalComponent implements OnInit {
     const fechaInicio = this.formatDate(this.reserva.fechaEntrada);
     const fechaFin = this.formatDate(this.reserva.fechaSalida);
 
-    this.disponibilidadService.buscarDisponibles(fechaInicio, fechaFin).subscribe({
+    this.disponibilidadService.buscarDisponibles(this.reserva.tipoHabitacionId, fechaInicio, fechaFin).subscribe({
       next: (data) => {
-        this.habitaciones = data;
+        this.habitaciones = (data || []).filter((h: any) =>
+          h.estado === 'DISPONIBLE'
+        );
         this.loading = false;
       },
       error: (err: Error) => {
@@ -50,8 +52,8 @@ export class CheckinModalComponent implements OnInit {
     });
   }
 
-  seleccionarHabitacion(habitacionId: number): void {
-    this.habitacionSeleccionada = habitacionId;
+  seleccionarHabitacion(habitacion: HabitacionDisponible): void {
+    this.habitacionSeleccionada = habitacion;
   }
 
   confirmarCheckin(): void {
@@ -63,7 +65,7 @@ export class CheckinModalComponent implements OnInit {
     this.confirmando = true;
     this.error = null;
 
-    this.reservasService.realizarCheckIn(this.reserva.id, this.habitacionSeleccionada).subscribe({
+    this.reservasService.realizarCheckIn(this.reserva.id, this.habitacionSeleccionada.id).subscribe({
       next: () => {
         this.confirmando = false;
         this.checkinCompletado.emit();
@@ -105,6 +107,6 @@ export class CheckinModalComponent implements OnInit {
   }
 
   isHabitacionSeleccionada(habitacionId: number): boolean {
-    return this.habitacionSeleccionada === habitacionId;
+    return this.habitacionSeleccionada?.id === habitacionId;
   }
 }

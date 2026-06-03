@@ -13,15 +13,17 @@ export class DisponibilidadService {
 
   constructor(private http: HttpClient) { }
 
-  buscarDisponibles(inicio: string, fin: string): Observable<HabitacionDisponible[]> {
+  buscarDisponibles(tipoId: number, inicio: string, fin: string): Observable<HabitacionDisponible[]> {
 
     const params = new HttpParams()
-      .set('inicio', inicio)
-      .set('fin', fin);
+      .set('tipoHabitacionId', tipoId)
+      .set('fechaInicio', inicio)
+      .set('fechaFin', fin);
 
     return this.http.get<HabitacionDisponible[]>(
       `${this.API}/disponibles`,
       { params }
     );
   }
+
 }
