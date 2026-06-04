@@ -1,0 +1,48 @@
+<div class="checkout-container">
+
+    
+    <div class="header">
+        <h1 class="titulo">Check-out</h1>
+        <p class="subtitulo">Reservas actualmente en estancia</p>
+    </div>
+    
+    <div *ngIf="loading" class="loading">
+        Cargando reservas...
+    </div>
+
+    <div class="grid" *ngIf="!loading">
+
+        <div class="card" *ngFor="let res of reservas">
+
+            <!-- Header -->
+            <div class="card-header">
+                <span class="habitacion">{{ res.habitacionNumero }}</span>
+                <span class="badge">EN CASA</span>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+                <div class="huesped">
+                    {{ res.nombreHuesped }}
+                </div>
+
+                <div class="fechas">
+                    {{ res.fechaEntrada }} → {{ res.fechaSalida }}
+                </div>
+            </div>
+
+            <!-- Estado -->
+            <div class="estado">
+                ● En estancia
+            </div>
+
+            <!-- Acción -->
+            <button class="btn-abrir" (click)="abrirFolio(res)">
+                Abrir folio
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

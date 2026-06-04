@@ -67,9 +67,9 @@ export class SidebarComponent implements OnInit {
       permisos: ['RESERVA_CHECKIN']
     },
     {
-      label: 'CHECK-OUT',
+      label: 'Check-out',
       icon: 'logout',
-      ruta: '/recepcion/checkout',
+      ruta: '/recepcion/front-desk/checkout',
       permisos: ['RESERVA_CHECKOUT']
     },
     {

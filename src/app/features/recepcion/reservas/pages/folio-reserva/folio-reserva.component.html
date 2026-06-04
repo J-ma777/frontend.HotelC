@@ -9,6 +9,10 @@
     </div>
   </div>
 
+  <div class="checkout-alert" *ngIf="fromCheckout">
+    ⚠️ Estás finalizando la estancia. Verifica el saldo antes de realizar el check-out.
+  </div>
+  
   <div class="loading" *ngIf="loading">
     <p>Cargando folio...</p>
   </div>
@@ -125,7 +129,8 @@
                 <td>{{ t.descripcion }}</td>
                 <td class="num">{{ t.cantidad }}</td>
                 <td class="num">{{ t.precioUnitario | currency }}</td>
-                <td class="num" [ngClass]="{ 'monto-pago': t.tipo === 'PAGO', 'monto-descuento': t.tipo === 'DESCUENTO' }">
+                <td class="num"
+                  [ngClass]="{ 'monto-pago': t.tipo === 'PAGO', 'monto-descuento': t.tipo === 'DESCUENTO' }">
                   {{ getMontoTransaccion(t) | currency }}
                 </td>
               </tr>
@@ -141,14 +146,18 @@
         </ng-template>
 
         <div class="actions-row">
-          <button class="btn btn-info" (click)="registrarConsumo()">Registrar consumo</button>
-          <button class="btn btn-success" (click)="registrarPago()">Registrar pago</button>
-          <button class="btn btn-warning" (click)="aplicarDescuento()">Aplicar descuento</button>
-          <button class="btn btn-danger" (click)="realizarCheckout()" [disabled]="saldo.total > 0">
-            Check-out
+          <button class="btn btn-info" [disabled]="reserva?.estado !== 'EN_CASA'" (click)="registrarConsumo()">Registrar
+            consumo</button>
+          <button class="btn btn-success" [disabled]="reserva?.estado !== 'EN_CASA'" (click)="registrarPago()">Registrar
+            pago</button>
+          <button class="btn btn-warning" [disabled]="reserva?.estado !== 'EN_CASA'"
+            (click)="aplicarDescuento()">Aplicar descuento</button>
+          <button class="btn btn-danger" [class.checkout-activo]="fromCheckout" [disabled]="reserva?.estado !== 'EN_CASA' || (resumen?.balance ?? 0) > 0"
+            (click)="onCheckout()">
+            Finalizar Check-out
           </button>
         </div>
-        <p *ngIf="saldo.total > 0" class="checkout-warning">
+        <p *ngIf="(resumen?.balance ?? 0) > 0" class="checkout-warning">
           Debe saldar la cuenta antes de realizar check-out
         </p>
       </div>
@@ -156,24 +165,23 @@
       <aside class="summary-card">
         <div class="summary-title">Resumen financiero</div>
         <div class="summary-item">
-          <span>Subtotal alojamiento</span>
-          <span>{{ subtotalAlojamiento | currency }}</span>
-        </div>
-        <div class="summary-item">
-          <span>Subtotal consumos</span>
-          <span>{{ subtotalConsumos | currency }}</span>
-        </div>
-        <div class="summary-item">
-          <span>Total descuentos</span>
-          <span class="monto-descuento">{{ getTotalDescuentosDisplay() | currency }}</span>
+          <span>Total cargos</span>
+          <span>{{ resumen?.totalCargos | currency }}</span>
         </div>
         <div class="summary-item">
           <span>Total pagos</span>
-          <span class="monto-pago">{{ totalPagos | currency }}</span>
+          <span class="monto-pago">{{ resumen?.totalPagos | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span>Total descuentos</span>
+          <span class="monto-descuento">{{ resumen?.totalDescuentos | currency }}</span>
         </div>
         <div class="summary-total">
-          <div class="summary-total-label">TOTAL FINAL</div>
-          <div class="summary-total-value">{{ saldo.total | currency }}</div>
+          <div class="summary-total-label">BALANCE</div>
+          <div class="summary-total-value" [ngClass]="{
+            'text-success': resumen?.balance === 0,
+            'text-danger': (resumen?.balance ?? 0) > 0
+          }">{{ resumen?.balance | currency }}</div>
           <div class="summary-total-note">Obtenido desde el backend</div>
         </div>
       </aside>

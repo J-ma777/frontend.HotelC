@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ReservaCheckout } from '../../front-desk/models/reserva-checkout.model';
 
 import { CrearReservaRequest, Reserva } from '../types/reserva.types';
 
@@ -48,6 +49,15 @@ export class ReservasService {
 
     return this.http.put<void>(url, {});
   }
+
+  obtenerReservasCheckout(): Observable<ReservaCheckout[]> {
+    const url = `${this.API_URL}/checkout`;
+
+    console.log('[ReservasService] Obtener reservas Checkout:', url);
+
+    return this.http.get<ReservaCheckout[]>(url);
+  }
+
 
   // CONFIRMAR
   confirmarReserva(id: number): Observable<void> {

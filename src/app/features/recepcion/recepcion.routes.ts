@@ -99,7 +99,17 @@ export const RECEPCION_ROUTES: Routes = [
   },
   {
     path: 'checkout',
-    redirectTo: 'reservas',
+    redirectTo: 'front-desk/checkout',
     pathMatch: 'full'
+  },
+  {
+    path: 'front-desk/checkout',
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      permissions: ['RESERVA_CHECKOUT']
+    },
+    loadComponent: () =>
+      import('./front-desk/checkout/checkout.component')
+        .then(m => m.CheckoutComponent)
   }
 ];

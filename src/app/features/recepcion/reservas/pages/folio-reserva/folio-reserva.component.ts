@@ -3,10 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Transaccion } from '../../../../../core/models/transaccion.model';
 import { Saldo } from '../../../../../core/models/saldo.model';
+import { FolioResumen } from '../../../../../core/models/folio-resumen.model';
 import { FolioService } from '../../../../../core/services/folio.service';
 import { forkJoin } from 'rxjs';
 import { ReservasService } from '../../services/reservas.service';
 import { Reserva } from '../../types/reserva.types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-folio-reserva',
@@ -18,8 +20,10 @@ import { Reserva } from '../../types/reserva.types';
 export class FolioReservaComponent implements OnInit {
   reservaId!: number;
   reserva: Reserva | null = null;
+  fromCheckout = false;
   transacciones: Transaccion[] = [];
   saldo: Saldo = { total: 0 };
+  resumen: FolioResumen | null = null;
 
   loading = false;
   error: string | null = null;
@@ -32,10 +36,15 @@ export class FolioReservaComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private folioService: FolioService,
-    private reservasService: ReservasService
+    private reservasService: ReservasService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.fromCheckout = params['fromCheckout'] === 'true';
+    });
+
     const idParam =
       this.route.snapshot.paramMap.get('id') ??
       this.route.parent?.snapshot.paramMap.get('id');
@@ -56,14 +65,16 @@ export class FolioReservaComponent implements OnInit {
     forkJoin({
       reserva: this.reservasService.getReservaById(this.reservaId),
       transacciones: this.folioService.getTransacciones(this.reservaId),
-      saldo: this.folioService.getSaldo(this.reservaId)
+      saldo: this.folioService.getSaldo(this.reservaId),
+      resumen: this.folioService.getResumen(this.reservaId)
     }).subscribe({
-      next: ({ reserva, transacciones, saldo }) => {
+      next: ({ reserva, transacciones, saldo, resumen }) => {
         this.reserva = reserva;
         this.transacciones = (transacciones || []).slice().sort(
           (a, b) => new Date(b.fechaTransaccion).getTime() - new Date(a.fechaTransaccion).getTime()
         );
         this.saldo = saldo;
+        this.resumen = resumen;
         this.calcularResumenFinanciero();
         this.loading = false;
       },
@@ -173,7 +184,7 @@ export class FolioReservaComponent implements OnInit {
       descripcion: descripcion || undefined
     };
 
-    this.folioService.registrarPago(this.reservaId, payload).subscribe({
+    this.folioService.registrarPago(this.reservaId, Number(montoRaw)).subscribe({
       next: () => this.cargarFolio(),
       error: (err) => {
         console.error('[FolioReservaComponent] Error registrarPago:', err);
@@ -208,5 +219,23 @@ export class FolioReservaComponent implements OnInit {
         window.alert('Check-out realizado.');
       });
     }
+  }
+
+  onCheckout(): void {
+    this.folioService.realizarCheckout(this.reservaId).subscribe({
+      next: () => {
+        window.alert('✅ Checkout realizado correctamente');
+        this.router.navigate(['/recepcion/front-desk/checkout'], {queryParams: { success: true}});
+      },
+      error: (error) => {
+        const mensaje: string = error?.error?.message || '';
+        if (mensaje.toLowerCase().includes('saldo pendiente')) {
+          window.alert('❌ No puedes hacer checkout, hay saldo pendiente');
+        } else {
+          window.alert('❌ Error al realizar checkout');
+        }
+        console.error('[FolioReservaComponent] Error checkout:', error);
+      }
+    });
   }
 }
