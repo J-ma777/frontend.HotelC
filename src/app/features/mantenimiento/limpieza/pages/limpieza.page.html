@@ -20,7 +20,7 @@
         (click)="seleccionarHabitacion(h)">
         <span class="room-number">{{ h.numero }}</span>
         <span class="room-type">{{ h.tipoNombre || 'Habitación' }}</span>
-        <span class="room-status" [ngClass]="h.estado | lowercase">
+        <span class="room-status" [ngClass]="(h.estado || '').toLowerCase().trim()">
            <span class="status-dot"></span>
            {{ h.estado }}
         </span>
@@ -41,7 +41,7 @@
              <p class="sub-text">{{ habitacionSeleccionada.tipoNombre || 'Tipo de Habitación Desconocido' }}</p>
            </div>
            
-           <div class="status-badge" [ngClass]="habitacionSeleccionada.estado | lowercase">
+           <div class="status-badge" [ngClass]="(habitacionSeleccionada.estado || '').toLowerCase().trim()">
              <div class="current-status-label">ESTADO ACTUAL</div>
              <div class="badge-pill">
                <span class="status-dot"></span> {{ habitacionSeleccionada.estado }}
@@ -68,13 +68,33 @@
            <div class="priority-actions">
              <span class="label">ACCIONES PRIORITARIAS</span>
              <ng-container *ngIf="!habitacionOcupada; else ocupadaActions">
-               <button class="btn-primary" (click)="marcarLimpia()">
-                  <span class="btn-icon">✓</span> MARCAR COMO LIMPIA
-               </button>
-               <button class="btn-secondary" (click)="marcarSucia()">
-                  <span class="btn-icon">!</span> MARCAR COMO SUCIA
-               </button>
-             </ng-container>
+
+              <!--  SUCIA -->
+              <button 
+                *ngIf="esSucia()"
+                class="btn-primary"
+                (click)="cambiarEstado('LIMPIANDO')">
+                <span class="btn-icon">🧹</span> INICIAR LIMPIEZA
+              </button>
+            
+              <!--  LIMPIANDO -->
+              <button 
+                *ngIf="esLimpiando()"
+                class="btn-warning"
+                (click)="cambiarEstado('INSPECCIONADA')">
+                <span class="btn-icon">🔍</span> MARCAR INSPECCIONADA
+              </button>
+            
+              <!--  INSPECCIONADA -->
+              <button 
+                *ngIf="esInspeccionada()"
+                class="btn-success"
+                (click)="cambiarEstado('DISPONIBLE')">
+                <span class="btn-icon">✅</span> MARCAR DISPONIBLE
+              </button>
+            
+            </ng-container>
+            
              <ng-template #ocupadaActions>
                <div class="occupied-actions-message" title="La habitación está ocupada">
                  Acciones deshabilitadas mientras la habitación está ocupada.

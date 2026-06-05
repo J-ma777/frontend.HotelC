@@ -117,30 +117,127 @@
 }
 
 .room-status {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
+  background: transparent;
+  min-width: 0;
 }
 
-.status-dot {
+.room-status .status-dot {
+  flex-shrink: 0;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   display: inline-block;
+  background-color: #64748b;
 }
 
-/* Colors for status */
-.limpia .status-dot, .clean .status-dot { background-color: #10b981; }
-.room-status.limpia, .room-status.clean { color: #10b981; }
+/* ===== ESTADOS REALES PMS (lista izquierda) ===== */
 
-.sucia .status-dot, .dirty .status-dot { background-color: #f43f5e; }
-.room-status.sucia, .room-status.dirty { color: #f43f5e; }
+.room-status.disponible {
+  color: #10b981;
+}
+.room-status.disponible .status-dot {
+  background-color: #10b981;
+}
 
-.in_progress .status-dot, .en_proceso .status-dot { background-color: #ffdf6c; }
-.room-status.in_progress, .room-status.en_proceso { color: #ffdf6c; }
+.room-status.ocupada {
+  color: #3b82f6;
+}
+.room-status.ocupada .status-dot {
+  background-color: #3b82f6;
+}
+
+.room-status.sucia {
+  color: #f43f5e;
+}
+.room-status.sucia .status-dot {
+  background-color: #f43f5e;
+}
+
+.room-status.limpiando {
+  color: #f59e0b;
+}
+.room-status.limpiando .status-dot {
+  background-color: #f59e0b;
+}
+
+.room-status.inspeccionada {
+  color: #06b6d4;
+}
+.room-status.inspeccionada .status-dot {
+  background-color: #06b6d4;
+}
+
+.room-status.fuera_de_servicio {
+  color: #6b7280;
+}
+.room-status.fuera_de_servicio .status-dot {
+  background-color: #6b7280;
+}
+
+/* Puntos del badge derecho (sin fondo en el contenedor) */
+.status-badge.disponible .status-dot {
+  background-color: #10b981;
+}
+.status-badge.ocupada .status-dot {
+  background-color: #3b82f6;
+}
+.status-badge.sucia .status-dot {
+  background-color: #f43f5e;
+}
+.status-badge.limpiando .status-dot {
+  background-color: #f59e0b;
+}
+.status-badge.inspeccionada .status-dot {
+  background-color: #06b6d4;
+}
+.status-badge.fuera_de_servicio .status-dot {
+  background-color: #6b7280;
+}
+
+
+/* ===== BADGE COMPLETO (RECTÁNGULO) ===== */
+
+.status-badge.disponible .badge-pill {
+  background-color: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.status-badge.ocupada .badge-pill {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.status-badge.sucia .badge-pill {
+  background-color: rgba(244, 63, 94, 0.1);
+  border-color: rgba(244, 63, 94, 0.2);
+  color: #f43f5e;
+}
+
+.status-badge.limpiando .badge-pill {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.status-badge.inspeccionada .badge-pill {
+  background-color: rgba(6, 182, 212, 0.1);
+  border-color: rgba(6, 182, 212, 0.2);
+  color: #06b6d4;
+}
+
+.status-badge.fuera_de_servicio .badge-pill {
+  background-color: rgba(107, 114, 128, 0.1);
+  border-color: rgba(107, 114, 128, 0.2);
+  color: #6b7280;
+}
 
 
 /* --- Right Panel --- */
@@ -332,13 +429,23 @@ button {
 }
 
 .btn-primary {
-  background-color: #ffdf6c;
+  background-color: #d5bb5d;
   color: #111522;
   border: none;
 }
 
 .btn-primary:hover {
   background-color: #eab308;
+}
+
+.btn-warning {
+  background-color: #4abdd1;
+  color: #111522;
+  border: none;
+}
+
+.btn-warning:hover {
+  background-color: #06b6d4;
 }
 
 .btn-secondary {

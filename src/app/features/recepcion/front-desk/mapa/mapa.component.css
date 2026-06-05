@@ -1,0 +1,289 @@
+/* ========== CONTENEDOR ========== */
+.mapa-container {
+    padding: 24px;
+    color: #e5e7eb;
+  }
+  
+  /* ========== HEADER ========== */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  
+  .title-group h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    color: #facc15;
+  }
+  
+  .subtitle {
+    font-size: 13px;
+    color: #94a3b8;
+  }
+  
+  /* BOTON HEADER */
+  .header-actions .btn-filter {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #cbd5f5;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .header-actions .btn-filter:hover {
+    background: rgba(255,255,255,0.1);
+  }
+  
+  /* ========== TABS ========== */
+  .tabs {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 25px;
+  }
+  
+  .tabs button {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-weight: 600;
+    padding: 8px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  
+  .tabs button:hover {
+    color: #ffffff;
+  }
+  
+  .tabs button.active {
+    color: #facc15;
+  }
+  
+  /* línea animada */
+  .tabs button.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 2px;
+    background: #facc15;
+  }
+  
+  /* ========== GRID ========== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 22px;
+  }
+  
+  /* ========== CARD ========== */
+  .card {
+    background: linear-gradient(160deg, #1e293b, #1a2436);
+    border-radius: 20px;
+    padding: 18px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* efecto glow sutil */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent);
+    opacity: 0;
+    transition: 0.3s;
+  }
+  
+  .card:hover::before {
+    opacity: 1;
+  }
+  
+  .card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.6);
+  }
+  
+  /* ========== HEADER CARD ========== */
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .badge.matrimonial {
+    background: rgba(59,130,246,0.2);
+    color: #60a5fa;
+  }
+  
+  .badge.individual {
+    background: rgba(34,197,94,0.2);
+    color: #4ade80;
+  }
+  
+  .numero {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  
+  .badge {
+    font-size: 11px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    color: #cbd5f5;
+  }
+  
+  /* ========== CONTENIDO CENTRAL ========== */
+  .card-content {
+    margin-top: 14px;
+    margin-bottom: 18px;
+    min-height: 48px;
+  }
+  
+  .info .primary {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f1f5f9;
+  }
+  
+  .info .secondary {
+    font-size: 12px;
+    color: #94a3b8;
+  }
+
+    /* BARRA DE OCUPACIÓN */
+  .ocupacion-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+
+  .ocupacion-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+  
+  /* ========== FOOTER ========== */
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* ESTADO */
+  .estado {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  /* DOT */
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  
+  .estado .icon {
+    font-size: 14px;
+  }
+  
+  /* ========== BOTON ACCION ========== */
+  .btn-action {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #334155;
+    color: #e2e8f0;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-action:hover {
+    background: #475569;
+  }
+  
+  /* ESTADOS CON COLOR */
+  .disponible .dot { background: #22c55e; }
+  .ocupada .dot { background: #facc15; }
+  .sucia .dot { background: #ef4444; }
+  .limpiando .dot { background: #3b82f6; }
+  .inspeccionada .dot { background: #22d3ee; }
+  .fuera_de_servicio .dot { background: #6b7280; }
+  
+  .disponible .estado { color: #22c55e; }
+  .ocupada .estado { color: #facc15; }
+  .sucia .estado { color: #ef4444; }
+  .limpiando .estado { color: #3b82f6; }
+  .inspeccionada .estado { color: #22d3ee; }
+  .fuera_de_servicio .estado { color: #6b7280; }
+  
+  /* ========== EFECTO BORDE POR ESTADO (ULTRA PRO) ========== */
+  
+  .disponible {
+    box-shadow: inset 0 0 0 1px rgba(34,197,94,0.2);
+  }
+  
+  .ocupada {
+    box-shadow: inset 0 0 0 1px rgba(250,204,21,0.2);
+  }
+  
+  .sucia {
+    box-shadow: inset 0 0 0 1px rgba(239,68,68,0.2);
+  }
+  
+  .limpiando {
+    box-shadow: inset 0 0 0 1px rgba(59,130,246,0.2);
+  }
+  
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.15);
+    opacity: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 20px;
+    transition: opacity 0.25s ease;
+
+    z-index: 10; /* 🔥 CLAVE */
+  }
+
+  /* ACTIVAR EN HOVER */
+  .card:hover .card-overlay {
+    opacity: 1;
+  }
+
+  /* BOTON */
+  .overlay-btn {
+    background: #facc15;
+    color: #000;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  }

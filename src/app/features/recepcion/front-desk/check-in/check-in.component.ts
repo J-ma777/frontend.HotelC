@@ -36,6 +36,8 @@ export class CheckInComponent implements OnInit, OnDestroy {
   habitaciones: any[] = [];
   habitacionSeleccionadaId: number | null = null;
 
+  modoDirecto = false;
+
   get habitacionSeleccionada(): number | null {
     return this.habitacionSeleccionadaId;
   }
@@ -66,6 +68,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
           if (Number.isFinite(id) && id > 0) {
             this.reservaIdInput = String(id);
             this.cargarReserva(id);
+            return;
           }
         }
       })
@@ -83,6 +86,26 @@ export class CheckInComponent implements OnInit, OnDestroy {
         }
       })
     );
+    
+  // FLUJO DESDE MAPA (habitacion directa)
+    const nav = this.router.getCurrentNavigation();
+    const habitacionId = nav?.extras?.state?.['habitacionId'];
+
+    if (habitacionId) {
+      console.log('Check-in desde mapa, habitación:', habitacionId);
+
+      // modo sin reserva
+      this.modoDirecto = true;
+
+      // guardas el id para usarlo luego
+      this.habitacionSeleccionadaId = habitacionId;
+
+      console.log('Habitacioón desde mapa:', habitacionId)
+
+      // opcional: puedes cargar info de la habitación
+      // this.cargarHabitacion(habitacionId);
+    }
+
   }
 
   ngOnDestroy(): void {

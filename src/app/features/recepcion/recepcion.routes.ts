@@ -74,8 +74,18 @@ export const RECEPCION_ROUTES: Routes = [
 
   {
     path: 'mapa',
-    redirectTo: 'reservas',
+    redirectTo: 'front-desk/mapa',
     pathMatch: 'full'
+  },
+  {
+    path: 'front-desk/mapa',
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      permissions: ['RESERVA_VER']
+    },
+    loadComponent: () =>
+      import('./front-desk/mapa/mapa.component')
+        .then(m => m.MapaComponent)
   },
   {
     path: 'checkin',
@@ -111,5 +121,27 @@ export const RECEPCION_ROUTES: Routes = [
     loadComponent: () =>
       import('./front-desk/checkout/checkout.component')
         .then(m => m.CheckoutComponent)
-  }
+  },
+  {
+    path: 'housekeeping/limpieza/:id',
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      permissions: ['HABITACION_VER']
+    },
+    loadComponent: () =>
+      import('../mantenimiento/limpieza/pages/limpieza.page')
+        .then(m => m.LimpiezaPage)
+  },
+
+  {
+    path: 'housekeeping/progreso/:id',
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      permissions: ['HABITACION_VER']
+    },
+    loadComponent: () =>
+      import('../mantenimiento/limpieza/pages/limpieza.page')
+        .then(m => m.LimpiezaPage)
+  },
+  
 ];

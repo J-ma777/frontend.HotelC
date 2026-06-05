@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Habitacion } from '../../../../core/models/habitacion.model';
 import { HabitacionCreate } from '../../../../core/models/habitacion-create.model';
+import { HabitacionMapa } from '../../../recepcion/front-desk/models/habitacion-mapa.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class HabitacionesService {
   // GET
   getAll(): Observable<Habitacion[]> {
     return this.http.get<Habitacion[]>(this.apiUrl);
+  }
+
+  getMapa(): Observable<HabitacionMapa[]> {
+    return this.http.get<HabitacionMapa[]>(`${this.apiUrl}/mapa`);
   }
 
   getDisponiblesMantenimiento(): Observable<Habitacion[]> {
@@ -55,6 +60,16 @@ export class HabitacionesService {
     };
     return this.http.put<Habitacion>(`${this.apiUrl}/${id}`, payload);
   }
+
+  // PUT
+  cambiarEstadoHabitacion(id: number, estado: string) {
+    return this.http.put(
+      `${this.apiUrl}/${id}/estado`,
+      null,
+      { params: { estado } }
+    );
+  }
+
 
   // DELETE
   delete(id: number): Observable<void> {

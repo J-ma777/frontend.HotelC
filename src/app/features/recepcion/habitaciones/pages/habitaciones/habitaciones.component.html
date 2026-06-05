@@ -87,15 +87,15 @@
       <div class="habitacion-card" *ngFor="let h of habitaciones">
         <div class="col-numero">{{ h.numero }}</div>
 
+        <!-- ESTADO -->
         <div class="col-estado">
-          <div class="estado" [ngClass]="{
-            'estado-disponible': h.estado === 'DISPONIBLE',
-            'estado-ocupada': h.estado === 'OCUPADA',
-            'estado-mantenimiento': h.estado === 'MANTENIMIENTO' || h.estado === 'LIMPIEZA',
-            'estado-bloqueada': h.estado === 'BLOQUEADA'
-          }">{{ h.estado }}</div>
-        </div>
+          <div class="estado" [ngClass]="(h.estado || '').toLowerCase().trim()">
 
+            <span class="dot"></span>
+            {{ h.estado }}
+
+          </div>
+        </div>
         <div class="col-info">
           <span class="label">UBICACIÓN</span>
           <span class="value">Piso {{ h.piso }}</span>
@@ -105,10 +105,62 @@
           <span class="label">CATEGORÍA</span>
           <span class="value">{{ h.tipoNombre }}</span>
         </div>
-
+        
+    <!-- ACCIONES -->
         <div class="col-actions">
-          <button class="btn btn-sm btn-edit" *ngIf="canEdit()" (click)="editar(h)">Editar</button>
-          <button class="btn btn-sm btn-delete" *ngIf="canDelete()" (click)="eliminar(h.id)">Eliminar</button>
+
+          <!-- HOUSEKEEPING -->
+          <button
+            *ngIf="h.estado === 'SUCIA'"
+            class="btn btn-sm"
+            (click)="irALimpieza(h)">
+            Iniciar limpieza
+          </button>
+
+          <button
+            *ngIf="h.estado === 'LIMPIANDO'"
+            class="btn btn-sm"
+            (click)="verProgreso(h)">
+            Ver progreso
+          </button>
+
+          <button
+            *ngIf="h.estado === 'INSPECCIONADA'"
+            class="btn btn-sm"
+            (click)="aprobar(h)">
+            Aprobar
+          </button>
+
+          <!-- RECEPCIÓN -->
+          <button
+            *ngIf="h.estado === 'DISPONIBLE'"
+            class="btn btn-sm"
+            (click)="crearReserva(h)">
+            Reservar
+          </button>
+
+          <button
+            *ngIf="h.estado === 'OCUPADA'"
+            class="btn btn-sm"
+            (click)="verFolio(h)">
+            Ver folio
+          </button>
+
+          <!-- ADMIN -->
+          <button
+            class="btn btn-sm btn-edit"
+            *ngIf="canEdit()"
+            (click)="editar(h)">
+            Editar
+          </button>
+
+          <button
+            class="btn btn-sm btn-delete"
+            *ngIf="canDelete()"
+            (click)="eliminar(h.id)">
+            Eliminar
+          </button>
+
         </div>
       </div>
     </div>

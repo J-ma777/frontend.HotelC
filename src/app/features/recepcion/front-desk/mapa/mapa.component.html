@@ -1,0 +1,191 @@
+<div class="mapa-container">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="title-group">
+        <h2>Mapa de Habitaciones</h2>
+        <span class="subtitle">
+          {{ habitaciones.length }} habitaciones
+        </span>
+      </div>
+  
+      <!-- FUTURO: FILTROS -->
+      <div class="header-actions">
+        <button class="btn-filter">Filtrar</button>
+      </div>
+    </div>
+  
+    <!-- LOADING -->
+    <div *ngIf="loading">Cargando...</div>
+  
+    <!-- CONTENIDO -->
+    <div *ngIf="!loading && pisoSeleccionado !== null">
+  
+      <!-- TABS -->
+      <div class="tabs">
+        <button
+          *ngFor="let piso of (habitacionesAgrupadas | keyvalue)"
+          (click)="pisoSeleccionado = +piso.key"
+          [class.active]="pisoSeleccionado === +piso.key">
+  
+          Piso {{ piso.key }}
+  
+        </button>
+      </div>
+  
+      <!-- GRID -->
+      <div class="grid">
+  
+        <!-- CARD -->
+        <div
+          class="card"
+          *ngFor="let h of habitacionesAgrupadas[pisoSeleccionado]"
+          [ngClass]="(h.estado || '').toLowerCase().trim()"
+          (click)="onHabitacionClick(h)"> <!-- preparado para navegación -->
+  
+          <!-- HEADER CARD -->
+          <div class="card-header">
+  
+            <div class="numero">
+              {{ h.numero }}
+            </div>
+              
+            <div
+            class="badge"
+            [ngClass]="h.tipoNombre.toLowerCase()">
+
+            {{ h.tipoNombre }}
+
+            </div>
+  
+          </div>
+  
+          <!-- CONTENIDO INTELIGENTE -->
+          <div class="card-content">
+  
+            <ng-container [ngSwitch]="h.estado">
+  
+              <!-- OCUPADA -->
+              <div *ngSwitchCase="'OCUPADA'" class="info">
+                
+                <div class="primary">
+                    {{ h.nombreHuesped || 'Huésped' }}
+                </div>
+
+                <div class="secondary" *ngIf="h.cantidadHuespedes">
+                    {{ h.cantidadHuespedes }} / {{ h.capacidad }} huésped(es)
+                    • Salida: {{ h.fechaSalida }}
+                    
+                    <!-- BARRA DE OCUPACIÓN -->
+                    <div class="ocupacion-bar">
+
+                      <div
+                        class="ocupacion-fill"
+                        [style.width.%]="(h.cantidadHuespedes || 0) / h.capacidad * 100">
+                      </div>
+
+                    </div>
+
+                </div>
+
+              </div>
+  
+              <!-- LIMPIANDO -->
+              <div *ngSwitchCase="'LIMPIANDO'" class="info">
+                <div class="primary">En limpieza</div>
+                <div class="secondary">Personal asignado</div>
+              </div>
+  
+              <!-- SUCIA -->
+              <div *ngSwitchCase="'SUCIA'" class="info">
+                <div class="primary">Pendiente limpieza</div>
+              </div>
+  
+              <!-- INSPECCIONADA -->
+              <div *ngSwitchCase="'INSPECCIONADA'" class="info">
+                <div class="primary">Lista para habilitar</div>
+              </div>
+  
+              <!-- FUERA DE SERVICIO -->
+              <div *ngSwitchCase="'FUERA_DE_SERVICIO'" class="info">
+                <div class="primary">Mantenimiento</div>
+              </div>
+  
+              <!-- DEFAULT -->
+              <div *ngSwitchDefault class="info">
+                <div class="primary">Disponible</div>
+              </div>
+  
+            </ng-container>
+  
+          </div>
+  
+          <!-- FOOTER (estado mas botón) -->
+          <div class="card-footer">
+  
+            <!-- ESTADO -->
+            <div class="estado">
+              
+              <span class="dot"></span>
+
+              <span class="icon">
+                <ng-container [ngSwitch]="h.estado">
+
+                  <span *ngSwitchCase="'OCUPADA'">🛏️</span>
+                  <span *ngSwitchCase="'DISPONIBLE'">✅</span>
+                  <span *ngSwitchCase="'SUCIA'">🧹</span>
+                  <span *ngSwitchCase="'LIMPIANDO'">🫧</span>
+                  <span *ngSwitchCase="'INSPECCIONADA'">🔍</span>
+                  <span *ngSwitchCase="'FUERA_DE_SERVICIO'">⚠️</span>
+
+                  <span *ngSwitchDefault>ℹ️</span>
+
+                </ng-container>
+              </span>
+
+              {{ h.estado }}
+
+            </div>
+  
+            <!-- ACCION -->
+            <div class="card-action">
+  
+              <button class="btn-action">
+  
+                <ng-container [ngSwitch]="h.estado">
+  
+                  <span *ngSwitchCase="'DISPONIBLE'">Check-in</span>
+                  <span *ngSwitchCase="'OCUPADA'">Ver folio</span>
+                  <span *ngSwitchCase="'SUCIA'">Limpiar</span>
+                  <span *ngSwitchCase="'LIMPIANDO'">Ver progreso</span>
+                  <span *ngSwitchDefault>Detalle</span>
+  
+                </ng-container>
+  
+              </button>
+  
+            </div>
+  
+          </div>
+
+          <!--  OVERLAY -->
+          <div class="card-overlay">
+
+            <button class="overlay-btn">
+              <span *ngIf="h.estado === 'SUCIA'">Iniciar limpieza</span>
+              <span *ngIf="h.estado === 'LIMPIANDO'">Vere progreso</span>
+              <span *ngIf="h.estado === 'INSPECCIONADA'">Aprobar</span>
+              <span *ngIf="h.estado === 'DISPONIBLE'">Ver reservas</span>
+              <span *ngIf="h.estado === 'OCUPADA'">Ver folio</span>
+              
+            </button>
+
+          </div>
+  
+        </div>
+  
+      </div>
+  
+    </div>
+  
+  </div>

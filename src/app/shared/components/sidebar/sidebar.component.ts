@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit {
     {
       label: 'MAPA',
       icon: 'map',
-      ruta: '/recepcion/mapa',
+      ruta: '/recepcion/front-desk/mapa',
       permisos: ['RESERVA_VER']
     },
     {
