@@ -12,6 +12,6 @@ export interface HabitacionMapa {
     fechaSalida: string | null;
     capacidad: number;
     reservaId: number | null;
-    tipoId?: number;
+    tipoId: number;
   
   }  

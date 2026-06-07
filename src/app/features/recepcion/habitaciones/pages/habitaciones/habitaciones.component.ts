@@ -29,27 +29,28 @@ export class HabitacionesComponent implements OnInit {
 
   nuevaHabitacion: HabitacionCreate = {
     numero: '',
-    estado: 'SUCIA', 
     piso: 1,
-    tipoId: null
+    tipoHabitacionId: null
   };
 
   constructor(
     private habService: HabitacionesService,
     private tipoService: TipoHabitacionService
-  ) {}
+  ) { }
 
   // PERMISOS
   canCreate(): boolean {
     return this.authService.hasPermission('HABITACION_CREAR');
   }
 
-  canEdit(): boolean {
-    return this.authService.hasPermission('HABITACION_EDITAR');
+  canEdit(h: HabitacionMapa): boolean {
+    return this.authService.hasPermission('HABITACION_EDITAR')
+      && h.estado !== 'OCUPADA';
   }
 
-  canDelete(): boolean {
-    return false;
+  canDelete(h: HabitacionMapa): boolean {
+    return this.authService.hasPermission('HABITACION_ELIMINAR')
+      && h.estado !== 'OCUPADA';
   }
 
   // INIT
@@ -82,7 +83,7 @@ export class HabitacionesComponent implements OnInit {
       return;
     }
 
-    if (!this.nuevaHabitacion.tipoId) {
+    if (!this.nuevaHabitacion.tipoHabitacionId) {
       this.showError('Debes seleccionar un tipo de habitación válido');
       return;
     }
@@ -116,9 +117,8 @@ export class HabitacionesComponent implements OnInit {
 
     this.nuevaHabitacion = {
       numero: h.numero,
-      estado: h.estado,
       piso: h.piso,
-      tipoId: h.tipoId ?? null
+      tipoHabitacionId: h.tipoId
     };
 
     this.editandoId = h.id;
@@ -141,9 +141,8 @@ export class HabitacionesComponent implements OnInit {
   resetForm() {
     this.nuevaHabitacion = {
       numero: '',
-      estado: 'SUCIA',
       piso: 1,
-      tipoId: null
+      tipoHabitacionId: null
     };
     this.editandoId = null;
   }
@@ -151,21 +150,27 @@ export class HabitacionesComponent implements OnInit {
   // ERRORES CENTRALIZADOS
   handleError(error: any) {
 
-    if (error.status === 500) {
-      if (error.error?.detail?.includes('tipo_habitacion_id')) {
-        this.showError('Debes seleccionar un tipo de habitación válido');
-        return;
-      }
-      this.showError('Error interno del servidor');
+    // 🔴 Conflictos de negocio (lo más importante)
+    if (error.status === 409) {
+      this.showError(error.error?.message || 'Conflicto en la operación');
       return;
     }
 
+    // 🟡 permisos
     if (error.status === 403) {
-      this.showError('No tienes permisos');
+      this.showError('No tienes permisos para realizar esta acción');
       return;
     }
 
-    this.showError('Error inesperado');
+    // ⚠️ validaciones
+    if (error.status === 400) {
+      this.showError(error.error?.message || 'Datos inválidos');
+      return;
+    }
+
+    // 💥 fallback
+    this.showError('Error inesperado del sistema');
+
   }
 
   // MENSAJES

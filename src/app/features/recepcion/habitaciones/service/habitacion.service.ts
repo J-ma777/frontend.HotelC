@@ -35,30 +35,15 @@ export class HabitacionesService {
   // POST
   create(data: HabitacionCreate): Observable<Habitacion> {
 
-    const payload = {
-      numero: data.numero,
-      estado: data.estado,
-      piso: data.piso,
-      tipoHabitacion: {
-        id: Number(data.tipoId)
-      }
-    };
-
-    console.log('PAYLOAD FINAL: ', payload);
-    return this.http.post<Habitacion>(this.apiUrl, payload);
+    console.log('CREATE → payload:', data);
+    return this.http.post<Habitacion>(this.apiUrl, data);
   }
 
   // PUT
   update(id: number, data: HabitacionCreate): Observable<Habitacion> {
-    const payload = {
-      numero: data.numero,
-      estado: data.estado,
-      piso: data.piso,
-      tipoHabitacion: {
-        id: Number(data.tipoId)
-      }
-    };
-    return this.http.put<Habitacion>(`${this.apiUrl}/${id}`, payload);
+
+    console.log('UPDATE → payload:', data);
+    return this.http.put<Habitacion>(`${this.apiUrl}/${id}`, data);
   }
 
   // PUT

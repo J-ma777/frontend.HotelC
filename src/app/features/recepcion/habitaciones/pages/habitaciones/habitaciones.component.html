@@ -41,7 +41,7 @@
       <div class="row">
         <div class="col full">
           <label>Tipo de habitación</label>
-          <select [(ngModel)]="nuevaHabitacion.tipoId" name="tipo">
+          <select [(ngModel)]="nuevaHabitacion.tipoHabitacionId" name="tipo">
             <option [ngValue]="null">Selecciona una categoría</option>
             <option *ngFor="let t of tipos" [ngValue]="t.id">{{ t.nombre }}</option>
           </select>
@@ -51,7 +51,7 @@
 
       <div class="actions">
         <button type="button" class="btn btn-cancel"
-          (click)="nuevaHabitacion = { numero: '', estado: 'DISPONIBLE', piso: 1, tipoId: 0 }">Cancelar</button>
+          (click)="resetForm()">Cancelar</button>
         <button type="submit" class="btn btn-primary">
           <span class="btn-icon" aria-hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -149,14 +149,14 @@
           <!-- ADMIN -->
           <button
             class="btn btn-sm btn-edit"
-            *ngIf="canEdit()"
+            *ngIf="canEdit(h)"
             (click)="editar(h)">
             Editar
           </button>
 
           <button
             class="btn btn-sm btn-delete"
-            *ngIf="canDelete()"
+            *ngIf="canDelete(h)"
             (click)="eliminar(h.id)">
             Eliminar
           </button>
