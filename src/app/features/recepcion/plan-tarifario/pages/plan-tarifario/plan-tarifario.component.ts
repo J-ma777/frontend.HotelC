@@ -8,7 +8,7 @@ import { AuthService } from '../../../../../core/services/auth.service';
 import { PlanTarifario, PlanTarifarioCreate } from '../../../../../core/models/plan-tarifario.model';
 import { TipoHabitacion } from '../../../../../core/models/tipo-habitacion.model';
 
-type FiltroTarifa = '' | 'feriado' | 'fin-de-semana' | 'entre-semana';
+type FiltroTarifa = '' | 'WEEKDAY' | 'WEEKEND' | 'HOLIDAY';
 
 @Component({
   selector: 'app-plan-tarifario',
@@ -51,7 +51,7 @@ export class PlanTarifarioComponent implements OnInit {
     nombre: '',
     precioPorNoche: null as number | null,
     tipoHabitacionId: null as number | null,
-    tipoTarifa: 'entre-semana' as FiltroTarifa,
+    tipoTarifa: 'WEEKDAY' as FiltroTarifa,
     validoDesde: '',
     validoHasta: ''
   };
@@ -61,8 +61,7 @@ export class PlanTarifarioComponent implements OnInit {
       id: 1,
       nombre: 'Standard Best Available Rate',
       precioPorNoche: 450,
-      esFinDeSemana: false,
-      esFeriado: false,
+      tipoTarifa: 'WEEKDAY',
       validoDesde: '2024-10-01',
       validoHasta: '2024-12-31',
       tipoHabitacionNombre: 'Deluxe King Room',
@@ -73,8 +72,7 @@ export class PlanTarifarioComponent implements OnInit {
       id: 2,
       nombre: 'Christmas Peak Season',
       precioPorNoche: 1200,
-      esFinDeSemana: false,
-      esFeriado: true,
+      tipoTarifa: 'HOLIDAY',
       validoDesde: '2024-12-20',
       validoHasta: '2025-01-05',
       tipoHabitacionNombre: 'All Luxury Suites',
@@ -84,8 +82,7 @@ export class PlanTarifarioComponent implements OnInit {
       id: 3,
       nombre: 'Non-Refundable Advance Purchase',
       precioPorNoche: 385,
-      esFinDeSemana: true,
-      esFeriado: false,
+      tipoTarifa: 'WEEKEND',
       validoDesde: '2024-01-01',
       validoHasta: '2024-12-31',
       tipoHabitacionNombre: 'Ocean Front Suite',
@@ -95,8 +92,7 @@ export class PlanTarifarioComponent implements OnInit {
       id: 4,
       nombre: 'Early Bird Promotion - Summer',
       precioPorNoche: 2800,
-      esFinDeSemana: false,
-      esFeriado: false,
+      tipoTarifa: 'WEEKDAY',
       validoDesde: '2024-06-01',
       validoHasta: '2024-08-31',
       tipoHabitacionNombre: 'Penthouse',
@@ -185,62 +181,61 @@ export class PlanTarifarioComponent implements OnInit {
 
   guardarPlan(): void {
 
-  const { nombre, precioPorNoche, tipoHabitacionId } = this.formulario;
+    const { nombre, precioPorNoche, tipoHabitacionId } = this.formulario;
 
-  // DEBUG TEMPORAL (puedes quitar después)
-  console.log('FORMULARIO RAW:', JSON.stringify(this.formulario, null, 2));
+    // DEBUG TEMPORAL (puedes quitar después)
+    console.log('FORMULARIO RAW:', JSON.stringify(this.formulario, null, 2));
 
-  // VALIDACIÓN REAL (ANTES de cualquier uso)
-  if (!nombre || !nombre.trim()) {
-    this.mostrarMensaje('Nombre es obligatorio', 'error');
-    return;
-  }
-
-  if (precioPorNoche === null || !Number.isFinite(Number(precioPorNoche)) || Number(precioPorNoche) <= 0) {
-    this.mostrarMensaje('Precio inválido', 'error');
-    return;
-  }
-
-  if (
-    tipoHabitacionId === null ||
-    tipoHabitacionId === undefined ||
-    !Number.isFinite(Number(tipoHabitacionId)) ||
-    Number(tipoHabitacionId) <= 0
-  ) {
-    this.mostrarMensaje('Selecciona un tipo de habitación válido', 'error');
-    return;
-  }
-
-  if (!this.formulario.validoDesde || !this.formulario.validoHasta) {
-    this.mostrarMensaje('Debes indicar la vigencia del plan.', 'error');
-    return;
-  }
-
-  // CONVERSIÓN SEGURA
-  const payload: PlanTarifarioCreate = {
-    nombre: nombre.trim(),
-    precioPorNoche: Number(precioPorNoche),
-    esFinDeSemana: this.formulario.tipoTarifa === 'fin-de-semana',
-    esFeriado: this.formulario.tipoTarifa === 'feriado',
-    validoDesde: this.formulario.validoDesde,
-    validoHasta: this.formulario.validoHasta,
-    tipoHabitacionId: Number(tipoHabitacionId)
-  };
-
-  console.log('PAYLOAD FINAL:', JSON.stringify(payload, null, 2));
-
-  this.planTarifarioService.create(payload).subscribe({
-    next: () => {
-      this.mostrarMensaje('Plan tarifario creado correctamente', 'success');
-      this.cerrarCrearPlan();
-      this.cargarPlanes();
-    },
-    error: (error: unknown) => {
-      const mensaje = error instanceof Error ? error.message : 'No se pudo guardar el plan tarifario.';
-      this.mostrarMensaje(mensaje, 'error');
+    // VALIDACIÓN REAL (ANTES de cualquier uso)
+    if (!nombre || !nombre.trim()) {
+      this.mostrarMensaje('Nombre es obligatorio', 'error');
+      return;
     }
-  });
-}
+
+    if (precioPorNoche === null || !Number.isFinite(Number(precioPorNoche)) || Number(precioPorNoche) <= 0) {
+      this.mostrarMensaje('Precio inválido', 'error');
+      return;
+    }
+
+    if (
+      tipoHabitacionId === null ||
+      tipoHabitacionId === undefined ||
+      !Number.isFinite(Number(tipoHabitacionId)) ||
+      Number(tipoHabitacionId) <= 0
+    ) {
+      this.mostrarMensaje('Selecciona un tipo de habitación válido', 'error');
+      return;
+    }
+
+    if (!this.formulario.validoDesde || !this.formulario.validoHasta) {
+      this.mostrarMensaje('Debes indicar la vigencia del plan.', 'error');
+      return;
+    }
+
+    // CONVERSIÓN SEGURA
+    const payload: PlanTarifarioCreate = {
+      nombre: nombre.trim(),
+      precioPorNoche: Number(precioPorNoche),
+      tipoTarifa: this.formulario.tipoTarifa as 'WEEKDAY' | 'WEEKEND' | 'HOLIDAY',
+      validoDesde: this.formulario.validoDesde,
+      validoHasta: this.formulario.validoHasta,
+      tipoHabitacionId: Number(tipoHabitacionId)
+    };
+
+    console.log('PAYLOAD FINAL:', JSON.stringify(payload, null, 2));
+
+    this.planTarifarioService.create(payload).subscribe({
+      next: () => {
+        this.mostrarMensaje('Plan tarifario creado correctamente', 'success');
+        this.cerrarCrearPlan();
+        this.cargarPlanes();
+      },
+      error: (error: unknown) => {
+        const mensaje = error instanceof Error ? error.message : 'No se pudo guardar el plan tarifario.';
+        this.mostrarMensaje(mensaje, 'error');
+      }
+    });
+  }
 
 
   trackByPlanId(_: number, plan: PlanTarifario): number {
@@ -248,29 +243,18 @@ export class PlanTarifarioComponent implements OnInit {
   }
 
   obtenerTipoTarifa(plan: PlanTarifario): FiltroTarifa {
-    if (plan.esFeriado) {
-      return 'feriado';
-    }
-
-    if (plan.esFinDeSemana) {
-      return 'fin-de-semana';
-    }
-
-    return 'entre-semana';
+    return plan.tipoTarifa as FiltroTarifa;
   }
 
   obtenerNombreTipoTarifa(plan: PlanTarifario): string {
-    const tipo = this.obtenerTipoTarifa(plan);
-
-    if (tipo === 'feriado') {
-      return 'Feriado';
+    switch (plan.tipoTarifa) {
+      case 'HOLIDAY':
+        return 'Feriado';
+      case 'WEEKEND':
+        return 'Fin de semana';
+      default:
+        return 'Entre semana';
     }
-
-    if (tipo === 'fin-de-semana') {
-      return 'Fin de semana';
-    }
-
-    return 'Entre semana';
   }
 
   obtenerNombreTipoHabitacion(plan: PlanTarifario): string {
@@ -278,46 +262,50 @@ export class PlanTarifarioComponent implements OnInit {
   }
 
   obtenerIcono(plan: PlanTarifario): string {
-    const tipo = this.obtenerTipoTarifa(plan);
-
-    if (tipo === 'feriado') {
-      return '📅';
+    switch (plan.tipoTarifa) {
+      case 'HOLIDAY':
+        return '📅';
+      case 'WEEKEND':
+        return '💼';
+      default:
+        return '🏷';
     }
-
-    if (tipo === 'fin-de-semana') {
-      return '💼';
-    }
-
-    return '🏷';
   }
 
   obtenerIconoClase(plan: PlanTarifario): string {
-    const tipo = this.obtenerTipoTarifa(plan);
-
-    if (tipo === 'feriado') {
-      return 'icon-bg-red';
+    switch (plan.tipoTarifa) {
+      case 'HOLIDAY':
+        return 'icon-bg-red';
+      case 'WEEKEND':
+        return 'icon-bg-blue';
+      default:
+        return 'icon-bg-gold';
     }
-
-    if (tipo === 'fin-de-semana') {
-      return 'icon-bg-blue';
-    }
-
-    return 'icon-bg-gold';
   }
+
 
   obtenerPlanClase(plan: PlanTarifario): string {
-    const tipo = this.obtenerTipoTarifa(plan);
-
-    if (tipo === 'feriado') {
-      return 'border-feriado';
+    switch (plan.tipoTarifa) {
+      case 'HOLIDAY':
+        return 'border-feriado';
+      case 'WEEKEND':
+        return 'border-finde';
+      default:
+        return 'border-semana';
     }
-
-    if (tipo === 'fin-de-semana') {
-      return 'border-finde';
-    }
-
-    return 'border-semana';
   }
+
+  obtenerBadgeTarifaClase(plan: PlanTarifario): string {
+    switch (plan.tipoTarifa) {
+      case 'HOLIDAY':
+        return 'badge-holiday';
+      case 'WEEKEND':
+        return 'badge-weekend';
+      default:
+        return 'badge-weekday';
+    }
+  }
+
 
   obtenerEstado(plan: PlanTarifario): string {
     return this.esActivo(plan) ? 'ACTIVO' : 'INACTIVO';
@@ -360,7 +348,7 @@ export class PlanTarifarioComponent implements OnInit {
       nombre: '',
       precioPorNoche: null as number | null,
       tipoHabitacionId: null as number | null,
-      tipoTarifa: 'entre-semana',
+      tipoTarifa: 'WEEKDAY',
       validoDesde: '',
       validoHasta: ''
     };

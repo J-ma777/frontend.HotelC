@@ -100,6 +100,7 @@ export class HabitacionesComponent implements OnInit {
 
     } else {
 
+      console.log('NUEVA HABITACION:', this.nuevaHabitacion);
       this.habService.create(this.nuevaHabitacion).subscribe({
         next: () => {
           this.showSuccess('Habitación creada correctamente');

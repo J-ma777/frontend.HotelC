@@ -3,12 +3,13 @@ export interface PlanTarifarioTipoHabitacion {
   nombre: string;
 }
 
+export type TipoTarifa = 'WEEKDAY' | 'WEEKEND' | 'HOLIDAY';
+
 export interface PlanTarifario {
   id: number;
   nombre: string;
   precioPorNoche: number;
-  esFinDeSemana: boolean;
-  esFeriado: boolean;
+  tipoTarifa: TipoTarifa;
   validoDesde: string;
   validoHasta: string;
   tipoHabitacionNombre: string;
@@ -18,8 +19,7 @@ export interface PlanTarifario {
 export interface PlanTarifarioCreate {
   nombre: string;
   precioPorNoche: number | null;
-  esFinDeSemana: boolean;
-  esFeriado: boolean;
+  tipoTarifa: TipoTarifa;
   validoDesde: string;
   validoHasta: string;
   tipoHabitacionId: number | null;

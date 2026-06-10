@@ -1,8 +1,9 @@
 <div class="plan-tarifario-page">
 
-  <div class="feedback-banner"
-       *ngIf="mensajeEstado"
-       [ngClass]="mensajeTipo === 'success' ? 'feedback-success' : 'feedback-error'">
+  <!-- ===== FEEDBACK BANNER ===== -->
+  <div class="feedback-banner" *ngIf="mensajeEstado"
+    [ngClass]="mensajeTipo === 'success' ? 'feedback-success' : 'feedback-error'">
+    <span class="feedback-icon">{{ mensajeTipo === 'success' ? '✓' : '✕' }}</span>
     {{ mensajeEstado }}
   </div>
 
@@ -10,17 +11,13 @@
   <section class="topbar">
     <div class="search-box">
       <span class="search-icon">⌕</span>
-      <input
-        type="text"
-        [(ngModel)]="busqueda"
-        (ngModelChange)="aplicarFiltros()"
-        placeholder="Buscar tarifas, planes o tipos..."
-        aria-label="Buscar planes tarifarios"
-      />
+      <input type="text" [(ngModel)]="busqueda" (ngModelChange)="aplicarFiltros()"
+        placeholder="Buscar tarifas, planes o tipos..." aria-label="Buscar planes tarifarios"
+        id="input-busqueda-planes" />
     </div>
 
     <div class="topbar-actions">
-      <button class="btn-nuevo btn-nuevo-topbar" (click)="abrirCrearPlan()">
+      <button class="btn-nuevo btn-nuevo-topbar" (click)="abrirCrearPlan()" id="btn-abrir-crear-plan" type="button">
         <span class="btn-icon">+</span> NUEVO PLAN TARIFARIO
       </button>
     </div>
@@ -42,20 +39,24 @@
       <div class="filter-row-top">
 
         <div class="filter-group">
-          <label class="filter-label">TIPO DE HABITACIÓN</label>
-          <select class="filter-select" [(ngModel)]="filtroTipoHabitacion" (ngModelChange)="aplicarFiltros()">
+          <label class="filter-label" for="filtro-tipo-habitacion">TIPO DE HABITACIÓN</label>
+          <select id="filtro-tipo-habitacion" class="filter-select" [(ngModel)]="filtroTipoHabitacion"
+            (ngModelChange)="aplicarFiltros()">
             <option value="">Todas las habitaciones</option>
-            <option *ngFor="let tipo of tiposHabitacionVisibles" [value]="tipo.nombre">{{ tipo.nombre }}</option>
+            <option *ngFor="let tipo of tiposHabitacionVisibles" [value]="tipo.nombre">
+              {{ tipo.nombre }}
+            </option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">TIPO DE TARIFA</label>
-          <select class="filter-select" [(ngModel)]="filtroTipoTarifa" (ngModelChange)="aplicarFiltros()">
+          <label class="filter-label" for="filtro-tipo-tarifa">TIPO DE TARIFA</label>
+          <select id="filtro-tipo-tarifa" class="filter-select" [(ngModel)]="filtroTipoTarifa"
+            (ngModelChange)="aplicarFiltros()">
             <option value="">Todos los tipos</option>
-            <option value="feriado">Feriado</option>
-            <option value="fin-de-semana">Fin de semana</option>
-            <option value="entre-semana">Entre semana</option>
+            <option value="HOLIDAY">🔴 Feriado</option>
+            <option value="WEEKEND">🟡 Fin de semana</option>
+            <option value="WEEKDAY">🟢 Entre semana</option>
           </select>
         </div>
 
@@ -63,33 +64,44 @@
 
       <div class="filter-row-bottom">
         <div class="filter-group filter-date">
-          <label class="filter-label">RANGO DE FECHAS</label>
+          <span class="filter-label">RANGO DE FECHAS</span>
           <div class="date-inputs">
-            <input type="date" class="date-input" [(ngModel)]="filtroFechaDesde" (ngModelChange)="aplicarFiltros()" />
-            <span class="date-separator">-</span>
-            <input type="date" class="date-input" [(ngModel)]="filtroFechaHasta" (ngModelChange)="aplicarFiltros()" />
+            <input type="date" id="filtro-fecha-desde" class="date-input" [(ngModel)]="filtroFechaDesde"
+              (ngModelChange)="aplicarFiltros()" />
+            <span class="date-separator">–</span>
+            <input type="date" id="filtro-fecha-hasta" class="date-input" [(ngModel)]="filtroFechaHasta"
+              (ngModelChange)="aplicarFiltros()" />
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- PANEL DERECHA -->
+    <!-- PANEL JERARQUÍA VISUAL -->
     <div class="jerarquia-panel">
       <h3 class="jerarquia-title">JERARQUÍA VISUAL DE TARIFAS</h3>
 
       <div class="jerarquia-items">
         <div class="jerarquia-item">
-          <span class="dot dot-feriado"></span>
-          <span>Feriado</span>
+          <span class="dot dot-holiday"></span>
+          <div class="jerarquia-info">
+            <span class="jerarquia-nombre">Feriado</span>
+            <span class="jerarquia-desc">Tarifa festiva premium</span>
+          </div>
         </div>
         <div class="jerarquia-item">
-          <span class="dot dot-finde"></span>
-          <span>Fin de semana</span>
+          <span class="dot dot-weekend"></span>
+          <div class="jerarquia-info">
+            <span class="jerarquia-nombre">Fin de semana</span>
+            <span class="jerarquia-desc">Sáb. y Dom.</span>
+          </div>
         </div>
         <div class="jerarquia-item">
-          <span class="dot dot-semana"></span>
-          <span>Entre semana</span>
+          <span class="dot dot-weekday"></span>
+          <div class="jerarquia-info">
+            <span class="jerarquia-nombre">Entre semana</span>
+            <span class="jerarquia-desc">Lun. a Vie.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -100,12 +112,11 @@
   <div class="plans-list">
 
     <div class="plan-card" *ngFor="let plan of planesFiltrados; trackBy: trackByPlanId"
-         [ngClass]="obtenerPlanClase(plan)">
+      [ngClass]="obtenerPlanClase(plan)">
 
       <!-- ICONO -->
       <div class="plan-icon" [ngClass]="obtenerIconoClase(plan)">
-        <span>{{ obtenerIcono(plan) }}</span>
-
+        <span class="plan-icon-emoji">{{ obtenerIcono(plan) }}</span>
       </div>
 
       <!-- INFO -->
@@ -114,13 +125,18 @@
         <p class="plan-habitacion">
           🏨 {{ obtenerNombreTipoHabitacion(plan) }}
         </p>
+        <!-- Badge de tipo de tarifa inline -->
+        <span class="tarifa-badge" [ngClass]="obtenerBadgeTarifaClase(plan)">
+          {{ obtenerNombreTipoTarifa(plan) }}
+        </span>
       </div>
 
       <!-- PRECIO -->
       <div class="plan-precio">
         <span class="precio-label">PRECIO POR NOCHE</span>
         <span class="precio-valor">
-          ${{ formatearPrecio(plan.precioPorNoche) }} USD
+          ${{ formatearPrecio(plan.precioPorNoche) }}
+          <small>USD</small>
         </span>
       </div>
 
@@ -128,14 +144,13 @@
       <div class="plan-vigencia">
         <span class="vigencia-label">VIGENCIA</span>
         <span class="vigencia-valor">
-          {{ formatearFecha(plan.validoDesde) }} - {{ formatearFecha(plan.validoHasta) }}
+          {{ formatearFecha(plan.validoDesde) }} — {{ formatearFecha(plan.validoHasta) }}
         </span>
       </div>
 
       <!-- ESTADO -->
       <div class="plan-estado">
         <span class="estado-label">ESTADO</span>
-
         <span class="estado-badge" [ngClass]="obtenerEstadoClase(plan)">
           ● {{ obtenerEstado(plan) }}
         </span>
@@ -143,108 +158,141 @@
 
     </div>
 
+    <!-- Estado vacío -->
     <div class="empty-state" *ngIf="planesFiltrados.length === 0 && !cargando">
-      No hay planes tarifarios que coincidan con los filtros.
+      <span class="empty-icon">📭</span>
+      <span>No hay planes tarifarios que coincidan con los filtros aplicados.</span>
+    </div>
+
+    <!-- Estado cargando -->
+    <div class="loading-state" *ngIf="cargando">
+      <span class="loading-spinner"></span>
+      <span>Cargando planes tarifarios...</span>
     </div>
 
   </div>
 
-  <!-- ===== FOOTER ===== -->
+  <!-- ===== FOOTER / PAGINACIÓN ===== -->
   <div class="plans-footer">
     <span class="plans-count">
-      Mostrando {{ planesFiltrados.length }} de {{ planes.length }} planes tarifarios
+      Mostrando <strong>{{ planesFiltrados.length }}</strong> de
+      <strong>{{ planes.length }}</strong> planes tarifarios
     </span>
 
     <div class="pagination">
-      <button class="page-btn" disabled>&lt;</button>
-      <button class="page-btn active">1</button>
-      <button class="page-btn">&gt;</button>
+      <button class="page-btn" type="button" disabled>&lt;</button>
+      <button class="page-btn active" type="button">1</button>
+      <button class="page-btn" type="button">&gt;</button>
     </div>
   </div>
 
-  <!-- ===== MODAL ===== -->
-  <div class="modal-backdrop"
-       *ngIf="crearModalVisible"
-       (click)="cerrarCrearPlan()">
+  <!-- ===== MODAL CREAR PLAN ===== -->
+  <div class="modal-backdrop" *ngIf="crearModalVisible" (click)="cerrarCrearPlan()" role="dialog" aria-modal="true"
+    aria-labelledby="modal-title">
 
     <div class="modal-panel" (click)="$event.stopPropagation()">
 
       <header class="modal-header">
-        <h2>Crear Plan Tarifario</h2>
-        <button class="close-btn" type="button" (click)="cerrarCrearPlan()">✕</button>
+        <h2 id="modal-title">Crear Plan Tarifario</h2>
+        <button class="close-btn" type="button" (click)="cerrarCrearPlan()" aria-label="Cerrar modal">✕</button>
       </header>
 
-      <form class="modal-form" (ngSubmit)="guardarPlan()">
+      <form class="modal-form" (ngSubmit)="guardarPlan()" novalidate>
 
-        <label>
-          <span class="form-label">Nombre</span>
-          <input type="text"
-                 [(ngModel)]="formulario.nombre"
-                 name="nombre" />
+        <!-- Nombre -->
+        <label for="form-nombre">
+          <span class="form-label">Nombre del plan <span class="required">*</span></span>
+          <input type="text" id="form-nombre" [(ngModel)]="formulario.nombre" name="nombre"
+            placeholder="Ej. Standard Best Available Rate" autocomplete="off" />
         </label>
 
-        <label>
-          <span class="form-label">Precio por noche</span>
-          <input type="number"
-                 [(ngModel)]="formulario.precioPorNoche"
-                 name="precioPorNoche" />
+        <!-- Precio -->
+        <label for="form-precio">
+          <span class="form-label">Precio por noche (USD) <span class="required">*</span></span>
+          <input type="number" id="form-precio" [(ngModel)]="formulario.precioPorNoche" name="precioPorNoche" min="0"
+            step="0.01" placeholder="0.00" />
         </label>
 
-        <label>
-          <span class="form-label">Tipo de habitación</span>
-          <select [(ngModel)]="formulario.tipoHabitacionId" name="tipoHabitacionId">
-            <option [ngValue]="null">Seleccione</option>
-            <option *ngFor="let tipo of tiposHabitacionVisibles" [ngValue]="tipo.id">{{ tipo.nombre }}</option>
+        <!-- Tipo habitación -->
+        <label for="form-tipo-habitacion">
+          <span class="form-label">Tipo de habitación <span class="required">*</span></span>
+          <select id="form-tipo-habitacion" [(ngModel)]="formulario.tipoHabitacionId" name="tipoHabitacionId">
+            <option [ngValue]="null" disabled>— Seleccione —</option>
+            <option *ngFor="let tipo of tiposHabitacionVisibles" [ngValue]="tipo.id">
+              {{ tipo.nombre }}
+            </option>
           </select>
         </label>
 
+        <!-- Tipo de tarifa — valores ENUM exactos del backend -->
         <div class="tarifa-group">
-          <span class="form-label">Tipo de tarifa</span>
+          <span class="form-label">Tipo de tarifa <span class="required">*</span></span>
 
           <div class="tarifa-options">
-            <label class="tarifa-option">
-              <input type="radio" name="tipoTarifa" [(ngModel)]="formulario.tipoTarifa" value="feriado">
-              <span>Feriado</span>
-            </label>
 
-            <label class="tarifa-option">
-              <input type="radio" name="tipoTarifa" [(ngModel)]="formulario.tipoTarifa" value="fin-de-semana">
-              <span>Fin de semana</span>
-            </label>
+            <!-- HOLIDAY -->
+            <div class="tarifa-option tarifa-option--holiday"
+              [class.tarifa-option--selected]="formulario.tipoTarifa === 'HOLIDAY'"
+              (click)="formulario.tipoTarifa = 'HOLIDAY'">
+              <input type="radio" name="tipoTarifa" [(ngModel)]="formulario.tipoTarifa" value="HOLIDAY"
+                id="tarifa-holiday" class="tarifa-radio" />
+              <span class="tarifa-dot tarifa-dot--holiday"></span>
+              <span class="tarifa-text">
+                <strong>Feriado</strong>
+                <small>HOLIDAY</small>
+              </span>
+            </div>
 
-            <label class="tarifa-option">
-              <input type="radio" name="tipoTarifa" [(ngModel)]="formulario.tipoTarifa" value="entre-semana">
-              <span>Entre semana</span>
-            </label>
+            <!-- WEEKEND -->
+            <div class="tarifa-option tarifa-option--weekend"
+              [class.tarifa-option--selected]="formulario.tipoTarifa === 'WEEKEND'"
+              (click)="formulario.tipoTarifa = 'WEEKEND'">
+              <input type="radio" name="tipoTarifa" [(ngModel)]="formulario.tipoTarifa" value="WEEKEND"
+                id="tarifa-weekend" class="tarifa-radio" />
+              <span class="tarifa-dot tarifa-dot--weekend"></span>
+              <span class="tarifa-text">
+                <strong>Fin de semana</strong>
+                <small>WEEKEND</small>
+              </span>
+            </div>
+
+            <!-- WEEKDAY -->
+            <div class="tarifa-option tarifa-option--weekday"
+              [class.tarifa-option--selected]="formulario.tipoTarifa === 'WEEKDAY'"
+              (click)="formulario.tipoTarifa = 'WEEKDAY'">
+              <input type="radio" name="tipoTarifa" [(ngModel)]="formulario.tipoTarifa" value="WEEKDAY"
+                id="tarifa-weekday" class="tarifa-radio" />
+              <span class="tarifa-dot tarifa-dot--weekday"></span>
+              <span class="tarifa-text">
+                <strong>Entre semana</strong>
+                <small>WEEKDAY</small>
+              </span>
+            </div>
+
           </div>
         </div>
 
+        <!-- Rango de vigencia -->
         <div class="form-date-range">
-          <label>
-            <span class="form-label">Desde</span>
-            <input type="date"
-                   [(ngModel)]="formulario.validoDesde"
-                   name="validoDesde">
+          <label for="form-valido-desde">
+            <span class="form-label">Válido desde <span class="required">*</span></span>
+            <input type="date" id="form-valido-desde" [(ngModel)]="formulario.validoDesde" name="validoDesde" />
           </label>
 
-          <label>
-            <span class="form-label">Hasta</span>
-            <input type="date"
-                   [(ngModel)]="formulario.validoHasta"
-                   name="validoHasta">
+          <label for="form-valido-hasta">
+            <span class="form-label">Válido hasta <span class="required">*</span></span>
+            <input type="date" id="form-valido-hasta" [(ngModel)]="formulario.validoHasta" name="validoHasta" />
           </label>
         </div>
 
+        <!-- Acciones -->
         <div class="modal-actions">
-          <button type="submit"
-                  class="btn-guardar"
-                  [disabled]="cargando">
-            Guardar
+          <button type="submit" class="btn-guardar" [disabled]="cargando" id="btn-guardar-plan">
+            <span *ngIf="!cargando">Guardar plan</span>
+            <span *ngIf="cargando">Guardando…</span>
           </button>
 
-          <button type="button"
-                  class="btn-cancelar"
-                  (click)="cerrarCrearPlan()">
+          <button type="button" class="btn-cancelar" (click)="cerrarCrearPlan()" id="btn-cancelar-plan">
             Cancelar
           </button>
         </div>

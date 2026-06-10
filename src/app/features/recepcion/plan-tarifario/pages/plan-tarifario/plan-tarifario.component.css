@@ -1,30 +1,63 @@
+/* =============================================================================
+   PLAN TARIFARIO — Estilos del módulo
+   Alineado con TipoTarifa enum: WEEKDAY | WEEKEND | HOLIDAY
+   ============================================================================= */
+
 :host {
   display: block;
+
+  /* Paleta base */
   --bg-primary: #0f1523;
   --bg-card: #1a2035;
   --bg-card-hover: #212942;
+  --bg-elevated: #232b45;
+
+  /* Acento principal */
   --accent-gold: #d4af37;
   --accent-gold-dim: rgba(212, 175, 55, 0.15);
+  --accent-gold-glow: rgba(212, 175, 55, 0.35);
+
+  /* Texto */
   --text-primary: #e0e0f0;
   --text-secondary: #8a8fb0;
   --text-muted: #5a5f80;
+
+  /* Bordes */
   --border-color: rgba(255, 255, 255, 0.08);
   --border-radius: 8px;
+
+  /* Colores semánticos */
   --red: #e11d48;
+  --red-dim: rgba(225, 29, 72, 0.15);
   --yellow: #fbbf24;
+  --yellow-dim: rgba(251, 191, 36, 0.15);
   --green: #34d399;
+  --green-dim: rgba(52, 211, 153, 0.15);
   --blue: #60a5fa;
+  --blue-dim: rgba(96, 165, 250, 0.15);
+
+  /* Colores por TipoTarifa */
+  --color-holiday: var(--red);
+  --color-holiday-dim: var(--red-dim);
+  --color-weekend: var(--yellow);
+  --color-weekend-dim: var(--yellow-dim);
+  --color-weekday: var(--green);
+  --color-weekday-dim: var(--green-dim);
 }
 
-/* ===== PAGE LAYOUT ===== */
+/* =============================================================================
+   PAGE LAYOUT
+   ============================================================================= */
 .plan-tarifario-page {
   padding: 28px 32px;
   min-height: 100vh;
   color: var(--text-primary);
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
 }
 
-/* ===== TOPBAR ===== */
+/* =============================================================================
+   TOPBAR
+   ============================================================================= */
 .topbar {
   display: flex;
   align-items: center;
@@ -45,7 +78,7 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 1rem;
   pointer-events: none;
 }
 
@@ -58,6 +91,8 @@
   color: var(--text-primary);
   font-size: 0.9rem;
   outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
 .search-box input:focus {
@@ -72,41 +107,9 @@
   flex-shrink: 0;
 }
 
-.action-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.action-btn:hover {
-  background: var(--bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
-.avatar-badge {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--accent-gold-dim);
-  color: var(--accent-gold);
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-/* ===== HEADER ===== */
+/* =============================================================================
+   HEADER
+   ============================================================================= */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -125,6 +128,7 @@
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 4px 0;
+  letter-spacing: -0.3px;
 }
 
 .subtitle {
@@ -133,6 +137,9 @@
   margin: 0;
 }
 
+/* =============================================================================
+   BOTÓN NUEVO
+   ============================================================================= */
 .btn-nuevo {
   display: flex;
   align-items: center;
@@ -158,29 +165,34 @@
 
 .btn-nuevo:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 4px 16px var(--accent-gold-glow);
 }
 
 .btn-icon {
   font-size: 1.1rem;
   font-weight: 700;
+  line-height: 1;
 }
 
-/* ===== EMPTY / FEEDBACK ===== */
-.empty-state {
-  padding: 18px 20px;
-  border: 1px dashed var(--border-color);
-  border-radius: var(--border-radius);
-  color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.03);
-}
-
+/* =============================================================================
+   FEEDBACK BANNER
+   ============================================================================= */
 .feedback-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 14px;
-  padding: 10px 14px;
+  padding: 10px 16px;
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
   font-size: 0.85rem;
+  animation: fadeIn 0.25s ease;
+}
+
+.feedback-icon {
+  font-size: 0.9rem;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
 .feedback-success {
@@ -195,34 +207,46 @@
   color: var(--red);
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 900px) {
-  .filters-row {
-    flex-direction: column;
-  }
+/* =============================================================================
+   EMPTY / LOADING STATE
+   ============================================================================= */
+.empty-state,
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 24px;
+  border: 1px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 0.9rem;
+}
 
-  .jerarquia-panel {
-    width: 100%;
-    min-width: 0;
+.empty-icon {
+  font-size: 1.2rem;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--accent-gold);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-@media (max-width: 768px) {
-  .plan-tarifario-page {
-    padding: 22px 18px;
-  }
-
-  .filter-row-top {
-    flex-direction: column;
-  }
-
-  .btn-nuevo {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* ===== FILTERS ROW ===== */
+/* =============================================================================
+   FILTROS
+   ============================================================================= */
 .filters-row {
   display: flex;
   gap: 20px;
@@ -249,7 +273,7 @@
 
 .filter-label {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.8px;
   color: var(--text-secondary);
@@ -267,6 +291,8 @@
   color: var(--text-primary);
   font-size: 0.85rem;
   appearance: auto;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
 }
 
 .filter-select:focus,
@@ -293,12 +319,13 @@
 .date-separator {
   color: var(--text-muted);
   font-size: 0.9rem;
+  flex-shrink: 0;
 }
 
 /* Jerarquía Panel */
 .jerarquia-panel {
-  width: 220px;
-  min-width: 220px;
+  width: 240px;
+  min-width: 240px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
@@ -306,7 +333,7 @@
 }
 
 .jerarquia-title {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.8px;
   color: var(--text-secondary);
@@ -317,15 +344,31 @@
 .jerarquia-items {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .jerarquia-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+}
+
+.jerarquia-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.jerarquia-nombre {
   font-size: 0.85rem;
+  font-weight: 600;
   color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.jerarquia-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
 }
 
 .dot {
@@ -333,25 +376,32 @@
   height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor;
 }
 
-.dot-feriado {
-  background: var(--red);
+/* Dots alineados al enum */
+.dot-holiday {
+  background: var(--color-holiday);
+  color: var(--color-holiday);
 }
 
-.dot-finde {
-  background: var(--yellow);
+.dot-weekend {
+  background: var(--color-weekend);
+  color: var(--color-weekend);
 }
 
-.dot-semana {
-  background: var(--green);
+.dot-weekday {
+  background: var(--color-weekday);
+  color: var(--color-weekday);
 }
 
-/* ===== PLAN CARDS ===== */
+/* =============================================================================
+   PLAN CARDS
+   ============================================================================= */
 .plans-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 24px;
 }
 
@@ -362,28 +412,28 @@
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  padding: 20px 24px;
-  transition: all 0.2s ease;
+  padding: 18px 24px;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   border-left: 4px solid transparent;
 }
 
 .plan-card:hover {
   background: var(--bg-card-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* Left border color by type */
-.border-feriado {
-  border-left-color: var(--red);
+/* ── Borde izquierdo por TipoTarifa ─────────────────────────────────────────── */
+.border-holiday {
+  border-left-color: var(--color-holiday);
 }
 
-.border-finde {
-  border-left-color: var(--yellow);
+.border-weekend {
+  border-left-color: var(--color-weekend);
 }
 
-.border-semana {
-  border-left-color: var(--green);
+.border-weekday {
+  border-left-color: var(--color-weekday);
 }
 
 /* Plan Icon */
@@ -397,37 +447,41 @@
   flex-shrink: 0;
 }
 
-.plan-icon svg {
-  width: 24px;
-  height: 24px;
+.plan-icon-emoji {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* ── Fondo del ícono por TipoTarifa ─────────────────────────────────────────── */
+.icon-bg-red {
+  background: var(--color-holiday-dim);
+}
+
+.icon-bg-yellow {
+  background: var(--color-weekend-dim);
 }
 
 .icon-bg-gold {
   background: var(--accent-gold-dim);
-  color: var(--accent-gold);
-}
-
-.icon-bg-red {
-  background: rgba(225, 29, 72, 0.15);
-  color: var(--red);
-}
-
-.icon-bg-blue {
-  background: rgba(96, 165, 250, 0.15);
-  color: var(--blue);
 }
 
 /* Plan Info */
 .plan-info {
   flex: 1.5;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .plan-nombre {
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 4px 0;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .plan-habitacion {
@@ -439,23 +493,49 @@
   margin: 0;
 }
 
-.mini-icon {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
+/* ── Badge de TipoTarifa inline en la card ──────────────────────────────────── */
+.tarifa-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.badge-holiday {
+  background: var(--color-holiday-dim);
+  color: var(--color-holiday);
+  border: 1px solid rgba(225, 29, 72, 0.3);
+}
+
+.badge-weekend {
+  background: var(--color-weekend-dim);
+  color: var(--color-weekend);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.badge-weekday {
+  background: var(--color-weekday-dim);
+  color: var(--color-weekday);
+  border: 1px solid rgba(52, 211, 153, 0.3);
 }
 
 /* Plan Precio */
 .plan-precio {
   flex: 1;
   text-align: left;
+  min-width: 120px;
 }
 
 .precio-label,
 .vigencia-label,
 .estado-label {
   display: block;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.5px;
   color: var(--text-muted);
@@ -467,10 +547,13 @@
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--accent-gold);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
 }
 
 .precio-valor small {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 500;
   color: var(--text-secondary);
 }
@@ -478,17 +561,20 @@
 /* Plan Vigencia */
 .plan-vigencia {
   flex: 1.2;
+  min-width: 0;
 }
 
 .vigencia-valor {
-  font-size: 0.85rem;
+  font-size: 0.83rem;
   color: var(--text-primary);
+  white-space: nowrap;
 }
 
 /* Plan Estado */
 .plan-estado {
   flex: 0.6;
   text-align: center;
+  min-width: 90px;
 }
 
 .estado-badge {
@@ -497,38 +583,26 @@
   gap: 6px;
   padding: 4px 14px;
   border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 700;
   letter-spacing: 0.5px;
 }
 
-.badge-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
 .badge-activo {
-  background: rgba(52, 211, 153, 0.1);
+  background: var(--green-dim);
   color: var(--green);
   border: 1px solid rgba(52, 211, 153, 0.3);
 }
 
-.badge-activo .badge-dot {
-  background: var(--green);
-}
-
 .badge-inactivo {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text-muted);
   border: 1px solid var(--border-color);
 }
 
-.badge-inactivo .badge-dot {
-  background: var(--text-muted);
-}
-
-/* ===== FOOTER / PAGINATION ===== */
+/* =============================================================================
+   FOOTER / PAGINACIÓN
+   ============================================================================= */
 .plans-footer {
   display: flex;
   justify-content: space-between;
@@ -540,6 +614,10 @@
 .plans-count {
   font-size: 0.8rem;
   color: var(--text-secondary);
+}
+
+.plans-count strong {
+  color: var(--text-primary);
 }
 
 .pagination {
@@ -578,11 +656,13 @@
   cursor: not-allowed;
 }
 
-/* ===== MODAL ===== */
+/* =============================================================================
+   MODAL
+   ============================================================================= */
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: flex-end;
@@ -590,6 +670,280 @@
   animation: fadeIn 0.2s ease;
 }
 
+.modal-panel {
+  width: 420px;
+  max-width: 90vw;
+  height: 100vh;
+  background: var(--bg-card);
+  padding: 28px;
+  border-left: 3px solid var(--accent-gold);
+  overflow-y: auto;
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: -0.2px;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s ease;
+  padding: 4px;
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  color: var(--text-primary);
+}
+
+/* ── Formulario ─────────────────────────────────────────────────────────────── */
+.modal-form label {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.required {
+  color: var(--red);
+  margin-left: 2px;
+}
+
+.modal-form input[type="text"],
+.modal-form input[type="number"],
+.modal-form input[type="date"],
+.modal-form select {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.modal-form input:focus,
+.modal-form select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px var(--accent-gold-dim);
+}
+
+.modal-form input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── Selector de TipoTarifa ─────────────────────────────────────────────────── */
+.tarifa-group {
+  margin-bottom: 16px;
+}
+
+.tarifa-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tarifa-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  user-select: none;
+}
+
+/* El input radio queda oculto visualmente: el <div> padre
+   maneja el click mediante (click)="formulario.tipoTarifa = '...'"
+   El input sigue sincronizado vía [(ngModel)] para que Angular
+   reconozca el valor seleccionado correctamente. */
+.tarifa-radio {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  /* NO usar pointer-events: none aquí para no romper el ngModel */
+}
+
+.tarifa-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: box-shadow 0.15s ease;
+}
+
+.tarifa-dot--holiday {
+  background: var(--color-holiday);
+}
+
+.tarifa-dot--weekend {
+  background: var(--color-weekend);
+}
+
+.tarifa-dot--weekday {
+  background: var(--color-weekday);
+}
+
+.tarifa-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+}
+
+.tarifa-text strong {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.tarifa-text small {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.3px;
+}
+
+/* Estado seleccionado por TipoTarifa */
+.tarifa-option--holiday.tarifa-option--selected {
+  border-color: var(--color-holiday);
+  background: var(--color-holiday-dim);
+}
+
+.tarifa-option--holiday.tarifa-option--selected .tarifa-dot--holiday {
+  box-shadow: 0 0 8px var(--color-holiday);
+}
+
+.tarifa-option--weekend.tarifa-option--selected {
+  border-color: var(--color-weekend);
+  background: var(--color-weekend-dim);
+}
+
+.tarifa-option--weekend.tarifa-option--selected .tarifa-dot--weekend {
+  box-shadow: 0 0 8px var(--color-weekend);
+}
+
+.tarifa-option--weekday.tarifa-option--selected {
+  border-color: var(--color-weekday);
+  background: var(--color-weekday-dim);
+}
+
+.tarifa-option--weekday.tarifa-option--selected .tarifa-dot--weekday {
+  box-shadow: 0 0 8px var(--color-weekday);
+}
+
+/* Hover en opciones no seleccionadas */
+.tarifa-option:hover:not(.tarifa-option--selected) {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--bg-elevated);
+}
+
+/* ── Rango de fechas ────────────────────────────────────────────────────────── */
+.form-date-range {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.form-date-range label {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* ── Acciones del modal ─────────────────────────────────────────────────────── */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.btn-guardar {
+  flex: 1;
+  background: var(--accent-gold);
+  color: var(--bg-primary);
+  border: none;
+  padding: 11px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.2px;
+}
+
+.btn-guardar:hover:not(:disabled) {
+  box-shadow: 0 4px 14px var(--accent-gold-glow);
+  transform: translateY(-1px);
+}
+
+.btn-guardar:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-cancelar {
+  flex: 1;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 11px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-cancelar:hover {
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+}
+
+/* =============================================================================
+   ANIMACIONES
+   ============================================================================= */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -610,156 +964,67 @@
   }
 }
 
-.modal-panel {
-  width: 400px;
-  max-width: 90vw;
-  height: 100vh;
-  background: var(--bg-card);
-  padding: 28px;
-  border-left: 3px solid var(--accent-gold);
-  overflow-y: auto;
-  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
-  animation: slideIn 0.3s ease;
+/* =============================================================================
+   RESPONSIVE
+   ============================================================================= */
+@media (max-width: 900px) {
+  .filters-row {
+    flex-direction: column;
+  }
+
+  .jerarquia-panel {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .jerarquia-items {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+  }
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border-color);
+@media (max-width: 768px) {
+  .plan-tarifario-page {
+    padding: 20px 16px;
+  }
+
+  .filter-row-top {
+    flex-direction: column;
+  }
+
+  .btn-nuevo {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .plan-card {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .plan-precio,
+  .plan-vigencia,
+  .plan-estado {
+    flex: 1 1 40%;
+  }
+
+  .modal-panel {
+    width: 100vw;
+    max-width: 100vw;
+  }
 }
 
-.modal-header h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--accent-gold);
-}
+@media (max-width: 480px) {
+  .tarifa-options {
+    gap: 6px;
+  }
 
-.close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.3rem;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: color 0.15s;
-}
+  .form-date-range {
+    flex-direction: column;
+  }
 
-.close-btn:hover {
-  color: var(--text-primary);
-}
-
-/* Form */
-.modal-form label {
-  display: block;
-  margin-bottom: 16px;
-}
-
-.form-label {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-  text-transform: uppercase;
-}
-
-.modal-form input[type="text"],
-.modal-form input[type="number"],
-.modal-form input[type="date"],
-.modal-form select {
-  width: 100%;
-  padding: 10px 12px;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  color: var(--text-primary);
-  font-size: 0.85rem;
-  transition: border-color 0.15s;
-  box-sizing: border-box;
-}
-
-.modal-form input:focus,
-.modal-form select:focus {
-  outline: none;
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 0 2px var(--accent-gold-dim);
-}
-
-.checkbox-group {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 16px;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: var(--text-primary);
-  cursor: pointer;
-}
-
-.checkbox-label input[type="checkbox"] {
-  accent-color: var(--accent-gold);
-  width: 16px;
-  height: 16px;
-}
-
-.form-date-range {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.form-date-range label {
-  flex: 1;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-color);
-}
-
-.btn-guardar {
-  flex: 1;
-  background: var(--accent-gold);
-  color: var(--bg-primary);
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-guardar:hover {
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
-  transform: translateY(-1px);
-}
-
-.btn-cancelar {
-  flex: 1;
-  background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  padding: 10px 16px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.btn-cancelar:hover {
-  border-color: var(--text-muted);
-  color: var(--text-primary);
+  .modal-actions {
+    flex-direction: column;
+  }
 }
