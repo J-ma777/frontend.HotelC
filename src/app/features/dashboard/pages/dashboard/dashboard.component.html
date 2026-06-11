@@ -1,0 +1,55 @@
+<div class="dashboard-container">
+
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+
+    <div class="filters">
+      <input type="date" [(ngModel)]="fechaInicio">
+      <input type="date" [(ngModel)]="fechaFin">
+      <button (click)="cargarDashboard()">Actualizar</button>
+    </div>
+  </div>
+
+  <div class="cards">
+
+    <!-- INGRESOS -->
+    <div class="card ingresos">
+      <div class="card-label">INGRESOS</div>
+      <div class="card-value">$ {{ dataActual?.ingresos }}</div> <!-- FIX -->
+
+      <div class="card-variation">
+        <span class="positivo" *ngIf="variacionIngresos > 0">
+          ↑ +{{ variacionIngresos | number:'1.0-2' }}%
+        </span>
+        <span class="negativo" *ngIf="variacionIngresos < 0">
+          ↓ -{{ abs(variacionIngresos) | number:'1.0-2' }}%
+        </span>
+        <span class="neutral" *ngIf="variacionIngresos === 0">
+          Sin cambios
+        </span>
+        <div class="variation-subtitle">vs periodo anterior</div>
+      </div>
+    </div>
+
+    <!-- OCUPACIÓN -->
+    <div class="card ocupacion">
+      <div class="card-label">OCUPACIÓN</div>
+      <div class="card-value">{{ dataActual?.ocupacion }}%</div> <!-- FIX -->
+
+      <div class="card-variation">
+        <span class="positivo" *ngIf="variacionOcupacion > 0">
+          ↑ +{{ variacionOcupacion | number:'1.0-2' }}%
+        </span>
+        <span class="negativo" *ngIf="variacionOcupacion < 0">
+          ↓ -{{ abs(variacionOcupacion) | number:'1.0-2' }}%
+        </span>
+        <span class="neutral" *ngIf="variacionOcupacion === 0">
+          Sin cambios
+        </span>
+        <div class="variation-subtitle">vs periodo anterior</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

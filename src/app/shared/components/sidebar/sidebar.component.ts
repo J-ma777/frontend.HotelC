@@ -25,10 +25,16 @@ export class SidebarComponent implements OnInit {
 
   readonly menuItems: MenuItem[] = [
     {
-      label: 'DASHBOARD',
+      label: 'HOME',
       icon: 'home',
       ruta: '/admin',
-      permisos: ['USUARIO_VER']
+      permisos: ['RESERVA_VER']
+    },
+    {
+      label: 'DASHBOARD',
+      icon: 'home',
+      ruta: '/admin/dashboard',
+      permisos: ['RESERVA_VER'] // temporal
     },
     {
       label: 'USUARIOS',
@@ -67,7 +73,7 @@ export class SidebarComponent implements OnInit {
       permisos: ['RESERVA_CHECKIN']
     },
     {
-      label: 'Check-out',
+      label: 'CHECKO-OUT',
       icon: 'logout',
       ruta: '/recepcion/front-desk/checkout',
       permisos: ['RESERVA_CHECKOUT']
