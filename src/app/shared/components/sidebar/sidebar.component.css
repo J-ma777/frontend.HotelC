@@ -1,175 +1,226 @@
-:host {
-  display: block;
-  width: 240px;
-  --primary:      #1e293b;
-  --primary-dark: #0f172a;
-  --accent:       #facc15;
-  --text-light:   #999a9b;
-  --text-muted:   #94a3b8;
-  --hover-bg:     rgba(255, 255, 255, 0.05);
-  --active-bg:    #334155;
-}
-
 .sidebar {
-  width: 240px;
-  min-height: 100vh;
-  background: var(--primary-dark);
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(180deg, #0f172a 0%, #0a0f1c 100%);
+  border-right: 1px solid rgba(250, 204, 21, 0.1);
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
-  position: sticky;
-  top: 0;
-  height: 100vh;
   overflow-y: auto;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Scroll personalizado */
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #facc15;
+  border-radius: 4px;
+}
+
+/* Modo móvil: el sidebar se controla desde el layout */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+}
+
+/* Resto de estilos del sidebar (mantén los que ya tenías) */
 .sidebar-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 24px 20px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.logo-icon {
-  font-size: 26px;
-}
-
-.logo-text {
-  font-size: 18px;
-  font-weight: 700;
-  color: #7f7e7e;
-  letter-spacing: -0.3px;
-}
-
-.user-info {
+  padding: 28px 24px;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.user-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--primary-dark);
-  font-size: 16px;
-  font-weight: 700;
+/* Sidebar mejorado */
+.sidebar {
+  width: 280px;
+  background: linear-gradient(180deg, #0f172a 0%, #0a0f1c 100%);
+  border-right: 1px solid rgba(250, 204, 21, 0.1);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  z-index: 100;
+}
+
+.sidebar-logo {
+  padding: 28px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: #facc15;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+}
+
+.logo-icon svg {
+  width: 20px;
+  height: 20px;
+  color: #0f172a;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #facc15;
+  letter-spacing: 1px;
+}
+
+.logo-subtitle {
+  font-size: 10px;
+  color: #64748b;
+  letter-spacing: 1px;
+}
+
+.user-info {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #facc15, #eab308);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  color: #0f172a;
+}
+
+.user-details {
+  flex: 1;
 }
 
 .user-name {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
-  color: #7f7e7e;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #e2e8f0;
+  margin-bottom: 4px;
+}
+
+.user-role {
+  font-size: 11px;
+  color: #94a3b8;
 }
 
 .sidebar-nav {
   flex: 1;
-  padding: 8px;
+  padding: 20px 12px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  overflow-y: auto;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  border-radius: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  color: #94a3b8;
   text-decoration: none;
-  color: var(--text-light);
-  font-size: 14px;
-  font-weight: 400;
-  transition: all 0.15s ease;
+  transition: all 0.2s;
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .nav-item:hover {
-  background: var(--hover-bg);
-  color: #7f7e7e;
+  background: rgba(250, 204, 21, 0.08);
+  color: #facc15;
 }
 
 .nav-item.activo {
-  background: var(--active-bg);
-  color: #7f7e7e;
-  font-weight: 600;
-  border-left: 4px solid var(--accent);
-  padding-left: 12px;
+  background: rgba(250, 204, 21, 0.12);
+  color: #facc15;
+  border-left: 2px solid #facc15;
 }
 
 .nav-icon {
-  font-size: 18px;
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  text-align: center;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.nav-icon-img {
+.nav-icon svg {
   width: 20px;
   height: 20px;
-  object-fit: contain;
-  filter: brightness(0.9);
+  stroke: currentColor;
 }
 
 .nav-label {
+  font-size: 13px;
+  font-weight: 500;
   flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.nav-badge {
+  background: rgba(250, 204, 21, 0.2);
+  color: #facc15;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 20px;
 }
 
 .sidebar-footer {
-  padding: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .btn-logout {
   width: 100%;
+  background: rgba(255, 71, 71, 0.1);
+  border: 1px solid rgba(255, 71, 71, 0.2);
+  padding: 10px 16px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  border-radius: 8px;
-  color: #fca5a5;
-  font-size: 14px;
+  justify-content: center;
+  color: #ff6b6b;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.2s;
+}
+
+.btn-logout svg {
+  width: 18px;
+  height: 18px;
+  stroke: #ff6b6b;
 }
 
 .btn-logout:hover {
-  background: rgba(239, 68, 68, 0.25);
-  color: #7f7e7e;
-}
-
-.nav-icon svg {
-  width: 20px;
-  height: 20px;
-  stroke: #9CA3AF;
-  stroke-width: 3; /* Grosor de los iconos */
-}
-
-.logo-icon svg {
-  width: 32px;
-  height: 32px;
-  stroke: #D4AF37; /* dorado elegante */
-  stroke-width: 3;
+  background: rgba(255, 71, 71, 0.2);
+  transform: translateY(-2px);
 }

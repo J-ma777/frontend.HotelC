@@ -1,10 +1,97 @@
 .layout-container {
   display: flex;
-  height: 100vh;
-  background-color: #0f172a; /* Color de fondo oscuro principal */
+  min-height: 100vh;
+  background-color: #0f172a;
 }
 
+/* Sidebar fijo en desktop */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+/* Contenido principal en desktop */
 .main {
   flex: 1;
-  overflow-y: auto; /* Permitir scroll solo en el área principal */
+  margin-left: 280px;
+  overflow-y: auto;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+/* Botón para abrir/cerrar sidebar en móvil (oculto en desktop) */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1001;
+  background: #facc15;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.menu-toggle svg {
+  width: 24px;
+  height: 24px;
+  stroke: #0f172a;
+  stroke-width: 2;
+}
+
+/* Overlay para móvil cuando el sidebar está abierto */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  backdrop-filter: blur(2px);
+}
+
+/* ========== RESPONSIVE MÓVIL ========== */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .main {
+    margin-left: 0;
+    padding-top: 70px;
+  }
+
+  .sidebar-overlay.show {
+    display: block;
+  }
+}
+
+/* ========== TABLET (ajuste opcional) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 260px;
+  }
+  .main {
+    margin-left: 260px;
+  }
 }

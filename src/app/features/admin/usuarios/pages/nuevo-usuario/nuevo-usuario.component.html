@@ -1,0 +1,69 @@
+<div class="nuevo-usuario-container">
+    <div class="form-wrapper">
+      <div class="form-header">
+        <button class="btn-back" (click)="cancelar()">
+          ← Volver
+        </button>
+        <h1 class="title">Nuevo Usuario</h1>
+        <p class="subtitle">Complete los datos para registrar un nuevo usuario en el sistema</p>
+      </div>
+  
+      <div class="form-card" *ngIf="!cargando; else loading">
+        <form (ngSubmit)="guardarUsuario()">
+          <div class="form-group">
+            <label class="form-label">Nombre de Usuario *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="usuarioData.nombreUsuario" 
+              name="nombreUsuario"
+              placeholder="Ej: jperez"
+              required>
+          </div>
+  
+          <div class="form-group">
+            <label class="form-label">Correo Electrónico *</label>
+            <input 
+              type="email" 
+              class="form-control" 
+              [(ngModel)]="usuarioData.correo" 
+              name="correo"
+              placeholder="Ej: usuario@hotel.com"
+              required>
+          </div>
+  
+          <div class="form-group">
+            <label class="form-label">Contraseña *</label>
+            <input 
+              type="password" 
+              class="form-control" 
+              [(ngModel)]="usuarioData.password" 
+              name="password"
+              placeholder="Mínimo 6 caracteres"
+              required>
+          </div>
+  
+          <div class="form-group">
+            <label class="form-label">Rol *</label>
+            <select class="form-control" [(ngModel)]="usuarioData.rolId" name="rolId" required>
+              <option [value]="null">-- Seleccione un rol --</option>
+              <option *ngFor="let rol of roles" [value]="rol.id">
+                {{ rol.nombre }} - {{ rol.descripcion }}
+              </option>
+            </select>
+          </div>
+  
+          <div class="form-actions">
+            <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+            <button type="submit" class="btn-guardar" [disabled]="enviando">
+              {{ enviando ? 'Guardando...' : 'Crear Usuario' }}
+            </button>
+          </div>
+        </form>
+      </div>
+  
+      <ng-template #loading>
+        <div class="loading">Cargando roles...</div>
+      </ng-template>
+    </div>
+  </div>

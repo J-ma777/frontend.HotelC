@@ -1,6 +1,23 @@
 <div class="layout-container">
-  <app-sidebar></app-sidebar>
-  <div class="main">
+  
+  <!-- Botón toggle para móvil -->
+  <button class="menu-toggle" (click)="toggleSidebar()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+
+  <!-- Overlay para cerrar sidebar en móvil -->
+  <div class="sidebar-overlay" [class.show]="mobileMenuOpen" (click)="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <app-sidebar [class.mobile-open]="mobileMenuOpen" class="sidebar"></app-sidebar>
+
+  <!-- Contenido principal -->
+  <main class="main">
     <router-outlet></router-outlet>
-  </div>
+  </main>
+
 </div>

@@ -1,0 +1,158 @@
+<div class="roles-container">
+    <div class="header">
+      <div>
+        <h1 class="title">Gestión de Roles</h1>
+        <p class="subtitle">Administre los roles y sus permisos asociados al sistema</p>
+      </div>
+      <button class="btn-new-rol" (click)="abrirModalNuevoRol()">
+        + Nuevo Rol
+      </button>
+    </div>
+  
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ roles.length }}</div>
+        <div class="stat-label">ROLES REGISTRADOS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ permisos.length }}</div>
+        <div class="stat-label">PERMISOS TOTALES</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ totalPermisosAsignados }}</div>
+        <div class="stat-label">PERMISOS ASIGNADOS</div>
+      </div>
+    </div>
+  
+    <div class="table-container" *ngIf="!cargando; else loading">
+      <table class="roles-table">
+        <thead>
+          <tr>
+            <th>ROL</th>
+            <th>DESCRIPCIÓN</th>
+            <th>PERMISOS</th>
+            <th>ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rol of roles">
+            <td class="rol-cell">
+              <div class="rol-avatar">{{ rol.nombre.charAt(0) }}</div>
+              <div class="rol-info">
+                <span class="rol-nombre">{{ rol.nombre }}</span>
+                <span class="rol-id">ID #{{ rol.id }}</span>
+              </div>
+            </td>
+            <td class="descripcion-cell">{{ rol.descripcion }}</td>
+            <td>
+              <div class="permisos-badges">
+                <span *ngFor="let permiso of rol.permisos?.slice(0, 3)" class="permiso-badge">
+                  {{ permiso.nombre }}
+                </span>
+                <span *ngIf="(rol.permisos?.length || 0) > 3" class="permiso-more">
+                  +{{ rol.permisos!.length - 3 }} más
+                </span>
+              </div>
+            </td>
+            <td>
+              <button class="btn-asignar" (click)="abrirModalPermisos(rol)">
+                Gestionar Permisos
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <ng-template #loading>
+      <div class="loading">Cargando roles...</div>
+    </ng-template>
+  </div>
+  
+    <!-- Modal Asignar Permisos -->
+    <div class="modal-overlay" *ngIf="mostrarModalPermisos" (click)="cerrarModalPermisos()">
+        <div class="modal-container modal-permisos" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <div class="modal-header-info">
+            <h3>Gestionar Permisos</h3>
+            <p>{{ rolSeleccionado?.nombre }}</p>
+            </div>
+            <button class="modal-close" (click)="cerrarModalPermisos()">×</button>
+        </div>
+        
+        <div class="modal-body">
+            <!-- Barra de búsqueda -->
+            <div class="search-bar">
+            <input 
+                type="text" 
+                class="search-input" 
+                placeholder="Buscar permiso..."
+                [(ngModel)]="filtroPermisos">
+            </div>
+    
+            <!-- Selector rápido -->
+            <div class="quick-actions">
+            <button class="quick-btn" (click)="seleccionarTodos()">✓ Seleccionar Todos</button>
+            <button class="quick-btn" (click)="deseleccionarTodos()">✗ Deseleccionar Todos</button>
+            </div>
+    
+            <!-- Lista de permisos agrupados por recurso -->
+            <div class="permisos-grupos">
+            <div *ngFor="let grupo of permisosAgrupados" class="grupo-permisos">
+                <div class="grupo-header">
+                <span class="grupo-icon">📦</span>
+                <span class="grupo-nombre">{{ grupo.recurso }}</span>
+                <span class="grupo-count">{{ grupo.permisos.length }} permisos</span>
+                </div>
+                <div class="permisos-grid">
+                <label *ngFor="let permiso of grupo.permisos" class="permiso-checkbox" [class.checked]="estaSeleccionado(permiso.id)">
+                    <input 
+                    type="checkbox" 
+                    [value]="permiso.id"
+                    [checked]="estaSeleccionado(permiso.id)"
+                    (change)="togglePermiso(permiso.id, $event)">
+                    <div class="permiso-info">
+                    <span class="permiso-nombre">{{ permiso.nombre }}</span>
+                    <span class="permiso-accion">{{ permiso.accion }}</span>
+                    </div>
+                </label>
+                </div>
+            </div>
+            </div>
+        </div>
+    
+        <div class="modal-footer">
+            <div class="selected-count">
+            {{ permisosSeleccionados.length }} de {{ permisos.length }} permisos seleccionados
+            </div>
+            <div class="modal-actions">
+            <button class="btn-secondary" (click)="cerrarModalPermisos()">Cancelar</button>
+            <button class="btn-primary-modal" (click)="guardarPermisos()">Guardar Cambios</button>
+            </div>
+        </div>
+        </div>
+    </div>
+  
+  <!-- Modal Nuevo Rol -->
+  <div class="modal-overlay" *ngIf="mostrarModalNuevoRol" (click)="cerrarModalNuevoRol()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Crear Nuevo Rol</h3>
+        <button class="modal-close" (click)="cerrarModalNuevoRol()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Nombre del Rol *</label>
+          <input type="text" class="form-control" [(ngModel)]="nuevoRol.nombre" placeholder="Ej: MANTENIMIENTO">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descripción</label>
+          <textarea class="form-control" [(ngModel)]="nuevoRol.descripcion" rows="3" placeholder="Describa las responsabilidades de este rol..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="cerrarModalNuevoRol()">Cancelar</button>
+        <button class="btn-primary" (click)="crearRol()" [disabled]="!nuevoRol.nombre.trim()">Crear Rol</button>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,370 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+
+* {
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  font-size: 20px;
+}
+
+.usuarios-container {
+  padding: 32px;
+  background: linear-gradient(135deg, #0f172a 0%, #1a2f4f 100%);
+  min-height: 100vh;
+  color: #e2e8f0;
+}
+
+.usuarios-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 38px;
+  font-weight: 700;
+  color: #facc15;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #94a3b8;
+  margin: 0;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.btn-new-user {
+  background: #facc15;
+  color: #0f172a;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 24px;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  transition: all 0.3s ease;
+}
+
+.btn-new-user:hover {
+  background: #fbbf24;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(250, 204, 21, 0.3);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px;
+  border-radius: 12px;
+  border-left: 4px solid #facc15;
+  backdrop-filter: blur(10px);
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.stat-value {
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.table-container {
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.usuarios-table thead {
+  background: rgba(15, 23, 42, 0.8);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.usuarios-table th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #facc15;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 11px;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.usuarios-table td {
+  padding: 16px;
+  color: #e2e8f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.usuarios-table tr:last-child td {
+  border-bottom: none;
+}
+
+.usuarios-table tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.id-badge {
+  background: rgba(250, 204, 21, 0.1);
+  color: #facc15;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  display: inline-block;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.usuario-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.usuario-avatar {
+  width: 36px;
+  height: 36px;
+  background: rgba(250, 204, 21, 0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #facc15;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.usuario-nombre {
+  font-weight: 500;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.badge-rol {
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.badge-estado {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.badge-estado.activo {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.badge-estado.inactivo {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-asignar {
+  background: rgba(250, 204, 21, 0.1);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #facc15;
+  cursor: pointer;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  transition: all 0.2s;
+}
+
+.btn-asignar:hover {
+  background: rgba(250, 204, 21, 0.2);
+  transform: translateY(-1px);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background: #1e293b;
+  border-radius: 16px;
+  width: 450px;
+  max-width: 90%;
+  border: 1px solid rgba(250, 204, 21, 0.2);
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #facc15;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #94a3b8;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #facc15;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-usuario {
+  margin: 0 0 20px 0;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #cbd5e1;
+  border-left: 3px solid #facc15;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  background: #0f172a;
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #e2e8f0;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #facc15;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #cbd5e1;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-primary-modal {
+  background: #facc15;
+  color: #0f172a;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  transition: all 0.2s;
+}
+
+.btn-primary-modal:hover {
+  background: #fbbf24;
+  transform: translateY(-1px);
+}
+
+.loading, .error {
+  padding: 32px;
+  text-align: center;
+  font-size: 16px;
+  color: #94a3b8;
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}

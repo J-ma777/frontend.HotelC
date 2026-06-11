@@ -1,0 +1,94 @@
+<div class="usuarios-container">
+  <div class="usuarios-header">
+    <div>
+      <h1 class="title">Gestión de Usuarios</h1>
+      <p class="subtitle">Administre los accesos y roles del personal del hotel</p>
+    </div>
+    <button class="btn-new-user" routerLink="/admin/usuarios/nuevo">
+      + Nuevo Usuario
+    </button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">TOTAL USUARIOS</div>
+      <div class="stat-value">{{ usuarios.length }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">ACTIVOS</div>
+      <div class="stat-value">{{ usuariosActivos }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">ROLES REGISTRADOS</div>
+      <div class="stat-value">{{ roles.length }}</div>
+    </div>
+  </div>
+
+  <div class="table-container" *ngIf="!cargando; else loading">
+    <table class="usuarios-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>USUARIO</th>
+          <th>CORREO</th>
+          <th>ROL</th>
+          <th>ESTADO</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuarios">
+          <td><span class="id-badge">#{{ usuario.id }}</span></td>
+          <td>
+            <div class="usuario-cell">
+              <div class="usuario-avatar">{{ usuario.nombreUsuario.charAt(0).toUpperCase() }}</div>
+              <span class="usuario-nombre">{{ usuario.nombreUsuario }}</span>
+            </div>
+          </td>
+          <td>{{ usuario.correo }}</td>
+          <td><span class="badge-rol">{{ usuario.rol?.nombre || 'Sin rol' }}</span></td>
+          <td>
+            <span class="badge-estado" [class.activo]="usuario.estado" [class.inactivo]="!usuario.estado">
+              {{ usuario.estado ? 'ACTIVO' : 'INACTIVO' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-asignar" (click)="abrirModalAsignarRol(usuario)">
+              Asignar Rol
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading">Cargando usuarios...</div>
+  </ng-template>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Asignar Rol</h3>
+      <button class="modal-close" (click)="cerrarModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-usuario">
+        Usuario: <strong>{{ usuarioSeleccionado?.nombreUsuario }}</strong>
+      </div>
+      <label class="form-label">Seleccione un rol</label>
+      <select class="form-select" [(ngModel)]="rolSeleccionadoId">
+        <option [value]="null">-- Seleccione un rol --</option>
+        <option *ngFor="let rol of roles" [value]="rol.id">
+          {{ rol.nombre }} - {{ rol.descripcion }}
+        </option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+      <button class="btn-primary-modal" (click)="asignarRol()">Guardar Cambios</button>
+    </div>
+  </div>
+</div>
