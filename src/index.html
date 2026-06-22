@@ -3,39 +3,63 @@
 <head>
   <meta charset="utf-8">
   <title>FrontendHotel</title>
-  <base href="/">
+  /
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
-  <!-- BEGIN: Custom Font Configuration -->
+
+  <!-- Custom Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
-  
-  <!-- BEGIN: Tailwind CDN -->
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com"/>
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <!-- BEGIN: Tailwind Customization -->
+
   <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              serif: ['Cinzel', 'serif'],
-              sans: ['Montserrat', 'sans-serif'],
-            },
-            colors: {
-              gold: '#C5A059',
-            }
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          },
+          colors: {
+            gold: '#C5A059',
           }
         }
       }
+    }
   </script>
 </head>
+
 <body>
+
   <app-root></app-root>
+
+    <script>
+      (function(d){
+        var s = d.createElement("script");
+    
+        s.src = "https://cdn.userway.org/widget.js";
+        s.async = true;
+    
+        // Color dorado para el botón de accesibilidad
+        s.setAttribute("data-color", "#C5A059");
+    
+        s.onload = function() {
+          console.log("Widget accesibilidad cargado ✅");
+        };
+    
+        document.body.appendChild(s);
+      })(document);
+    </script>
+  
 </body>
 </html>
